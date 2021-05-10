@@ -1,4 +1,9 @@
 alias nano="vim"
 alias lg="lazygit"
-alias cat="lolcat"
-
+alias la="ls -A"
+alias l="ls -CF"
+alias ll="ls -AlF"
+alias which="which -a"
+alias nmap="nmap -T4"
+alias neofetch="~/Documents/neofetch/neofetch"
+alias update="~/update.sh"
