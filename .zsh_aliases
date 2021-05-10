@@ -1,16 +1,17 @@
-alias brew="brew -v"
 alias ls="gls --color=auto"
 alias grep="ggrep --color=auto"
-alias fgrep="gfgrep --color=auto"
-alias egrep="gegrep --color=auto"
+
 alias la="ls -A"
 alias l="ls -CF"
 alias ll="ls -AlF"
-alias cat="lolcat"
-alias python="/opt/homebrew/opt/python@3.9/libexec/bin/python"
-alias python3="python"
-alias pip="/opt/homebrew/bin/pip"
-alias pip3="/opt/homebrew/bin/pip3"
-alias idle="/opt/homebrew/opt/python@3.9/libexec/bin/idle"
+
+alias which="which -a"
+alias brew="brew -v"
+alias nmap="nmap -T4"
+
 alias nano="vim"
 alias lg="lazygit"
+
+alias neofetch="~/Documents/neofetch/neofetch"
+alias update="~/update.sh"
+alias trash="trash -v -F"
