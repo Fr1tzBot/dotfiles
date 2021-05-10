@@ -1,6 +1,3 @@
 [user]
 	email = fritz@standland.org
 	name = Fritz Geib
-[filesystem "Ubuntu|11.0.10|/dev/sda2"]
-	timestampResolution = 10000 nanoseconds
-	minRacyThreshold = 5046 microseconds
