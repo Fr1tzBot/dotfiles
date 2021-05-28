@@ -1,9 +1,13 @@
-alias nano="vim"
-alias lg="lazygit"
 alias la="ls -A"
 alias l="ls -CF"
-alias ll="ls -AlF"
+alias ll="ls -Alh"
+
 alias which="which -a"
+alias brew="brew -v"
 alias nmap="nmap -T4"
-alias neofetch="~/Documents/neofetch/neofetch"
-alias update="~/update.sh"
+
+alias nano="vim"
+alias lg="lazygit"
+
+alias trash="trash -v -F"
+eval $(thefuck --alias)
