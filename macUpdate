@@ -1,4 +1,4 @@
-#!/bin/bash
+#!bash
 printf "\nRunning Brew Update...\n\n"
 sleep 0.5
 brew -v update

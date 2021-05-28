@@ -1,4 +1,4 @@
-#!/bin/bash
+#!bash
 if [  -z "$1" ]; then
     printf "\nOptions:\n    update  | List Updates\n    upgrade | Install Recommended Updates\n"
     read -p "> " option

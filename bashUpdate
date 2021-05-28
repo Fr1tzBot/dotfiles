@@ -1,3 +1,4 @@
+#!/bin/bash
 updateType=""
 #sudo printf "Would you like to preform a full update? [y/n] "
 #read updateType

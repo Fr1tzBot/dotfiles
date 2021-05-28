@@ -1,7 +1,3 @@
-alias la="ls -A"
-alias l="ls -CF"
-alias ll="ls -Alh"
-
 alias which="which -a"
 alias brew="brew -v"
 alias nmap="nmap -T4"
