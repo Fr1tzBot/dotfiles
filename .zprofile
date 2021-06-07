@@ -18,5 +18,6 @@ PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
 PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 
 export PATH
-export PS1="%B%F{green}%n%f%b%B%F{green}@%f%b%B%F{green}%m%f%b:%F{blue}%~%f$ "
+export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
+#export PS1="%B%F{green}%n%f%b%B%F{green}@%f%b%B%F{green}%m%f%b:%F{blue}%~%f$ "
 eval `gdircolors ~/.dir_colors`
