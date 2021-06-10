@@ -1,13 +1,18 @@
 #Set Base PATH
 PATH="/usr/local/bin:/usr/bin:/usr/sbin:/sbin"
 
-#set PATH so it includes homebrew bin if it exists, otherwise add /bin
+#set PATH so it includes homebrew bins if they exists, otherwise add /bin
 if [ -d "/opt/homebrew" ] ; then
-    PATH="/opt/homebrew/sbin:$PATH"
-    PATH="/opt/homebrew/bin:$PATH"
+    eval $(/opt/homebrew/bin/brew shellenv)
 else
     PATH="/bin:$PATH"
 
+fi
+
+# set PATH so it includes macports bins if they exist
+if [ -d "/opt/local" ] ; then
+    PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+    MANPATH="/opt/local/share/man:$MANPATH"
 fi
 
 # set PATH so it includes user's private bin if it exists
@@ -56,10 +61,11 @@ fi
 #Export env variables
 export PATH
 export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
+export MANPATH
 # (for zsh) export PS1="%B%F{green}%n%f%b%B%F{green}@%f%b%B%F{green}%m%f%b:%F{blue}%~%f$ "
-eval $(/opt/homebrew/bin/brew shellenv)
 eval $(/opt/homebrew/opt/coreutils/libexec/gnubin/dircolors $HOME/.dir_colors)
 if [ -f $HOME/.bash_aliases ]; then
     source $HOME/.bash_aliases
 fi
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
+
