@@ -1,12 +1,31 @@
+#Notify if PATH is already set
+if [ ! -z "$PATH" ] ; then
+    #if set, replace it
+    PATH=""
+fi
+
 #Set Base PATH
-PATH="/usr/local/bin:/usr/bin:/usr/sbin:/sbin"
+if [ -d "/usr/local/bin" ] ; then
+    PATH="$PATH:/usr/local/bin"
+fi
+if [ -d "/usr" ] ; then
+    PATH="$PATH:/usr/bin:/usr/sbin"
+fi
+if [ -d "/sbin" ] ; then
+    PATH="$PATH:/sbin"
+fi
+
+if [ -d "/data/data/com.termux/files/usr" ] ; then
+    PATH="$PATH:/data/data/com.termux/files/usr/bin"
+fi
 
 #set PATH so it includes homebrew bins if they exists, otherwise add /bin
 if [ -d "/opt/homebrew" ] ; then
     eval $(/opt/homebrew/bin/brew shellenv)
 else
-    PATH="/bin:$PATH"
-
+    if [ -d "/bin" ] ; then
+        PATH="/bin:$PATH"
+    fi
 fi
 
 # set PATH so it includes macports bins if they exist
@@ -60,10 +79,17 @@ fi
 
 #Export env variables
 export PATH
-export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
+if [ "$COLUMNS" -gt "70" ] ; then
+    export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
+    # (for zsh) export PS1="%B%F{green}%n%f%b%B%F{green}@%f%b%B%F{green}%m%f%b:%F{blue}%~%f$ "
+else
+    export PS1="\[\e[0;32m\]\w\[\e[0m\] \[\e[0;97m\]\$\[\e[0m\] "
+fi
 export MANPATH
-# (for zsh) export PS1="%B%F{green}%n%f%b%B%F{green}@%f%b%B%F{green}%m%f%b:%F{blue}%~%f$ "
-eval $(/opt/homebrew/opt/coreutils/libexec/gnubin/dircolors $HOME/.dir_colors)
+
+if [ command -v "dircolors" &> "/dev/null" ] ; then
+    eval $(dircolors $HOME/.dir_colors)
+fi
 if [ -f $HOME/.bash_aliases ]; then
     source $HOME/.bash_aliases
 fi

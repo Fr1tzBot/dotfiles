@@ -16,4 +16,7 @@ alias lg="lazygit"
 alias search="ddgr"
 
 alias trash="trash -v -F"
-eval $(thefuck --alias)
+if [ command -v thefuck &> /dev/null ] ; then
+    eval $(thefuck --alias)
+fi
+
