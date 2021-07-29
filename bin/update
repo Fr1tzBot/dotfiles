@@ -70,6 +70,7 @@ else
         mac) updateMac ;;
         pacman) updatePacman;;
         pip) updatePip ;;
+        pip3) updatePip ;;
         pkg) updatePkg ;;
         port) updatePort ;;
         snap) updateSnap ;;
