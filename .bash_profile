@@ -98,14 +98,14 @@ export EDITOR
 
 #Source remaining files
 if command -v "dircolors" &> "/dev/null" ; then
-    eval $(dircolors $HOME/.dir_colors)
+    eval $(dircolors "$HOME/.dir_colors")
 fi
 
-if [ -f $HOME/.bash_aliases ] ; then
-    source $HOME/.bash_aliases
+if [ -f "$HOME/.bash_aliases" ] ; then
+    source "$HOME/.bash_aliases"
 fi
 
-if [ -f $HOME/.launchscripts ] ; then
-    source $HOME/.launchscripts
+if [ -f "$HOME/.launchscripts" ] ; then
+    source "$HOME/.launchscripts"
 fi
 
