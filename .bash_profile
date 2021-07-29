@@ -2,7 +2,7 @@
 if [ ! -z "$PATH" ] ; then
     #if set, replace it
     #for testing:
-    #printf "WARNING: reset path from $PATH"
+    printf "\033[31mWARNING: reset path from $PATH \033[39m\n"
     PATH=""
 fi
 
@@ -53,7 +53,7 @@ if [ -d "/Applications/Wireshark.app" ] ; then
 fi
 
 #Set PATH So it includes individual brew app bins
-if command -v brew &> "/dev/null" ; then
+if command -v "brew" &> "/dev/null" ; then
     prefix=$(brew --prefix)
     #Add editors to the end
     PATH="$prefix/opt/ed/libexec/gnubin:$PATH"
@@ -89,9 +89,23 @@ else
 fi
 export MANPATH
 
+if command -v "vim" &> "/dev/null" ; then
+    EDITOR=$(command -v "vim")
+elif command -v "nano" &> "/dev/null" ; then
+    EDITOR=$(command -v "nano")
+fi
+export EDITOR
+
+#Source remaining files
 if command -v "dircolors" &> "/dev/null" ; then
     eval $(dircolors $HOME/.dir_colors)
 fi
-if [ -f $HOME/.bash_aliases ]; then
+
+if [ -f $HOME/.bash_aliases ] ; then
     source $HOME/.bash_aliases
 fi
+
+if [ -f $HOME/.launchscripts ] ; then
+    source $HOME/.launchscripts
+fi
+
