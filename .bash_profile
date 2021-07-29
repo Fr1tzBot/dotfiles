@@ -28,12 +28,6 @@ else
     fi
 fi
 
-# set PATH so it includes macports bins if they exist
-if [ -d "/opt/local" ] ; then
-    PATH="/opt/local/bin:/opt/local/sbin:$PATH"
-    MANPATH="/opt/local/share/man:$MANPATH"
-fi
-
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
