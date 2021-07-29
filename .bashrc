@@ -1,4 +1,4 @@
-if [ -f ~/.bash_profile ]; then
-     . ~/.bash_profile
+if [ -f "$HOME/.bash_profile" ]; then
+     source "$HOME/.bash_profile"
 fi
 

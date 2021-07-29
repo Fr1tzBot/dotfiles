@@ -17,7 +17,7 @@ alias search="ddgr"
 alias ddl="aria2c --dir=$HOME/Downloads/aria2 --max-concurrent-downloads=20 --check-integrity=true --continue=true --max-connection-per-server=16 --split=20 --optimize-concurrent-downloads=true"
 
 alias trash="trash -v -F"
-if [ command -v thefuck &> /dev/null ] ; then
+if command -v thefuck &> /dev/null ; then
     eval $(thefuck --alias)
 fi
 

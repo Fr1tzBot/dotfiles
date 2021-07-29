@@ -1,5 +1,5 @@
 #Notify if PATH is already set
-if [ ! -z "$PATH" ] ; then
+if [ -n "$PATH" ] ; then
     #if set, replace it
     #for testing:
     printf "\033[31mWARNING: reset path from $PATH \033[39m\n"
