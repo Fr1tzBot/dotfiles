@@ -1,6 +1,8 @@
 #Notify if PATH is already set
 if [ ! -z "$PATH" ] ; then
     #if set, replace it
+    #for testing:
+    #printf "WARNING: reset path from $PATH"
     PATH=""
 fi
 
@@ -22,6 +24,8 @@ fi
 #set PATH so it includes homebrew bins if they exists, otherwise add /bin
 if [ -d "/opt/homebrew" ] ; then
     eval $(/opt/homebrew/bin/brew shellenv)
+elif [ -d "/usr/local" ] ; then
+    eval $(/usr/local/bin/brew shellenv)
 else
     if [ -d "/bin" ] ; then
         PATH="/bin:$PATH"
@@ -49,26 +53,30 @@ if [ -d "/Applications/Wireshark.app" ] ; then
 fi
 
 #Set PATH So it includes individual brew app bins
-if [ -d "/opt/homebrew" ] ; then
-    #Add editors last
-    PATH="/opt/homebrew/opt/ed/libexec/gnubin:$PATH"
-    PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
-    #Add languages
-    PATH="/opt/homebrew/opt/gawk/libexec/gnubin:$PATH"
-    PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-    PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
-    PATH="/opt/homebrew/opt/python@3.9/libexec/bin:$PATH"
+if command -v brew &> "/dev/null" ; then
+    prefix=$(brew --prefix)
+    #Add editors to the end
+    PATH="$prefix/opt/ed/libexec/gnubin:$PATH"
+    PATH="$prefix/opt/gnu-sed/libexec/gnubin:$PATH"
+    #Add languages next
+    PATH="$prefix/opt/gawk/libexec/gnubin:$PATH"
+    PATH="$prefix/opt/ruby/bin:$PATH"
+    PATH="$prefix/opt/openjdk@11/bin:$PATH"
+    PATH="$prefix/opt/python@3.9/libexec/bin:$PATH"
     #Add archive tools
-    PATH="/opt/homebrew/opt/zip/bin:$PATH"
-    PATH="/opt/homebrew/opt/gnu-tar/libexec/gnubin:$PATH"
-    #Add basic utilities first
-    PATH="/opt/homebrew/opt/curl/bin:$PATH"
-    PATH="/opt/homebrew/opt/findutils/libexec/gnubin:$PATH"
-    PATH="/opt/homebrew/opt/gnu-which/libexec/gnubin:$PATH"
-    PATH="/opt/homebrew/opt/gnu-time/libexec/gnubin:$PATH"
-    PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
-    PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
-    PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+    PATH="$prefix/opt/zip/bin:$PATH"
+    PATH="$prefix/opt/gnu-tar/libexec/gnubin:$PATH"
+    #Add basic utilities finally
+    PATH="$prefix/opt/curl/bin:$PATH"
+    PATH="$prefix/opt/findutils/libexec/gnubin:$PATH"
+    PATH="$prefix/opt/gnu-which/libexec/gnubin:$PATH"
+    PATH="$prefix/opt/gnu-time/libexec/gnubin:$PATH"
+    PATH="$prefix/opt/make/libexec/gnubin:$PATH"
+    PATH="$prefix/opt/grep/libexec/gnubin:$PATH"
+    PATH="$prefix/opt/coreutils/libexec/gnubin:$PATH"
+
+    #load brew bash completion script
+    [[ -r "$prefix/etc/profile.d/bash_completion.sh" ]] && . "$prefix/etc/profile.d/bash_completion.sh"
 fi
 
 #Export env variables
@@ -81,11 +89,9 @@ else
 fi
 export MANPATH
 
-if [ command -v "dircolors" &> "/dev/null" ] ; then
+if command -v "dircolors" &> "/dev/null" ; then
     eval $(dircolors $HOME/.dir_colors)
 fi
 if [ -f $HOME/.bash_aliases ]; then
     source $HOME/.bash_aliases
 fi
-[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
-
