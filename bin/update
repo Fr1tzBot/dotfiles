@@ -1,5 +1,5 @@
 #!/bin/bash
-has() { type -p "$1" &> /dev/null }
+has() { type -p "$1" &> /dev/null; }
 
 updateApt() {
     apt update
@@ -12,15 +12,15 @@ updateBrew() {
     brew -v autoremove
 }
 
-updateFlatpak() { flatpak update }
+updateFlatpak() { flatpak update; }
 updateMac() {
     softwareupdate --verbose -l
     softwareupdate --verbose -ir --agree-to-license
 }
 
-updatePacman() { pacman -Syu }
-updatePip() { python -m pip install --upgrade pip }
-updatePip3() { python -m pip3 install --upgrade pip3 }
+updatePacman() { pacman -Syu; }
+updatePip() { python -m pip install --upgrade pip; }
+updatePip3() { python -m pip3 install --upgrade pip3; }
 
 updatePkg() {
     pkg upgrade
@@ -31,7 +31,7 @@ updatePort() {
     port -v upgrade outdated
     port -v uninstall inactive
 }
-updateSnap() { snap refresh }
+updateSnap() { snap refresh; }
 
 updateAll() {
     has apt && updateApt
@@ -66,3 +66,4 @@ else
         *) echo "Error: unrecognized parameter" ;;
     esac
 fi
+
