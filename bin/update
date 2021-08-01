@@ -1,51 +1,37 @@
 #!/bin/bash
-has() {
-    type -p "$1" &> /dev/null
-}
+has() { type -p "$1" &> /dev/null }
 
 updateApt() {
     apt update
     apt upgrade
     apt autoremove 
 }
-
 updateBrew() {
     brew -v update
     brew -v upgrade
     brew -v autoremove
 }
 
-updateFlatpak() {
-    flatpak update
-}
-
+updateFlatpak() { flatpak update }
 updateMac() {
     softwareupdate --verbose -l
     softwareupdate --verbose -ir --agree-to-license
 }
 
-updatePacman() {
-    pacman -Syu
-}
-
-updatePip() {
-    python -m pip install --upgrade pip
-}
+updatePacman() { pacman -Syu }
+updatePip() { python -m pip install --upgrade pip }
+updatePip3() { python -m pip3 install --upgrade pip3 }
 
 updatePkg() {
     pkg upgrade
     pkg autoclean
 }
-
 updatePort() {
     port -v selfupdate
     port -v upgrade outdated
     port -v uninstall inactive
 }
-
-updateSnap() {
-    snap refresh
-}
+updateSnap() { snap refresh }
 
 updateAll() {
     has apt && updateApt
@@ -54,10 +40,12 @@ updateAll() {
     has softwareupdate && updateMac
     has pacman && updatePacman
     has pip && updatePip
+    has pip3 && updatePip3
     has pkg && updatePkg
     has port && updatePort
     has snap && updateSnap
 }
+
 if (($#==0)); then
     updateAll
 else
@@ -70,7 +58,7 @@ else
         mac) updateMac ;;
         pacman) updatePacman;;
         pip) updatePip ;;
-        pip3) updatePip ;;
+        pip3) updatePip3 ;;
         pkg) updatePkg ;;
         port) updatePort ;;
         snap) updateSnap ;;

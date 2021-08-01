@@ -1,7 +1,8 @@
+#!/bin/bash
+has() { type -p "$1" >/dev/null; }
 #Notify if PATH is already set
 if [ -n "$PATH" ] ; then
     #if set, replace it
-    #for testing:
     printf "\033[31mWARNING: reset path from $PATH \033[39m\n"
     PATH=""
 fi
@@ -53,7 +54,7 @@ if [ -d "/Applications/Wireshark.app" ] ; then
 fi
 
 #Set PATH So it includes individual brew app bins
-if command -v "brew" &> "/dev/null" ; then
+if has brew ; then
     prefix=$(brew --prefix)
     #Add editors to the end
     PATH="$prefix/opt/ed/libexec/gnubin:$PATH"
@@ -89,15 +90,15 @@ else
 fi
 export MANPATH
 
-if command -v "vim" &> "/dev/null" ; then
+if has vim ; then
     EDITOR=$(command -v "vim")
-elif command -v "nano" &> "/dev/null" ; then
+elif has nano ; then
     EDITOR=$(command -v "nano")
 fi
 export EDITOR
 
 #Source remaining files
-if command -v "dircolors" &> "/dev/null" ; then
+if has dircolors ; then
     eval $(dircolors "$HOME/.dir_colors")
 fi
 

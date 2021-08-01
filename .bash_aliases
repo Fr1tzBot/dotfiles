@@ -1,3 +1,4 @@
+#!/bin/bash
 has() { type -p "$1" >/dev/null; }
 
 has grep && alias grep="grep --color=auto"
