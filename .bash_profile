@@ -24,7 +24,7 @@ fi
 #set PATH so it includes homebrew bins if they exists, otherwise add /bin
 if [ -d "/opt/homebrew" ] ; then
     eval $(/opt/homebrew/bin/brew shellenv)
-elif [ -d "/usr/local" ] ; then
+elif [ -f "/usr/local/bin/brew" ] ; then
     eval $(/usr/local/bin/brew shellenv)
 else
     if [ -d "/bin" ] ; then
@@ -81,7 +81,7 @@ fi
 
 #Export env variables
 export PATH
-if [ "$COLUMNS" -gt "70" ] ; then
+if [ "$COLUMNS" -gt 70 ] ; then
     export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
     # (for zsh) export PS1="%B%F{green}%n%f%b%B%F{green}@%f%b%B%F{green}%m%f%b:%F{blue}%~%f$ "
 else

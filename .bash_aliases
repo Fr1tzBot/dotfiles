@@ -1,23 +1,26 @@
-alias ls="ls --color=auto"
-alias grep="grep --color=auto"
-alias diff="diff --color=auto"
+has() { type -p "$1" >/dev/null; }
 
-alias la="ls -A"
-alias l="ls -CF"
-alias ll="ls -Alh"
+has grep && alias grep="grep --color=auto"
+has diff && alias diff="diff --color=auto"
 
-alias which="which -a"
-alias brew="brew -v"
-alias port="port -v"
-alias nmap="nmap -T4"
-
-alias nano="vim"
-alias lg="lazygit"
-alias search="ddgr"
-alias ddl="aria2c --dir=$HOME/Downloads/aria2 --max-concurrent-downloads=20 --check-integrity=true --continue=true --max-connection-per-server=16 --split=20 --optimize-concurrent-downloads=true"
-
-alias trash="trash -v -F"
-if command -v thefuck &> /dev/null ; then
-    eval $(thefuck --alias)
+if has ls; then
+    alias ls="ls --color=auto"
+    alias la="ls -A"
+    alias l="ls -CF"
+    alias ll="ls -Alh"
 fi
+
+has which && alias which="which -a"
+has brew && alias brew="brew -v"
+has port && alias port="port -v"
+has nmap && alias nmap="nmap -T4"
+
+has vim && alias nano="vim"
+has lazygit && alias lg="lazygit"
+has ddgr && alias search="ddgr"
+has aria2c && alias ddl="aria2c --dir=$HOME/Downloads/aria2 --max-concurrent-downloads=20 --check-integrity=true --continue=true --max-connection-per-server=16 --split=20 --optimize-concurrent-downloads=true"
+
+has trash && alias trash="trash -v -F"
+has thefuck && eval $(thefuck --alias)
+
 
