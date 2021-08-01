@@ -20,7 +20,6 @@ updateMac() {
 
 updatePacman() { pacman -Syu; }
 updatePip() { python -m pip install --upgrade pip; }
-updatePip3() { python -m pip3 install --upgrade pip3; }
 
 updatePkg() {
     pkg upgrade
@@ -40,7 +39,6 @@ updateAll() {
     has softwareupdate && updateMac
     has pacman && updatePacman
     has pip && updatePip
-    has pip3 && updatePip3
     has pkg && updatePkg
     has port && updatePort
     has snap && updateSnap
@@ -58,7 +56,6 @@ else
         mac) updateMac ;;
         pacman) updatePacman;;
         pip) updatePip ;;
-        pip3) updatePip3 ;;
         pkg) updatePkg ;;
         port) updatePort ;;
         snap) updateSnap ;;
