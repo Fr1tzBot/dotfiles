@@ -1,7 +1,7 @@
 #!/bin/bash
 has() { type -p "$1" >/dev/null; }
-if has lsb_release ; then
-    distro=$(lsb_release -s)
+if has ubuntu-bug ; then
+    distro="Ubuntu"
 elif has brew ; then
     distro="Mac OS"
 elif has termux-open ; then
