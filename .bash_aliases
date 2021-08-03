@@ -11,6 +11,7 @@ if has ls; then
     alias ll="ls -Alh"
 fi
 
+has exit && alias q="exit"
 has which && alias which="which -a"
 has brew && alias brew="brew -v"
 has port && alias port="port -v"
