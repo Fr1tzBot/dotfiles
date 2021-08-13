@@ -59,8 +59,10 @@ if has brew ; then
     #Add editors to the end
     PATH="$prefix/opt/ed/libexec/gnubin:$PATH"
     PATH="$prefix/opt/gnu-sed/libexec/gnubin:$PATH"
-    #Add languages next
+    #Add Basic Utils
     PATH="$prefix/opt/bison/bin:$PATH"
+    PATH="$prefix/opt/man-db/libexec/bin:$PATH"
+    #Add languages next
     PATH="$prefix/opt/gawk/libexec/gnubin:$PATH"
     PATH="$prefix/opt/ruby/bin:$PATH"
     PATH="$prefix/opt/openjdk@11/bin:$PATH"
