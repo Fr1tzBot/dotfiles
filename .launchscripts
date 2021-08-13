@@ -6,6 +6,8 @@ elif has brew ; then
     distro="Mac OS"
 elif has termux-open ; then
     distro="Termux"
+elif has pacman ; then
+    distro="Arch"
 else
     distro=$(uname -s)
 fi
