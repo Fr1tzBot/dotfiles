@@ -2,3 +2,4 @@
 find . -type f -name ".*" -exec cp -v {} ~/ \;
 cp -rv ./bin ~/
 cp -rv ./.vim ~/
+cp -rv ./.config ~/
