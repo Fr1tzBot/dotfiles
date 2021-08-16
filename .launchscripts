@@ -11,6 +11,6 @@ elif has pacman ; then
 else
     distro=$(uname -s)
 fi
-printf "Good day, welcome to $distro!\n"
+printf 'Good day, welcome to %s' "$distro!"
 neofetch
 

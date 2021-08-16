@@ -24,9 +24,9 @@ fi
 
 #set PATH so it includes homebrew bins if they exists, otherwise add /bin
 if [ -d "/opt/homebrew" ] ; then
-    eval $(/opt/homebrew/bin/brew shellenv)
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [ -f "/usr/local/bin/brew" ] ; then
-    eval $(/usr/local/bin/brew shellenv)
+    eval "$(/usr/local/bin/brew shellenv)"
 else
     if [ -d "/bin" ] ; then
         PATH="/bin:$PATH"
@@ -55,7 +55,7 @@ fi
 
 #Set PATH So it includes individual brew app bins
 if has brew ; then
-    prefix=$(brew --prefix)
+    prefix="$(brew --prefix)"
     #Add editors to the end
     PATH="$prefix/opt/ed/libexec/gnubin:$PATH"
     PATH="$prefix/opt/gnu-sed/libexec/gnubin:$PATH"
@@ -102,7 +102,7 @@ export EDITOR
 
 #Source remaining files
 if has dircolors ; then
-    eval $(dircolors "$HOME/.dir_colors")
+    eval "$(dircolors "$HOME/.dir_colors")"
 fi
 
 if [ -f "$HOME/.bash_aliases" ] ; then

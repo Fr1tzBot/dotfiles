@@ -32,5 +32,6 @@ has vim && alias nano="vim"
 has batcat && alias bat="batcat"
 has trash && alias trash="trash -v -F"
 has aria2c && alias ddl="aria2c --dir=$HOME/Downloads/aria2 --max-concurrent-downloads=20 --check-integrity=true --continue=true --max-connection-per-server=16 --split=20 --optimize-concurrent-downloads=true"
-has thefuck && eval $(thefuck --alias)
-
+has thefuck && eval "$(thefuck --alias)"
+has ytfzf && alias yt="ytfzf"
+has ytfzf && alias ytdl="ytfzf -d"
