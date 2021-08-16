@@ -100,7 +100,7 @@ elif has nano ; then
     EDITOR=$(command -v "nano")
 fi
 export EDITOR
-
+has java && export CPPFLAGS="-I$prefix/opt/openjdk@11/include"
 #Source remaining files
 if has dircolors ; then
     eval "$(dircolors "$HOME/.dir_colors")"
