@@ -69,6 +69,7 @@ if has brew ; then
     PATH="$prefix/opt/python@3.9/libexec/bin:$PATH"
     #Add archive tools
     PATH="$prefix/opt/zip/bin:$PATH"
+    PATH="$prefix/opt/unzip/bin:$PATH"
     PATH="$prefix/opt/gnu-tar/libexec/gnubin:$PATH"
     #Add basic utilities finally
     PATH="$prefix/opt/curl/bin:$PATH"
