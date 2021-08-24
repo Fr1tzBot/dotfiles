@@ -10,7 +10,7 @@ fi
 if [ -d "$HOME/Documents/neofetch" ] ; then
     git -C "$HOME/Documents/neofetch" pull
 else
-    git clone "https://github.com/dylanaraps/neofetch.git" "$HOME/Documents/"
+    git clone "https://github.com/dylanaraps/neofetch.git" "$HOME/Documents/neofetch"
 fi
 
 if [ ! -f "$HOME/bin/neofetch" ] ; then
