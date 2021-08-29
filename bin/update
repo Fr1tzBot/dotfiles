@@ -1,10 +1,25 @@
 #!/bin/bash
 has() { type -p "$1" &> /dev/null; }
 
+if has sudo ; then
+    printf "Using sudo for root privileges\n"
+    rootstring="sudo"
+elif has doas ; then
+    printf "Using doas for root privileges\n"
+    rootstring="doas"
+elif [ "$EUID" -eq 0 ] ; then
+    printf "Using current user for root privileges\n"
+    rootstring=""
+else
+    printf "ERROR: no root privileges found.\n"
+    printf "You can try running this script as root or verifying that sudo or doas is in your PATH"
+    exit
+fi
+
 updateApt() {
-    apt update
-    apt upgrade
-    apt autoremove 
+    $rootstring apt update
+    $rootstring apt upgrade
+    $rootstring apt autoremove
 }
 updateBrew() {
     brew -v update
@@ -18,7 +33,7 @@ updateMac() {
     softwareupdate --verbose -ir --agree-to-license
 }
 
-updatePacman() { pacman -Syu; }
+updatePacman() { $rootstring pacman -Syu; }
 updatePip() { python -m pip install --upgrade pip; }
 
 updatePkg() {
