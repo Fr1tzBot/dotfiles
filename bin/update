@@ -27,7 +27,7 @@ updateBrew() {
     brew -v autoremove
 }
 
-updateFlatpak() { flatpak update; }
+updateFlatpak() { $rootstring flatpak update; }
 updateMac() {
     softwareupdate --verbose -l
     softwareupdate --verbose -ir --agree-to-license
@@ -45,7 +45,7 @@ updatePort() {
     port -v upgrade outdated
     port -v uninstall inactive
 }
-updateSnap() { snap refresh; }
+updateSnap() { $rootstring snap refresh; }
 
 updateAll() {
     has apt && updateApt
