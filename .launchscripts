@@ -1,10 +1,5 @@
 #!/bin/bash
 has() { type -p "$1" &> /dev/null; }
-gitpull() {
-    distro="Ubuntu"
-    git -C "$HOME/Documents/neofetch" pull &> /dev/null
-    git -C "$HOME/Documents/ytfzf" pull &> /dev/null
-}
 
 if has ubuntu-bug ; then
     distro="Ubuntu"
@@ -20,7 +15,6 @@ else
     distro=$(uname -s)
 fi
 
-gitpull
 printf 'Good day, welcome to %s' "$distro!\n"
 neofetch
 

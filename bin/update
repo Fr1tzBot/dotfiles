@@ -32,6 +32,10 @@ updateBrew() {
 }
 
 updateFlatpak() { $rootstring flatpak update; }
+updateGit() {
+    git -C "$HOME/Documents/neofetch" pull &> /dev/null
+    git -C "$HOME/Documents/ytfzf" pull &> /dev/null
+}
 updateMac() {
     softwareupdate --verbose -l
     softwareupdate --verbose -ir --agree-to-license
@@ -56,6 +60,7 @@ updateAll() {
     has apt && updateApt
     has brew && updateBrew
     has flatpak && updateFlatpak
+    has git && updateGit
     has softwareupdate && updateMac
     has pacman && updatePacman
     has pip && updatePip
@@ -74,6 +79,7 @@ else
         apt) updateApt ;;
         brew) updateBrew ;;
         flatpak) updateFlatpak ;;
+        git) updateGit ;;
         mac) updateMac ;;
         pacman) updatePacman;;
         pip) updatePip ;;
