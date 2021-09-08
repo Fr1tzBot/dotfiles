@@ -33,8 +33,8 @@ updateBrew() {
 
 updateFlatpak() { $rootstring flatpak update; }
 updateGit() {
-    git -C "$HOME/Documents/neofetch" pull &> /dev/null
-    git -C "$HOME/Documents/ytfzf" pull &> /dev/null
+    git -C "$HOME/Documents/neofetch" pull
+    git -C "$HOME/Documents/ytfzf" pull
 }
 updateMac() {
     softwareupdate --verbose -l
