@@ -49,6 +49,7 @@ updatePort() {
     port -v upgrade outdated
     port -v uninstall inactive
 }
+updateScoop() { scoop update; }
 updateSnap() { $rootstring snap refresh; }
 
 updateAll() {
@@ -60,6 +61,7 @@ updateAll() {
     has pip && updatePip
     has pkg && updatePkg
     has port && updatePort
+    has scoop && updateScoop
     has snap && updateSnap
 }
 
@@ -77,6 +79,7 @@ else
         pip) updatePip ;;
         pkg) updatePkg ;;
         port) updatePort ;;
+        scoop) updateScoop ;;
         snap) updateSnap ;;
 
         *) echo "Error: unrecognized parameter" ;;
