@@ -17,9 +17,13 @@ else
 fi
 
 updateApt() {
-    $rootstring apt update
-    $rootstring apt upgrade
-    $rootstring apt autoremove
+    #exit code check to prevent apt binary being detected on mac
+    apt &> /dev/null
+    if [ $? -eq 0 ] ; then
+        $rootstring apt update
+        $rootstring apt upgrade
+        $rootstring apt autoremove
+    fi
 }
 updateBrew() {
     brew -v update
