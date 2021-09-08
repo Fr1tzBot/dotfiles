@@ -3,7 +3,7 @@ has() { type -p "$1" >/dev/null; }
 #Notify if PATH is already set
 if [ -n "$PATH" ] ; then
     #if set, replace it
-    printf "\033[31mWARNING: reset path from $PATH \033[39m\n"
+    printf '\033[31mWARNING: reset path from %s \033[39m\n' "$PATH"
     PATH=""
 fi
 
@@ -41,6 +41,11 @@ fi
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
+fi
+
+#set PATH so it includes scoop if it exists
+if [ -d "$HOME/scoop/shims" ] ; then
+    PATH="$HOME/scoop/shims:$PATH"
 fi
 
 #Set PATH so it includes X11 bin if it exists
