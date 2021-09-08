@@ -15,6 +15,6 @@ else
     distro=$(uname -s)
 fi
 
-printf 'Good day, welcome to %s' "$distro!\n"
 neofetch
+printf 'Good day, welcome to %s\n' "$distro!"
 
