@@ -1,5 +1,11 @@
 #!/bin/bash
-has() { type -p "$1" >/dev/null; }
+has() { type -p "$1" &> /dev/null; }
+gitpull() {
+    distro="Ubuntu"
+    git -C "$HOME/Documents/neofetch" pull &> /dev/null
+    git -C "$HOME/Documents/ytfzf" pull &> /dev/null
+}
+
 if has ubuntu-bug ; then
     distro="Ubuntu"
 elif has brew ; then
@@ -8,9 +14,13 @@ elif has termux-open ; then
     distro="Termux"
 elif has pacman ; then
     distro="Arch"
+elif has scoop ; then
+    distro="Windows"
 else
     distro=$(uname -s)
 fi
-printf 'Good day, welcome to %s' "$distro!"
+
+gitpull
+printf 'Good day, welcome to %s' "$distro!\n"
 neofetch
 
