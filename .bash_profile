@@ -48,6 +48,13 @@ if [ -d "$HOME/scoop/shims" ] ; then
     PATH="$HOME/scoop/shims:$PATH"
 fi
 
+#set PATH to include windows dirs
+if [ -d "/c/WINDOWS" ] ; then
+    PATH="/c/WINDOWS/System32/WindowsPowershell/v1.0:$PATH"
+    PATH="/c/WINDOWS:$PATH"
+    PATH="/c/WINDOWS/System32:$PATH"
+fi
+
 #Set PATH so it includes X11 bin if it exists
 if [ -d "/opt/X11" ] ; then
     PATH="$PATH:/opt/X11/bin"
