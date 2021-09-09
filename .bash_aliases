@@ -40,4 +40,5 @@ has ytfzf && alias ytsearch="ytfzf -L"
 has 7z && alias un7zip="7z x"
 has tar && alias untar="tar -xvf"
 has tar && alias ungz="tar -xvzf"
+has Wireshark && alias wireshark="Wireshark"
 
