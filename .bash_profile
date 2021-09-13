@@ -11,9 +11,11 @@ fi
 if [ -d "/usr/local/bin" ] ; then
     PATH="$PATH:/usr/local/bin"
 fi
+
 if [ -d "/usr" ] ; then
     PATH="$PATH:/usr/bin:/usr/sbin"
 fi
+
 if [ -d "/sbin" ] ; then
     PATH="$PATH:/sbin"
 fi
@@ -125,4 +127,3 @@ fi
 if [ -f "$HOME/.launchscripts" ] ; then
     source "$HOME/.launchscripts"
 fi
-

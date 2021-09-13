@@ -17,7 +17,6 @@ if [ ! -f "$HOME/bin/neofetch" ] ; then
     ln -sv "$HOME/Documents/neofetch/neofetch" "$HOME/bin/neofetch"
 fi
 
-
 if [ -d "$HOME/Documents/ytfzf" ] ; then
     git -C "$HOME/Documents/ytfzf" pull
 else
