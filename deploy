@@ -28,4 +28,3 @@ if [ ! -f "$HOME/bin/ytfzf" ] ; then
     ln -sv "$HOME/Documents/ytfzf/ytfzf" "$HOME/bin/ytfzf"
 fi
 source "$HOME/.bashrc"
-
