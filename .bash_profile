@@ -98,7 +98,7 @@ fi
 
 #Export env variables
 export PATH
-if [ "$COLUMNS" -gt "70" ] ; then
+if [ "$COLUMNS" -gt 70 ] ; then
     export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
     # (for zsh) export PS1="%B%F{green}%n%f%b%B%F{green}@%f%b%B%F{green}%m%f%b:%F{blue}%~%f$ "
 else
