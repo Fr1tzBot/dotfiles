@@ -16,4 +16,4 @@ else
 fi
 
 printf 'Good day, welcome to %s\n' "$distro!"
-neofetch
+"$HOME/bin/neofetch"
