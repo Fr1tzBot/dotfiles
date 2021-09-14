@@ -1,16 +1,16 @@
 #!/bin/bash
-find . -type f -maxdepth 1 -name ".*" -exec cp -v {} ~/ \;
+find . -maxdepth 1 -type f -name ".*" -exec cp -v {} ~/ \;
 cp -rv "./bin" "$HOME/"
 cp -rv "./.vim" "$HOME/"
 cp -rv "./.config" "$HOME/"
 if [ -d "#HOME/Documents" ] ; then
-    mkdir "$HOME/Documents"
+    mkdir -p "$HOME/Documents"
 fi
 
 if [ -d "$HOME/Documents/neofetch" ] ; then
     git -C "$HOME/Documents/neofetch" pull
 else
-    git clone "https://github.com/dylanaraps/neofetch.git" "$HOME/Documents/neofetch"
+    git clone "https://github.com/dylanaraps/neofetch.git/" "$HOME/Documents/neofetch"
 fi
 
 if [ ! -f "$HOME/bin/neofetch" ] ; then
@@ -20,7 +20,7 @@ fi
 if [ -d "$HOME/Documents/ytfzf" ] ; then
     git -C "$HOME/Documents/ytfzf" pull
 else
-    git clone "https://github.com/pystardust/ytfzf.git" "$HOME/Documents/ytfzf"
+    git clone "https://github.com/pystardust/ytfzf.git/" "$HOME/Documents/ytfzf"
 fi
 
 if [ ! -f "$HOME/bin/ytfzf" ] ; then
