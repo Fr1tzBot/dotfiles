@@ -18,8 +18,7 @@ fi
 
 updateApt() {
     #exit code check to prevent apt binary being detected on mac
-    apt &> /dev/null
-    if [ $? -eq 0 ] ; then
+    if apt &> /dev/null ; then
         $rootstring apt update
         $rootstring apt upgrade
         $rootstring apt autoremove
