@@ -48,7 +48,7 @@ elif has dig ; then
 fi
 
 if has dig ; then
-    alias dns="dns +short"
+    alias dns="dig +short"
 elif has host ; then
     alias dns="host"
 fi
