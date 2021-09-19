@@ -47,3 +47,9 @@ elif has dig ; then
     alias reversedns="dig -x"
 fi
 
+if has dig ; then
+    alias dns="dns +short"
+elif has host ; then
+    alias dns="host"
+fi
+
