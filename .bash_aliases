@@ -52,4 +52,5 @@ if has dig ; then
 elif has host ; then
     alias dns="host"
 fi
+has Discord && alias discord="Discord"
 

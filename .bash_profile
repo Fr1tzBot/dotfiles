@@ -67,6 +67,11 @@ if [ -d "/Applications/Firefox.app" ] ; then
     PATH="$PATH:/Applications/Firefox.app/Contents/MacOS"
 fi
 
+#Set PATH so it includes discord if it exists
+if [ -d "/Applications/Discord.app" ] ; then
+    PATH="$PATH:/Applications/Discord.app/Contents/MacOS"
+fi
+
 #Set PATH So it includes Wireshark bin if it exists
 if [ -d "/Applications/Wireshark.app" ] ; then
     PATH="$PATH:/Applications/Wireshark.app/Contents/MacOS"
