@@ -21,6 +21,7 @@ has clear && alias cls="clear"
 has exit && alias q="exit"
 has which && alias which="which -a"
 has cd && alias ..="cd .."
+has cd && alias ~="cd $HOME"
 has thefuck && eval "$(thefuck --alias)"
 
 #Text Editor eliases
