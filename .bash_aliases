@@ -21,6 +21,7 @@ has clear && alias cls="clear"
 has exit && alias q="exit"
 has which && alias which="which -a"
 has cd && alias ..="cd .."
+has thefuck && eval "$(thefuck --alias)"
 
 #Text Editor eliases
 has vim && alias vi="vim"
@@ -58,8 +59,12 @@ has brew && alias brew="brew -v"
 has port && alias port="port -v"
 
 #Other software aliases
-has thefuck && eval "$(thefuck --alias)"
 has lazygit && alias lg="lazygit"
 has ddgr && alias search="ddgr"
 has aria2c && alias ddl="aria2c --dir=$HOME/Downloads/aria2 --max-concurrent-downloads=20 --check-integrity=true --continue=true --max-connection-per-server=16 --split=20 --optimize-concurrent-downloads=true"
 has Discord && alias discord="Discord"
+
+#Spelling aliases
+has ls && alias al="la"
+has ls && alias sl="ls"
+has lazygit && alias gl="lg"
