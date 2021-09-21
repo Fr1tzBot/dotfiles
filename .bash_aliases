@@ -53,4 +53,5 @@ elif has host ; then
     alias dns="host"
 fi
 has Discord && alias discord="Discord"
+has cd && alias ..="cd .."
 
