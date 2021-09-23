@@ -123,7 +123,7 @@ if has vim ; then
 elif has nano ; then
     EDITOR=$(command -v "nano")
 fi
-if [ "$(arch)" = "i386" ] ; then
+if [ "$(has arch && arch)" = "i386" ] ; then
     export BASH_SILENCE_DEPRECATION_WARNING=1
 fi
 export EDITOR
