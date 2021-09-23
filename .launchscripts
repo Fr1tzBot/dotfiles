@@ -3,6 +3,8 @@ has() { type -p "$1" &> /dev/null; }
 
 if has ubuntu-bug ; then
     distro="Ubuntu"
+elif [ "$(has arch && arch)" = "i386" ] ; then
+    distro="Mac OS (Rosetta)"
 elif has brew ; then
     distro="Mac OS"
 elif has termux-open ; then
