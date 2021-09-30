@@ -1,4 +1,8 @@
 #!/bin/bash
+
+#if not running interactively, dont do anything
+[ -z "$PS1" ] && return
+
 has() { type -p "$1" >/dev/null; }
 #Notify if PATH is already set
 if [ -n "$PATH" ] ; then
