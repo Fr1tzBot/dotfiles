@@ -1,7 +1,9 @@
 #!/bin/bash
 has() { type -p "$1" &> /dev/null; }
 
-if has doas ; then
+if [ -n $TERMUX_VERSION ] ; then
+    printf "No root privileges needed on termux"
+elif has doas ; then
     printf "Using doas for root privileges\n"
     rootstring="doas"
 elif has sudo ; then
