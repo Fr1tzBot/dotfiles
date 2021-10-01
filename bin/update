@@ -2,7 +2,7 @@
 has() { type -p "$1" &> /dev/null; }
 
 if [ -n $TERMUX_VERSION ] ; then
-    printf "No root privileges needed on termux"
+    printf "No root privileges needed on termux\n"
 elif has doas ; then
     printf "Using doas for root privileges\n"
     rootstring="doas"
