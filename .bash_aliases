@@ -23,7 +23,6 @@ has which && alias which="which -a"
 has cd && alias ..="cd .."
 has cd && alias ~="cd $HOME"
 has thefuck && eval "$(thefuck --alias)"
-has arch && alias x86="env arch -x86_64 /bin/zsh --login"
 
 #Text Editor eliases
 has vim && alias vi="vim"
