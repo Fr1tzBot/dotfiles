@@ -46,7 +46,7 @@ updatePacman() { $rootstring pacman -Syu; }
 updatePip() { python -m pip install --upgrade pip; }
 
 updatePkg() {
-    if [ -n $TERMUX_VERSION ] ; then
+    if [ -n "$TERMUX_VERSION" ] ; then
         pkg upgrade
         pkg autoclean
     fi
@@ -58,6 +58,7 @@ updatePort() {
 }
 updateScoop() { scoop update; }
 updateSnap() { $rootstring snap refresh; }
+updateYay() { yay -Syu; }
 
 updateAll() {
     has apt && updateApt
@@ -71,6 +72,7 @@ updateAll() {
     has port && updatePort
     has scoop && updateScoop
     has snap && updateSnap
+    has yay && updateYay
 }
 
 if (($#==0)); then
@@ -90,6 +92,7 @@ else
         port) updatePort ;;
         scoop) updateScoop ;;
         snap) updateSnap ;;
+        yay) updateYay ;;
 
         *) echo "Error: unrecognized parameter" ;;
     esac
