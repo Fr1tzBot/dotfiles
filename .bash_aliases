@@ -59,6 +59,13 @@ fi
 has brew && alias brew="brew -v"
 has port && alias port="port -v"
 
+#Image Aliases
+if has viu ; then
+    alias icat="viu"
+elif has kitty ; then
+    alias icat="kitty +kitten icat"
+fi
+
 #Other software aliases
 has lazygit && alias lg="lazygit"
 has ddgr && alias search="ddgr"
