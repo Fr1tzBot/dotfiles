@@ -38,8 +38,7 @@ updateGit() {
     git -C "$HOME/Documents/ytfzf" pull
 }
 updateMac() {
-    softwareupdate --verbose -l
-    softwareupdate --verbose -ir --agree-to-license
+    softwareupdate --verbose -lir --agree-to-license
 }
 
 updatePacman() { $rootstring pacman -Syu; }
