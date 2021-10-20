@@ -42,7 +42,8 @@ has tar && alias ungz="tar -xvzf"
 
 #Networking Aliases
 has Wireshark && alias wireshark="Wireshark"
-has nmap && alias nmap="nmap -T4"
+has nmap && alias nmap="nmap -v -T4"
+has nmap && alias randmap="nmap -v -iR 100"
 if has nslookup ; then
     alias reversedns="nslookup"
 elif has dig ; then
