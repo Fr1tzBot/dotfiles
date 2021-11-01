@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import requests
 import xmltodict
-import os
+from subprocess import run
 imageurl = xmltodict.parse((xmltodict.parse(requests.get("https://xkcd.com/rss.xml").text))['rss']['channel']['item'][0]["description"])["img"]["@src"]
-os.system("curl -s " + imageurl + " | viu -;")
+run(["curl -s " + imageurl + " | viu -;"], shell=True)
