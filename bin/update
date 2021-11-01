@@ -1,118 +1,125 @@
-#!/bin/bash
-has() {
-    case $1 in
-        apt) apt --version &> /dev/null && [ -z "$TERMUX_VERSION" ] ;; #exit code check to prevent apt binary being detected on mac
-        *) type -p "$1" &> /dev/null ;;
-    esac
+#!/usr/bin/env python
+#WARNING: SCRIPT USES PYTHON 3.10 FEATURES
+
+from shutil import which
+from os import environ
+from subprocess import run, DEVNULL
+from sys import argv
+
+def has(program: str) -> bool:
+    if program == "apt":
+        return (run(["apt", "--version"], stderr=DEVNULL, stdout=DEVNULL).returncode == 0) and (environ.get("TERMUX_VERSION", None) != None)
+    else:
+        return which(program) != None
+
+def getRootString() -> None:
+    if environ.get("TERMUX_VERSION", None) != None:
+        rootProgram = "Termux"
+    elif has("doas"):
+        rootProgram = "Doas"
+        rootstring = "doas"
+    elif has("sudo"):
+        rootProgram = "Sudo"
+        rootstring = "sudo"
+    elif environ.get("EUID", None) == 0:
+        rootstring = ""
+        rootProgram = "Root User"
+    else:
+        print("ERROR: no root privileges found.")
+        print("You can try running this script as root or verifying that sudo or doas is in your PATH")
+        exit(1)
+    print("Using " + rootProgram + " for root privileges.")
+    return rootstring
+
+def getManagers() -> None:
+    foundManagers = []
+    for i in managerList.keys():
+        if has(i):
+            foundManagers.append(i)
+    return foundManagers
+
+def update(manager: str) -> None:
+    if has(manager):
+        for j in managerList[manager]:
+            run(j.split(" "))
+
+def updateAll() -> None:
+    for i in managerList.keys():
+        update(i)
+
+rootString = getRootString()
+specifiedManager = False
+managerList = {
+    "apt":
+        [
+            rootString + "apt update",
+            rootString + "apt upgrade",
+            rootString + "apt autormeove"
+        ],
+    "brew":
+        [
+            "brew -v update",
+            "brew -v upgrade",
+            "brew -v autoremove"
+        ],
+    "flatpak":
+        [
+            rootString + "flatpak update"
+        ],
+    "git":
+        [
+            "git -C " + environ.get("HOME") + "/Documents/neofetch pull",
+            "git -C " + environ.get("HOME") + "/Documents/ytfzf pull"
+        ],
+    "softwareupdate":
+        [
+            "softwareupdate --verbose -lir --agree-to-license"
+        ],
+    "pacman":
+        [
+            rootString + "pacman -Syu"
+        ],
+    "pip":
+        [
+            "python -m pip install --upgrade pip"
+        ],
+    "pkg":
+        [
+            "pkg upgrade",
+            "pkg autoclean"
+        ],
+    "port":
+        [
+            "port -v selfupdate"
+            "port -v upgrade outdated"
+            "port -v uninstall inactive"
+        ],
+    "scoop":
+        [
+            "scoop update"
+        ],
+    "snap":
+        [
+            rootString + "snap refresh"
+        ],
+    "yay":
+        [
+            "yay -Syu"
+        ]
 }
+params = argv[1:]
 
-if [ -n "$TERMUX_VERSION" ] ; then
-    printf "No root privileges needed on termux\n"
-elif has doas ; then
-    printf "Using doas for root privileges\n"
-    rootstring="doas"
-elif has sudo ; then
-    printf "Using sudo for root privileges\n"
-    rootstring="sudo"
-elif [ "$EUID" -eq 0 ] ; then
-    printf "Using current user for root privileges\n"
-    rootstring=""
-else
-    printf "ERROR: no root privileges found.\n"
-    printf "You can try running this script as root or verifying that sudo or doas is in your PATH"
-    exit
-fi
+if len(params) > 0:
+    for i in params:
+        match i:
+            case "list":
+                print(getManagers())
+            case "all":
+                updateAll()
+            case _:
+                if i in managerList.keys():
+                    update(i)
+else:
+    updateAll()
 
-updateApt() {
-    if has apt ; then
-        $rootstring apt update
-        $rootstring apt upgrade
-        $rootstring apt autoremove
-    fi
-}
-updateBrew() {
-    brew -v update
-    brew -v upgrade
-    brew -v autoremove
-}
-
-updateFlatpak() { $rootstring flatpak update; }
-updateGit() {
-    git -C "$HOME/Documents/neofetch" pull
-    git -C "$HOME/Documents/ytfzf" pull
-}
-updateMac() {
-    softwareupdate --verbose -lir --agree-to-license
-}
-
-updatePacman() { $rootstring pacman -Syu; }
-updatePip() { python -m pip install --upgrade pip; }
-
-updatePkg() {
-    if [ -n "$TERMUX_VERSION" ] ; then
-        pkg upgrade
-        pkg autoclean
-    fi
-}
-updatePort() {
-    port -v selfupdate
-    port -v upgrade outdated
-    port -v uninstall inactive
-}
-updateScoop() { scoop update; }
-updateSnap() { $rootstring snap refresh; }
-updateYay() { yay -Syu; }
-
-updateAll() {
-    has apt && updateApt
-    has brew && updateBrew
-    has flatpak && updateFlatpak
-    has git && updateGit
-    has softwareupdate && updateMac
-    has pacman && updatePacman
-    has pip && updatePip
-    has pkg && updatePkg
-    has port && updatePort
-    has scoop && updateScoop
-    has snap && updateSnap
-    has yay && updateYay
-}
-
-listManagers() {
-    has apt && printf "apt\n";
-    has brew && printf "brew\n";
-    has flatpak && printf "flatpak\n";
-    has git && printf "git\n";
-    has softwareupdate && printf "mac\n";
-    has pacman && printf "pacman\n";
-    has pip && printf "pip\n";
-    has pkg && printf "pkg\n";
-    has port && printf "port\n";
-    has scoop && printf "scoop\n";
-    has snap && printf "snap\n";
-    has yay && printf "yay\n";
-}
-
-if (($#==0)); then
-    updateAll
-else
-    case $1 in
-        all) updateAll ;;
-        list) listManagers ;;
-
-        apt) updateApt ;;
-        brew) updateBrew ;;
-        flatpak) updateFlatpak ;;
-        git) updateGit ;;
-        mac) updateMac ;;
-        pacman) updatePacman;;
-        pip) updatePip ;;
-        pkg) updatePkg ;;
-        port) updatePort ;;
-        scoop) updateScoop ;;
-        snap) updateSnap ;;
-        yay) updateYay ;;
-
-        *) echo "Error: unrecognized parameter" ;;
-    esac
-fi
+        
