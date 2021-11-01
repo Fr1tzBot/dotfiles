@@ -1,5 +1,10 @@
 #!/bin/bash
-has() { type -p "$1" &> /dev/null; }
+has() {
+    case $1 in
+        apt) apt --version &> /dev/null && [ -z "$TERMUX_VERSION" ] ;; #exit code check to prevent apt binary being detected on mac
+        *) type -p "$1" &> /dev/null ;;
+    esac
+}
 
 if [ -n "$TERMUX_VERSION" ] ; then
     printf "No root privileges needed on termux\n"
@@ -19,8 +24,7 @@ else
 fi
 
 updateApt() {
-    #exit code check to prevent apt binary being detected on mac
-    if apt --version &> /dev/null && [ -z "$TERMUX_VERSION" ] ; then
+    if has apt ; then
         $rootstring apt update
         $rootstring apt upgrade
         $rootstring apt autoremove
@@ -74,11 +78,27 @@ updateAll() {
     has yay && updateYay
 }
 
+listManagers() {
+    has apt && printf "apt\n";
+    has brew && printf "brew\n";
+    has flatpak && printf "flatpak\n";
+    has git && printf "git\n";
+    has softwareupdate && printf "mac\n";
+    has pacman && printf "pacman\n";
+    has pip && printf "pip\n";
+    has pkg && printf "pkg\n";
+    has port && printf "port\n";
+    has scoop && printf "scoop\n";
+    has snap && printf "snap\n";
+    has yay && printf "yay\n";
+}
+
 if (($#==0)); then
     updateAll
 else
     case $1 in
         all) updateAll ;;
+        list) listManagers ;;
 
         apt) updateApt ;;
         brew) updateBrew ;;
