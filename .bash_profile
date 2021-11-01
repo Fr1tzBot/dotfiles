@@ -93,6 +93,7 @@ if has brew ; then
     #Add languages next
     PATH="$prefix/opt/gawk/libexec/gnubin:$PATH"
     PATH="$prefix/opt/ruby/bin:$PATH"
+    PATH="$PREFIX/opt/python@3.10/bin:$PATH"
     PATH="$prefix/opt/python@3.10/libexec/bin:$PATH"
     #Add archive tools
     PATH="$prefix/opt/zip/bin:$PATH"
