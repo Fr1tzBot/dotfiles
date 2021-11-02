@@ -52,7 +52,7 @@ managerList = {
         [
             rootString + "apt update",
             rootString + "apt upgrade",
-            rootString + "apt autormeove"
+            rootString + "apt autoremove"
         ],
     "brew":
         [
@@ -118,5 +118,4 @@ if len(params) > 0:
                 update(i)
 else:
     updateAll()
-
 
