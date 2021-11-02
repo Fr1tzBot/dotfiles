@@ -6,7 +6,10 @@ from sys import argv
 
 def has(program: str) -> bool:
     if program == "apt":
-        return (run(["apt", "--version"], stderr=DEVNULL, stdout=DEVNULL).returncode == 0) and (environ.get("TERMUX_VERSION", None) == None)
+        try:
+            return (run(["apt", "--version"], stderr=DEVNULL, stdout=DEVNULL).returncode == 0) and (environ.get("TERMUX_VERSION", None) == None)
+        except:
+            return False
     else:
         return which(program) != None
 
