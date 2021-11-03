@@ -103,6 +103,10 @@ managerList = {
         [
             rootString + "snap refresh"
         ],
+    "tldr":
+        [
+            "tldr -vu"
+        ],
     "yay":
         [
             "yay -Syu"
