@@ -1,29 +1,55 @@
 #!/bin/bash
-find . -maxdepth 1 -type f -name ".*" -exec cp -v {} ~/ \;
+
+# Copy all files starting with . to ~
+find . -maxdepth 1 -type f -name ".*" -exec cp -v {} $HOME/ \;
+
+# Copy only specified directories
 cp -rv "./bin" "$HOME/"
 cp -rv "./.vim" "$HOME/"
 cp -rv "./.config" "$HOME/"
+
+# Ensure Documents folder (used for cloned code) exists
 if [ -d "#HOME/Documents" ] ; then
     mkdir -p "$HOME/Documents"
 fi
 
+# check if neofetch is already cloned
 if [ -d "$HOME/Documents/neofetch" ] ; then
+    # if it is, pull latest version
     git -C "$HOME/Documents/neofetch" pull
 else
+    # otherwise, clone neofetch from github and place it into ~/Documents/neofetch
     git clone "https://github.com/dylanaraps/neofetch.git/" "$HOME/Documents/neofetch"
 fi
 
+# ensure ~/bin/neofetch symlink exists
 if [ ! -f "$HOME/bin/neofetch" ] ; then
-    ln -sv "$HOME/Documents/neofetch/neofetch" "$HOME/bin/neofetch"
+    ln -sv "$HOME/Documents/neofetch/neofetch/" "$HOME/bin/neofetch"
 fi
 
+# check if ytfzf is already cloned
 if [ -d "$HOME/Documents/ytfzf" ] ; then
+    # if it is, pull latest version
     git -C "$HOME/Documents/ytfzf" pull
 else
+    # otherwise, clone ytfzf from github and place it into ~/Documents/ytfzf
     git clone "https://github.com/pystardust/ytfzf.git/" "$HOME/Documents/ytfzf"
 fi
 
+# ensure ~/bin/ytfzf symlink exists
 if [ ! -f "$HOME/bin/ytfzf" ] ; then
     ln -sv "$HOME/Documents/ytfzf/ytfzf" "$HOME/bin/ytfzf"
 fi
+
+# check if zspotify is already cloned
+if [ -d "$HOME/Documents/zspotify" ] ; then
+    # if it is, pull latest version
+    git -C "$HOME/Documents/zspotify" pull
+else
+    # otherwise, clone zspotify from github and place it into ~/Documents/zspotify
+    git clone "https://github.com/Footsiefat/zspotify.git" "$HOME/Documents/zspotify"
+fi
+
+# source new bashrc
+# TODO verify this actually works
 . "$HOME/.bashrc"

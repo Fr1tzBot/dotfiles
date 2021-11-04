@@ -70,7 +70,8 @@ managerList = {
     "git":
         [
             "git -C " + environ.get("HOME") + "/Documents/neofetch pull",
-            "git -C " + environ.get("HOME") + "/Documents/ytfzf pull"
+            "git -C " + environ.get("HOME") + "/Documents/ytfzf pull",
+            "git -C " + environ.get("HOME") + "/Documents/zspotify pull"
         ],
     "softwareupdate":
         [
