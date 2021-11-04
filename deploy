@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Copy all files starting with . to ~
-find . -maxdepth 1 -type f -name ".*" -exec cp -v {} $HOME/ \;
+find . -maxdepth 1 -type f -name ".*" -exec cp -v {} "$HOME/" \;
 
 # Copy only specified directories
 cp -rv "./bin" "$HOME/"
@@ -48,6 +48,13 @@ if [ -d "$HOME/Documents/zspotify" ] ; then
 else
     # otherwise, clone zspotify from github and place it into ~/Documents/zspotify
     git clone "https://github.com/Footsiefat/zspotify.git" "$HOME/Documents/zspotify"
+fi
+
+# ensure ~/bin/zspotify alias exists
+if [ ! -f "$HOME/bin/zspotify" ] ; then
+    echo '#!/bin/bash
+python3 "$HOME/Documents/zspotify/zspotify/__main__.py" "$@"' > "$HOME/bin/zspotify";
+    chmod +x "$HOME/bin/zspotify"
 fi
 
 # source new bashrc
