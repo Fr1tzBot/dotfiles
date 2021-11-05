@@ -30,6 +30,9 @@ has vim && alias vi="vim"
 has vim && alias nano="vim"
 has batcat && alias bat="batcat"
 
+# Zspotify Aliases
+has zspotify && alias zspotify="zspotify -s"
+
 #Youtube Aliases
 has ytfzf && alias yt="ytfzf"
 has youtube-dl && alias ytdl="youtube-dl --external-downloader=aria2c --external-downloader-args='--max-concurrent-downloads=20 --continue=true --max-connection-per-server=16 --split=20 --optimize-concurrent-downloads=true'"
