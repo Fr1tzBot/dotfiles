@@ -1,0 +1,5 @@
+#!/usr/bin/env python3
+import requests
+import xmltodict
+imageurl = xmltodict.parse((xmltodict.parse(requests.get("https://xkcd.com/rss.xml").text))['rss']['channel']['item'][0]["description"])["img"]["@src"]
+print(imageurl)

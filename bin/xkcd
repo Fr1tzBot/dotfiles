@@ -1,7 +1,2 @@
-#!/usr/bin/env python3
-import requests
-import xmltodict
-from subprocess import run
-imageurl = xmltodict.parse((xmltodict.parse(requests.get("https://xkcd.com/rss.xml").text))['rss']['channel']['item'][0]["description"])["img"]["@src"]
-run(["curl -s " + imageurl + " | viu -;"], shell=True)
-
+#!/bin/bash
+curl -s "$(xkcdLatest)" | kitty +kitten icat --align=left #--scale-up
