@@ -4,3 +4,4 @@ import xmltodict
 from subprocess import run
 imageurl = xmltodict.parse((xmltodict.parse(requests.get("https://xkcd.com/rss.xml").text))['rss']['channel']['item'][0]["description"])["img"]["@src"]
 run(["curl -s " + imageurl + " | viu -;"], shell=True)
+
