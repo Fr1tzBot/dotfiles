@@ -60,6 +60,12 @@ elif has host ; then
     alias dns="host"
 fi
 
+if has iwgetid ; then
+    alias ssid="iwgetid -r"
+elif [ -f "/System/Library/PrivateFrameworks/Apple80211.framework/Resources/airport" ] ; then
+    alias ssid="/System/Library/PrivateFrameworks/Apple80211.framework/Resources/airport -I | awk -F: '/ SSID/{print \$2}' | sed 's/ //g'"
+fi
+
 #Package Manager Aliases
 has brew && alias brew="brew -v"
 has port && alias port="port -v"
