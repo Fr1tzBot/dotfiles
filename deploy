@@ -26,7 +26,7 @@ fi
 
 # ensure ~/bin/neofetch symlink exists
 if [ ! -f "$TRIMMED_HOME/bin/neofetch" ] ; then
-    ln -sv "$TRIMMED_HOME/Documents/neofetch/neofetch/" "$TRIMMED_HOME/bin/neofetch"
+    ln -sv "$TRIMMED_HOME/Documents/neofetch/neofetch" "$TRIMMED_HOME/bin/neofetch"
 fi
 
 # check if ytfzf is already cloned
