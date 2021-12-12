@@ -1,5 +1,6 @@
 #!/bin/bash
 has() { type -p "$1" &> /dev/null; }
+TRIMMED_HOME=$(realpath -s "$HOME")
 
 if has ubuntu-bug ; then
     distro="Ubuntu"
@@ -18,4 +19,4 @@ else
 fi
 
 printf 'Good day, welcome to %s\n' "$distro!"
-"$HOME/bin/neofetch" --ascii_colors 4 11 --colors 11 11 7 4 7 7 --ascii "$HOME/.config/neofetch/lightningrobotics.ascii"
+"$TRIMMED_HOME/bin/neofetch" --ascii_colors 4 11 --colors 11 11 7 4 7 7 --ascii "$TRIMMED_HOME/.config/neofetch/lightningrobotics.ascii"
