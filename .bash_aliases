@@ -24,6 +24,7 @@ has cd && alias ..="cd .."
 has cd && alias ~="cd $HOME"
 has thefuck && eval "$(thefuck --alias)"
 has dd && alias dd="dd status=progress"
+has du && alias dush="du -sh"
 
 #Text Editor eliases
 has vim && alias vi="vim"
