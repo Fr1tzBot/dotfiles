@@ -164,7 +164,7 @@ set autoindent
 set nostartofline
 set confirm
 set mouse=a
-set tabstop=8
+set tabstop=4
 set softtabstop=0
 set shiftwidth=4
 set smartindent
