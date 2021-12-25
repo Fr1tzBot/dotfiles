@@ -49,7 +49,7 @@ if [ -d "$TRIMMED_HOME/Documents/zspotify" ] ; then
     git -C "$TRIMMED_HOME/Documents/zspotify" pull
 else
     # otherwise, clone zspotify from github and place it into ~/Documents/zspotify
-    git clone "https://github.com/Footsiefat/zspotify.git" "$TRIMMED_HOME/Documents/zspotify"
+    git clone "https://github.com/THIS-IS-NOT-A-BACKUP/zspotify" "$TRIMMED_HOME/Documents/zspotify"
 fi
 
 # ensure ~/bin/zspotify alias exists
