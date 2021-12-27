@@ -5,9 +5,9 @@ from subprocess import run, DEVNULL
 from sys import argv
 
 def has(program: str) -> bool:
-    if program == "apt":
+    if program == "apt-get":
         try:
-            return (run(["apt", "--version"], stderr=DEVNULL, stdout=DEVNULL).returncode == 0) and (environ.get("TERMUX_VERSION", None) == None)
+            return (run(["apt-get", "--version"], stderr=DEVNULL, stdout=DEVNULL).returncode == 0) and (environ.get("TERMUX_VERSION", None) == None)
         except:
             return False
     else:
@@ -51,11 +51,11 @@ def updateAll() -> None:
 rootString = getRootString()
 specifiedManager = False
 managerList = {
-    "apt":
+    "apt-get":
         [
-            rootString + "apt update",
-            rootString + "apt upgrade",
-            rootString + "apt autoremove"
+            rootString + "apt-get update",
+            rootString + "apt-get upgrade",
+            rootString + "apt-get autoremove"
         ],
     "brew":
         [
