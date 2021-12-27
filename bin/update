@@ -16,15 +16,15 @@ def has(program: str) -> bool:
 def getRootString() -> None:
     if environ.get("TERMUX_VERSION", None) != None:
         rootProgram = "Termux"
+    elif environ.get("EUID", None) == 0:
+        rootstring = ""
+        rootProgram = "Root User"
     elif has("doas"):
         rootProgram = "Doas"
         rootstring = "doas "
     elif has("sudo"):
         rootProgram = "Sudo"
         rootstring = "sudo "
-    elif environ.get("EUID", None) == 0:
-        rootstring = ""
-        rootProgram = "Root User"
     else:
         print("ERROR: no root privileges found.")
         print("You can try running this script as root or verifying that sudo or doas is in your PATH")
