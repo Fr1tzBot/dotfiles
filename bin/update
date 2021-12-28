@@ -32,6 +32,12 @@ def getRootString() -> None:
     print("Using " + rootProgram + " for root privileges.")
     return rootstring
 
+def getHome() -> str:
+    home = environ.get("HOME")
+    if home[-1] != "/":
+        home += "/"
+    return home
+
 def getManagers() -> None:
     foundManagers = []
     for i in managerList.keys():
@@ -69,9 +75,9 @@ managerList = {
         ],
     "git":
         [
-            "git -C " + environ.get("HOME") + "/Documents/neofetch pull",
-            "git -C " + environ.get("HOME") + "/Documents/ytfzf pull",
-            "git -C " + environ.get("HOME") + "/Documents/zspotify pull"
+            "git -C " + getHome() + "Documents/neofetch pull",
+            "git -C " + getHome() + "Documents/ytfzf pull",
+            "git -C " + getHome() + "Documents/zspotify pull"
         ],
     "softwareupdate":
         [
