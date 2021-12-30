@@ -1,67 +1,74 @@
 #!/usr/bin/env python3
+"""update: a script to automatically update software"""
+
 from shutil import which
 from os import environ
-from subprocess import run, DEVNULL
-from sys import argv
+from subprocess import run
+import argparse
+import sys
+
+def isTermux() -> bool:
+    """Check if current os is termux"""
+    return environ.get("TERMUX_VERSION", None) is not None
 
 def has(program: str) -> bool:
-    if program == "apt-get":
-        try:
-            return (run(["apt-get", "--version"], stderr=DEVNULL, stdout=DEVNULL).returncode == 0) and (environ.get("TERMUX_VERSION", None) == None)
-        except:
-            return False
-    else:
-        return which(program) != None
+    """Check if specified program is in PATH"""
+    return which(program) is not None
 
 def getRootString() -> None:
-    if environ.get("TERMUX_VERSION", None) != None:
+    """return string to prepend to commands in order to run them as root"""
+    if isTermux():
+        rootString = ""
         rootProgram = "Termux"
     elif environ.get("EUID", None) == 0:
-        rootstring = ""
+        rootString = ""
         rootProgram = "Root User"
     elif has("doas"):
         rootProgram = "Doas"
-        rootstring = "doas "
+        rootString = "doas "
     elif has("sudo"):
         rootProgram = "Sudo"
-        rootstring = "sudo "
+        rootString = "sudo "
     else:
         print("ERROR: no root privileges found.")
         print("You can try running this script as root or verifying that sudo or doas is in your PATH")
-        exit(1)
+        sys.exit(1)
     print("Using " + rootProgram + " for root privileges.")
-    return rootstring
+    return rootString
 
 def getHome() -> str:
+    """return the current users home directory, with a trailing slash"""
     home = environ.get("HOME")
     if home[-1] != "/":
         home += "/"
     return home
 
 def getManagers() -> None:
+    """returns a list of all availible package managers"""
     foundManagers = []
-    for i in managerList.keys():
-        if has(i):
-            foundManagers.append(i)
+    for manager in managerList:
+        if has(manager):
+            foundManagers.append(manager)
     return foundManagers
 
 def update(manager: str) -> None:
+    """update a specified package manager"""
     if has(manager):
-        for j in managerList[manager]:
-            run(j.split(" "))
+        for command in managerList[manager]:
+            run(command.split(" "), check=False)
 
 def updateAll() -> None:
-    for i in managerList.keys():
-        update(i)
+    """update all availible packages"""
+    for manager in managerList:
+        update(manager)
 
-rootString = getRootString()
-specifiedManager = False
+ROOT_STRING = getRootString()
 managerList = {
     "apt-get":
         [
-            rootString + "apt-get update",
-            rootString + "apt-get upgrade",
-            rootString + "apt-get autoremove"
+            ROOT_STRING + "apt-get update",
+            ROOT_STRING + "apt-get upgrade",
+            ROOT_STRING + "apt-get autoremove"
         ],
     "brew":
         [
@@ -71,7 +78,7 @@ managerList = {
         ],
     "flatpak":
         [
-            rootString + "flatpak update"
+            ROOT_STRING + "flatpak update"
         ],
     "git":
         [
@@ -85,7 +92,7 @@ managerList = {
         ],
     "pacman":
         [
-            rootString + "pacman -Syu"
+            ROOT_STRING + "pacman -Syu"
         ],
     "pip":
         [
@@ -108,7 +115,7 @@ managerList = {
         ],
     "snap":
         [
-            rootString + "snap refresh"
+            ROOT_STRING + "snap refresh"
         ],
     "tldr":
         [
@@ -119,17 +126,25 @@ managerList = {
             "yay -Syu"
         ]
 }
-params = argv[1:]
 
-if len(params) > 0:
-    for i in params:
-        if i == "list":
-            print(getManagers())
-        elif i == "all":
-            updateAll()
-        else:
-            if i in managerList.keys():
-                update(i)
-else:
+parser = argparse.ArgumentParser(description="a program to automatically uppdate installed package managers")
+
+parser.add_argument("--toUpdate", dest="toUpdate", help="specify which managers to update", nargs="+", type=str)
+parser.add_argument("--list", "-l", dest="listMode", action="store_true", help="list availible package managers")
+parser.add_argument("--all", "-a", dest="UPDATE_ALL", action="store_true", help="update all availible package managers, (this is the default)")
+
+args = vars(parser.parse_args())
+toUpdate = args["toUpdate"]
+listMode = args["listMode"]
+UPDATE_ALL = args["UPDATE_ALL"]
+
+if listMode:
+    print(getManagers())
+elif toUpdate is None or UPDATE_ALL:
     updateAll()
-
+else:
+    for selectedManager in toUpdate:
+        if selectedManager in managerList:
+            update(selectedManager)
+        else:
+            print("WARNING: unrecognized package manager '" + str(selectedManager) + "'.")
