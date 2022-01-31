@@ -106,6 +106,7 @@ if has brew ; then
     PATH="$prefix/opt/gnu-time/libexec/gnubin:$PATH"
     PATH="$prefix/opt/make/libexec/gnubin:$PATH"
     PATH="$prefix/opt/grep/libexec/gnubin:$PATH"
+    PATH="$prefix/opt/util-linux/bin:$PATH"
     PATH="$prefix/opt/coreutils/libexec/gnubin:$PATH"
 
     #load brew bash completion script
