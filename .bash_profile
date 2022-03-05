@@ -102,6 +102,7 @@ if has brew ; then
     #Add basic utilities finally
     PATH="$prefix/opt/curl/bin:$PATH"
     PATH="$prefix/opt/findutils/libexec/gnubin:$PATH"
+    PATH="$prefix/opt/binutils/bin:$PATH"
     PATH="$prefix/opt/gnu-which/libexec/gnubin:$PATH"
     PATH="$prefix/opt/gnu-time/libexec/gnubin:$PATH"
     PATH="$prefix/opt/make/libexec/gnubin:$PATH"
