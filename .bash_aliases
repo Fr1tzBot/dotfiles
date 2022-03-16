@@ -23,6 +23,7 @@ has which && alias which="which -a"
 has cd && alias ..="cd .."
 has cd && alias ~="cd $HOME"
 has thefuck && eval "$(thefuck --alias)"
+has fuck && alias fk="fuck"
 has dd && alias dd="dd status=progress"
 has du && alias dush="du -sh"
 
