@@ -4,6 +4,8 @@ TRIMMED_HOME=$(realpath -s "$HOME")
 
 if has ubuntu-bug ; then
     distro="Ubuntu"
+elif has apt && apt &> /dev/null ; then
+    distro="Debian"
 elif [ "$(has arch && arch)" = "i386" ] ; then
     distro="Mac OS (Rosetta)"
 elif has brew ; then
