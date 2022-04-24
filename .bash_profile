@@ -3,119 +3,98 @@
 #if not running interactively, dont do anything
 [ -z "$PS1" ] && return
 
+#function to check if program is in path
 has() { type -p "$1" >/dev/null; }
+
+#add a directory to path
+appendPath() { if [ -d "$1" ] ; then PATH="$PATH:$1"; fi }
+prependPath() { if [ -d "$1" ] ; then PATH="$1:$PATH"; fi }
+
+#add a brew directory to path
+brewPath() { prependPath "$prefix$1"; }
+
 #Notify if PATH is already set
 if [ -n "$PATH" ] ; then
     #if set, replace it
     printf '\033[31mWARNING: reset path from %s \033[39m\n' "$PATH"
-    PATH=""
+    export PATH=""
 fi
 
 #Set Base PATH
-if [ -d "/usr/local/bin" ] ; then
-    PATH="$PATH:/usr/local/bin"
-fi
-
-if [ -d "/usr" ] ; then
-    PATH="$PATH:/usr/bin:/usr/sbin"
-fi
-
-if [ -d "/sbin" ] ; then
-    PATH="$PATH:/sbin"
-fi
-
-if [ -d "/data/data/com.termux/files/usr" ] ; then
-    PATH="$PATH:/data/data/com.termux/files/usr/bin"
-fi
+appendPath "/usr/local/bin"
+appendPath "/usr/bin"
+appendPath "/usr/sbin"
+appendPath "/sbin"
+appendPath "/data/data/com.termux/files/usr/bin"
 
 #set PATH so it includes homebrew bins if they exists, otherwise add /bin
-if [ -d "/opt/homebrew" ] ; then
+if [ -f "/opt/homebrew/bin/brew" ] ; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [ -f "/usr/local/bin/brew" ] ; then
     eval "$(/usr/local/bin/brew shellenv)"
 else
-    if [ -d "/bin" ] ; then
-        PATH="/bin:$PATH"
-    fi
+    appendPath "/bin"
 fi
 
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
-fi
-
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
+# set PATH so it includes user's private bin(s) if they exist
+appendPath "$HOME/bin"
+appendPath "$HOME/.local/bin"
 
 #set PATH so it includes scoop if it exists
-if [ -d "$HOME/scoop/shims" ] ; then
-    PATH="$HOME/scoop/shims:$PATH"
-fi
+appendPath "$HOME/scoop/shims"
 
 #set PATH to include windows dirs
-if [ -d "/c/WINDOWS" ] ; then
-    PATH="/c/WINDOWS/System32/WindowsPowershell/v1.0:$PATH"
-    PATH="/c/WINDOWS:$PATH"
-    PATH="/c/WINDOWS/System32:$PATH"
-fi
+appendPath "/c/WINDOWS/System32/WindowsPowershell/v1.0"
+appendPath "/c/WINDOWS"
+appendPath "/c/WINDOWS/System32"
 
 #Set PATH so it includes X11 bin if it exists
-if [ -d "/opt/X11" ] ; then
-    PATH="$PATH:/opt/X11/bin"
-fi
+appendPath "opt/X11/bin"
 
 #Set PATH so it includes firefox if it exists
-if [ -d "/Applications/Firefox.app" ] ; then
-    PATH="$PATH:/Applications/Firefox.app/Contents/MacOS"
-fi
+appendPath "/Applications/Firefox.app/Contents/MacOS"
 
 #Set PATH so it includes discord if it exists
-if [ -d "/Applications/Discord.app" ] ; then
-    PATH="$PATH:/Applications/Discord.app/Contents/MacOS"
-fi
+appendPath "/Applications/Discord.app/Contents/MacOS"
 
 #Set PATH So it includes Wireshark bin if it exists
-if [ -d "/Applications/Wireshark.app" ] ; then
-    PATH="$PATH:/Applications/Wireshark.app/Contents/MacOS"
-fi
+appendPath "/Applications/Wireshark.app/Contents/MacOS"
 
 #Set PATH So it includes individual brew app bins
 if has brew ; then
     prefix="$(brew --prefix)"
     #Add editors to the end
-    PATH="$prefix/opt/ed/libexec/gnubin:$PATH"
-    PATH="$prefix/opt/gnu-sed/libexec/gnubin:$PATH"
+    brewPath "/opt/ed/libexec/gnubin"
+    brewPath "/opt/gnu-sed/libexec/gnubin"
     #Add Basic Utils
-    PATH="$prefix/opt/bison/bin:$PATH"
-    PATH="$prefix/opt/man-db/libexec/bin:$PATH"
+    brewPath "/opt/bison/bin"
+    brewPath "/opt/man-db/libexec/bin"
     #Add languages next
-    PATH="$prefix/opt/gawk/libexec/gnubin:$PATH"
-    PATH="$prefix/opt/ruby/bin:$PATH"
-    PATH="$PREFIX/opt/python@3.10/bin:$PATH"
-    PATH="$prefix/opt/python@3.10/libexec/bin:$PATH"
+    brewPath "/opt/gawk/libexec/gnubin"
+    brewPath "/opt/ruby/bin"
+    brewPath "/opt/python@3.10/bin"
+    brewPath "/opt/python@3.10/libexec/bin"
     #Add archive tools
-    PATH="$prefix/opt/zip/bin:$PATH"
-    PATH="$prefix/opt/unzip/bin:$PATH"
-    PATH="$prefix/opt/gnu-tar/libexec/gnubin:$PATH"
+    brewPath "/opt/zip/bin"
+    brewPath "/opt/unzip/bin"
+    brewPath "/opt/gnu-tar/libexec/gnubin"
     #Add basic utilities finally
-    PATH="$prefix/opt/curl/bin:$PATH"
-    PATH="$prefix/opt/findutils/libexec/gnubin:$PATH"
-    PATH="$prefix/opt/binutils/bin:$PATH"
-    PATH="$prefix/opt/gnu-which/libexec/gnubin:$PATH"
-    PATH="$prefix/opt/gnu-time/libexec/gnubin:$PATH"
-    PATH="$prefix/opt/make/libexec/gnubin:$PATH"
-    PATH="$prefix/opt/grep/libexec/gnubin:$PATH"
-    PATH="$prefix/opt/util-linux/bin:$PATH"
-    PATH="$prefix/opt/coreutils/libexec/gnubin:$PATH"
+    brewPath "/opt/curl/bin"
+    brewPath "/opt/findutils/libexec/gnubin"
+    brewPath "/opt/binutils/bin"
+    brewPath "/opt/gnu-which/libexec/gnubin"
+    brewPath "/opt/gnu-time/libexec/gnubin"
+    brewPath "/opt/make/libexec/gnubin"
+    brewPath "/opt/grep/libexec/gnubin"
+    brewPath "/opt/util-linux/bin"
+    brewPath "/opt/coreutils/libexec/gnubin"
 
     #load brew bash completion script
     [[ -r "$prefix/etc/profile.d/bash_completion.sh" ]] && . "$prefix/etc/profile.d/bash_completion.sh"
 fi
 
 #Export env variables
-export PATH
+export PATH="$PATH"
 if [ "$COLUMNS" -gt 70 ] ; then
     export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
     # (for zsh) export PS1="%B%F{green}%n%f%b%B%F{green}@%f%b%B%F{green}%m%f%b:%F{blue}%~%f$ "
@@ -129,6 +108,7 @@ if has vim ; then
 elif has nano ; then
     EDITOR=$(command -v "nano")
 fi
+
 if [ "$(has arch && arch)" = "i386" ] ; then
     export BASH_SILENCE_DEPRECATION_WARNING=1
 fi
