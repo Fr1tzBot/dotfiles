@@ -21,73 +21,75 @@ if [ -n "$PATH" ] ; then
 fi
 
 #Set Base PATH
-appendPath "/usr/local/bin"
-appendPath "/usr/bin"
-appendPath "/usr/sbin"
-appendPath "/sbin"
-appendPath "/data/data/com.termux/files/usr/bin"
+basePaths=(
+    "/usr/local/bin"
+    "/usr/bin"
+    "/usr/sbin"
+    "/sbin"
+    "/data/data/com.termux/files/usr/bin"
+    "/bin"
+    "$HOME/bin"
+    "$HOME/.local/bin"
+    "$HOME/scoop/shims"
+    "/c/WINDOWS/System32/WindowsPowershell/v1.0"
+    "/c/WINDOWS"
+    "/c/WINDOWS/System32"
+    "opt/X11/bin"
+    "/Applications/Firefox.app/Contents/MacOS"
+    "/Applications/Discord.app/Contents/MacOS"
+    "/Applications/Wireshark.app/Contents/MacOS"
+)
 
-#set PATH so it includes homebrew bins if they exists, otherwise add /bin
-if [ -f "/opt/homebrew/bin/brew" ] ; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [ -f "/usr/local/bin/brew" ] ; then
-    eval "$(/usr/local/bin/brew shellenv)"
-else
-    appendPath "/bin"
-fi
-
-# set PATH so it includes user's private bin(s) if they exist
-appendPath "$HOME/bin"
-appendPath "$HOME/.local/bin"
-
-#set PATH so it includes scoop if it exists
-appendPath "$HOME/scoop/shims"
-
-#set PATH to include windows dirs
-appendPath "/c/WINDOWS/System32/WindowsPowershell/v1.0"
-appendPath "/c/WINDOWS"
-appendPath "/c/WINDOWS/System32"
-
-#Set PATH so it includes X11 bin if it exists
-appendPath "opt/X11/bin"
-
-#Set PATH so it includes firefox if it exists
-appendPath "/Applications/Firefox.app/Contents/MacOS"
-
-#Set PATH so it includes discord if it exists
-appendPath "/Applications/Discord.app/Contents/MacOS"
-
-#Set PATH So it includes Wireshark bin if it exists
-appendPath "/Applications/Wireshark.app/Contents/MacOS"
+for i in "${basePaths[@]}" ; do
+    case "$i" in
+        "/bin")
+            #set PATH so it includes homebrew bins if they exists, otherwise add /bin
+            if [ -f "/opt/homebrew/bin/brew" ] ; then
+                eval "$(/opt/homebrew/bin/brew shellenv)"
+            elif [ -f "/usr/local/bin/brew" ] ; then
+                eval "$(/usr/local/bin/brew shellenv)"
+            else
+                appendPath "/bin"
+            fi ;;
+        *)
+            appendPath "$i" ;;
+    esac
+done
 
 #Set PATH So it includes individual brew app bins
 if has brew ; then
     prefix="$(brew --prefix)"
-    #Add editors to the end
-    brewPath "/opt/ed/libexec/gnubin"
-    brewPath "/opt/gnu-sed/libexec/gnubin"
-    #Add Basic Utils
-    brewPath "/opt/bison/bin"
-    brewPath "/opt/man-db/libexec/bin"
-    #Add languages next
-    brewPath "/opt/gawk/libexec/gnubin"
-    brewPath "/opt/ruby/bin"
-    brewPath "/opt/python@3.10/bin"
-    brewPath "/opt/python@3.10/libexec/bin"
-    #Add archive tools
-    brewPath "/opt/zip/bin"
-    brewPath "/opt/unzip/bin"
-    brewPath "/opt/gnu-tar/libexec/gnubin"
-    #Add basic utilities finally
-    brewPath "/opt/curl/bin"
-    brewPath "/opt/findutils/libexec/gnubin"
-    brewPath "/opt/binutils/bin"
-    brewPath "/opt/gnu-which/libexec/gnubin"
-    brewPath "/opt/gnu-time/libexec/gnubin"
-    brewPath "/opt/make/libexec/gnubin"
-    brewPath "/opt/grep/libexec/gnubin"
-    brewPath "/opt/util-linux/bin"
-    brewPath "/opt/coreutils/libexec/gnubin"
+    brewPaths=(
+        #Add editors to the end
+        "/opt/ed/libexec/gnubin"
+        "/opt/gnu-sed/libexec/gnubin"
+        #Add Basic Utils
+        "/opt/bison/bin"
+        "/opt/man-db/libexec/bin"
+        #Add languages next
+        "/opt/gawk/libexec/gnubin"
+        "/opt/ruby/bin"
+        "/opt/python@3.10/bin"
+        "/opt/python@3.10/libexec/bin"
+        #Add archive tools
+        "/opt/zip/bin"
+        "/opt/unzip/bin"
+        "/opt/gnu-tar/libexec/gnubin"
+        #Add basic utilities finally
+        "/opt/curl/bin"
+        "/opt/findutils/libexec/gnubin"
+        "/opt/binutils/bin"
+        "/opt/gnu-which/libexec/gnubin"
+        "/opt/gnu-time/libexec/gnubin"
+        "/opt/make/libexec/gnubin"
+        "/opt/grep/libexec/gnubin"
+        "/opt/util-linux/bin"
+        "/opt/coreutils/libexec/gnubin"
+    )
+
+    for i in "${brewPaths[@]}" ; do
+        brewPath "$i"
+    done
 
     #load brew bash completion script
     [[ -r "$prefix/etc/profile.d/bash_completion.sh" ]] && . "$prefix/etc/profile.d/bash_completion.sh"
