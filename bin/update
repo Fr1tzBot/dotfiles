@@ -4,8 +4,9 @@
 from shutil import which
 from os import environ
 from subprocess import run
-import argparse
 import sys
+#all above modules are built in to python 3.10
+import argparse #argparse, python module created by Thomas Waldmann
 
 def isTermux() -> bool:
     """Check if current os is termux"""
@@ -83,8 +84,7 @@ managerList = {
     "git":
         [
             "git -C " + getHome() + "Documents/neofetch pull",
-            "git -C " + getHome() + "Documents/ytfzf pull",
-            "git -C " + getHome() + "Documents/zspotify pull"
+            "git -C " + getHome() + "Documents/ytfzf pull"
         ],
     "softwareupdate":
         [
