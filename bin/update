@@ -145,6 +145,10 @@ elif toUpdate is None or UPDATE_ALL:
 else:
     for selectedManager in toUpdate:
         if selectedManager in managerList:
-            update(selectedManager)
+            # don't update pacman if yay is installed
+            if selectedManager == "pacman" & has("yay"):
+                continue
+            else:
+                update(selectedManager)
         else:
             print("WARNING: unrecognized package manager '" + str(selectedManager) + "'.")
