@@ -146,7 +146,7 @@ else:
     for selectedManager in toUpdate:
         if selectedManager in managerList:
             # don't update pacman if yay is installed
-            if selectedManager == "pacman" & has("yay"):
+            if (selectedManager == "pacman") and (has("yay")):
                 continue
             else:
                 update(selectedManager)
