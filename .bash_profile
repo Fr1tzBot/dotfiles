@@ -71,6 +71,7 @@ if has brew ; then
         "/opt/ruby/bin"
         "/opt/python@3.10/bin"
         "/opt/python@3.10/libexec/bin"
+        "/opt/openjdk@17/bin"
         #Add archive tools
         "/opt/zip/bin"
         "/opt/unzip/bin"
@@ -115,7 +116,7 @@ if [ "$(has arch && arch)" = "i386" ] ; then
     export BASH_SILENCE_DEPRECATION_WARNING=1
 fi
 export EDITOR
-has java && export CPPFLAGS="-I$prefix/opt/openjdk@11/include"
+has java && export CPPFLAGS="-I$prefix/opt/openjdk@17/include"
 #Source remaining files
 if has dircolors ; then
     eval "$(dircolors "$HOME/.dir_colors")"
