@@ -68,6 +68,13 @@ python3 "$TRIMMED_HOME/Documents/zspotify/zspotify/__main__.py" "$@"' > "$TRIMME
     chmod +x "$TRIMMED_HOME/bin/zspotify"
 fi
 
+if [ -d "/Applications/Obsidian.app" ] ; then
+    # ensure ~/bin/obsidian symlink exists
+    if [ ! -f "$TRIMMED_HOME/bin/obsidian" ] ; then
+        ln -sv "/Applications/Obsidian.app/Contents/MacOS/Obsidian" "$TRIMMED_HOME/bin/obsidian"
+    fi
+fi
+
 # source new bashrc
 # TODO verify this actually works
 . "$TRIMMED_HOME/.bashrc"
