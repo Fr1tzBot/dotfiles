@@ -142,11 +142,12 @@ skip = args["skip"]
 UPDATE_ALL = args["UPDATE_ALL"]
 
 # remove skipped managers
-for skippedManager in skip:
-    if skippedManager in managerList:
-        managerList.pop(skippedManager)
-    else:
-        print("WARNING: unrecognized package manager '" + str(skippedManager.keys()) + "'.")
+if skip is not None:
+    for skippedManager in skip:
+        if skippedManager in managerList:
+            managerList.pop(skippedManager)
+        else:
+            print("WARNING: unrecognized package manager '" + str(skippedManager.keys()) + "'.")
 
 if listMode:
     print(getManagers())
