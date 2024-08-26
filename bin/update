@@ -60,7 +60,6 @@ def update(manager: str) -> None:
 
 def updateAll() -> None:
     """update all availible packages"""
-    print("Updating " + str(managerList.keys()) + ".")
     for manager in managerList:
         update(manager)
 
