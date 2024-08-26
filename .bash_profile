@@ -48,7 +48,7 @@ for i in "${basePaths[@]}" ; do
                 eval "$(/opt/homebrew/bin/brew shellenv)"
             elif [ -f "/usr/local/bin/brew" ] ; then
                 eval "$(/usr/local/bin/brew shellenv)"
-            else
+            elif [ -z "$TERMUX_VERSION" ] ; then
                 appendPath "/bin"
             fi ;;
         *)
