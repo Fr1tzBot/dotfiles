@@ -96,7 +96,7 @@ managerList = {
         ],
     "pip":
         [
-            "" if isTermux() else "python -m pip install --upgrade pip"
+            "echo \" Skipped Pip Install for Termux\"" if isTermux() else "python -m pip install --upgrade pip"
         ],
     "pkg":
         [
