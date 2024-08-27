@@ -83,6 +83,7 @@ if has brew ; then
         "/opt/binutils/bin"
         "/opt/gnu-which/libexec/gnubin"
         "/opt/gnu-time/libexec/gnubin"
+        "/opt/ncurses/bin"
         "/opt/make/libexec/gnubin"
         "/opt/grep/libexec/gnubin"
         "/opt/util-linux/bin"
