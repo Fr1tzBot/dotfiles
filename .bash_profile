@@ -78,6 +78,7 @@ if has brew ; then
         "/opt/gnu-tar/libexec/gnubin"
         #Add basic utilities finally
         "/opt/curl/bin"
+        "/opt/m4/bin"
         "/opt/findutils/libexec/gnubin"
         "/opt/binutils/bin"
         "/opt/gnu-which/libexec/gnubin"
