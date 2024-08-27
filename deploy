@@ -75,11 +75,11 @@ if [ -d "/Applications/Obsidian.app" ] ; then
     fi
 fi
 
+# source new bashrc
+# TODO verify this actually works
+. "$TRIMMED_HOME/.bashrc"
+
 # nuke bashrc on termux to avoid double sourcing on startup
 if [ -n "$TERMUX_VERSION" ] ; then
     rm -v "$TRIMMED_HOME/.bashrc"
 fi
-
-# source new bashrc
-# TODO verify this actually works
-. "$TRIMMED_HOME/.bashrc"
