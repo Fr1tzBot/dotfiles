@@ -22,13 +22,13 @@ fi
 
 #Set Base PATH
 basePaths=(
+    "$HOME/bin"
     "/usr/local/bin"
     "/usr/bin"
     "/usr/sbin"
     "/sbin"
     "/data/data/com.termux/files/usr/bin"
     "/bin"
-    "$HOME/bin"
     "$HOME/.local/bin"
     "$HOME/scoop/shims"
     "/c/WINDOWS/System32/WindowsPowershell/v1.0"
