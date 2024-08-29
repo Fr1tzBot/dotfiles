@@ -27,6 +27,8 @@
     - required for .vimrc
     - has color file
     - has convenience alias(es)
+- node
+    - required for copilot support in vim
 - java
     - has some configuration
 - grep
