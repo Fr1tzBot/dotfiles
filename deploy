@@ -34,23 +34,20 @@ fi
 if [ -d "$TRIMMED_HOME/Documents/ytfzf" ] ; then
     # if it is, pull latest version
     git -C "$TRIMMED_HOME/Documents/ytfzf" pull
-else
-    # otherwise, clone ytfzf from github and place it into ~/Documents/ytfzf
-    git clone "https://github.com/pystardust/ytfzf.git/" "$TRIMMED_HOME/Documents/ytfzf"
-fi
 
-# ensure ~/bin/ytfzf symlink exists
-if [ ! -f "$TRIMMED_HOME/bin/ytfzf" ] ; then
-    ln -sv "$TRIMMED_HOME/Documents/ytfzf/ytfzf" "$TRIMMED_HOME/bin/ytfzf"
+    # ensure ~/bin/ytfzf symlink exists
+    if [ ! -f "$TRIMMED_HOME/bin/ytfzf" ] ; then
+        ln -sv "$TRIMMED_HOME/Documents/ytfzf/ytfzf" "$TRIMMED_HOME/bin/ytfzf"
+    fi
 fi
 
 # check if zspotify is already cloned
 if [ -d "$TRIMMED_HOME/Documents/zspotify" ] ; then
     # if it is, pull latest version
     git -C "$TRIMMED_HOME/Documents/zspotify" pull
-else
-    # otherwise, clone zspotify from github and place it into ~/Documents/zspotify
-    git clone "https://github.com/THIS-IS-NOT-A-BACKUP/zspotify" "$TRIMMED_HOME/Documents/zspotify"
+# else
+#     # otherwise, clone zspotify from github and place it into ~/Documents/zspotify
+#     git clone "https://github.com/THIS-IS-NOT-A-BACKUP/zspotify" "$TRIMMED_HOME/Documents/zspotify"
 fi
 
 #Check if rayshud is already cloned
