@@ -128,6 +128,10 @@ if [ -f "$HOME/.bash_aliases" ] ; then
     source "$HOME/.bash_aliases"
 fi
 
+if [ -f "$HOME/.osspecific" ] ; then
+    source "$HOME/.osspecific"
+fi
+
 if [ -f "$HOME/.launchscripts" ] ; then
     source "$HOME/.launchscripts"
 fi
