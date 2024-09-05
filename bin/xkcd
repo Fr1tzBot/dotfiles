@@ -1,2 +1,6 @@
 #!/bin/bash
-curl -s "$(xkcdLatest)" | kitty +kitten icat --align=left #--scale-up
+
+BASE_URL="https://xkcd.com/"
+
+
+curl -s "$(curl -s "$BASE_URL$1/" | grep -oP -m 1 'https://imgs.xkcd.com/comics/.*\.(png|jpg)')" | viu -
