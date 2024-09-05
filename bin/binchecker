@@ -1,10 +1,26 @@
 #!/bin/bash
 # quick script to list binaries in a directory that are not in the PATH
 
+
 if [ -n "$1" ] ; then
+
+    #check if argument is in the PATH
+    if [[ ":$PATH:" == *":$1:"* ]] ; then
+        printf "Folder is in PATH, would you like to temporarily remove it? [y/n]: " >&2
+        read -r response
+        if [ "$response" == "y" ] ; then
+            OLD_PATH="$PATH"
+            export PATH=${PATH//$1:/}
+        fi
+    fi
+
     # shellcheck disable=SC2046
     # word splitting is intended
     which $(find "$1" -type f -printf "%f\n") 2>&1 | grep -oP "no .* in" | sed "s/no //" | sed "s/ in//"
+
+    if [ -n "$OLD_PATH" ] ; then
+        export PATH="$OLD_PATH"
+    fi
 else
-    echo "Usage: binchecker <path to bin>"
+    echo "Usage: binchecker <path to bin>" >&2
 fi
