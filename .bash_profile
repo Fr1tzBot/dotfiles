@@ -76,6 +76,7 @@ if has brew ; then
         "/opt/zip/bin"
         "/opt/unzip/bin"
         "/opt/gnu-tar/libexec/gnubin"
+        "/opt/pax/bin"
         #Add basic utilities finally
         "/opt/curl/bin"
         "/opt/m4/bin"
