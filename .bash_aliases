@@ -69,7 +69,6 @@ elif [ -f "/System/Library/PrivateFrameworks/Apple80211.framework/Resources/airp
 fi
 
 #Package Manager Aliases
-has brew && alias brew="brew"
 has port && alias port="port -v"
 
 #Image Aliases
