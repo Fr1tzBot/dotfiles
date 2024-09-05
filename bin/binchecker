@@ -1,0 +1,10 @@
+#!/bin/bash
+# quick script to list binaries in a directory that are not in the PATH
+
+if [ -n "$1" ] ; then
+    # shellcheck disable=SC2046
+    # word splitting is intended
+    which $(find "$1" -type f -printf "%f\n") 2>&1 | grep -oP "no .* in" | sed "s/no //" | sed "s/ in//"
+else
+    echo "Usage: binchecker <path to bin>"
+fi
