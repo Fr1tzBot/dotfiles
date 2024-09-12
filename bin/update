@@ -19,7 +19,6 @@ def has(program: str) -> bool:
 def getRootString() -> None:
     """return string to prepend to commands in order to run them as root"""
     if isTermux():
-        rootString = ""
         print("No Root Privileges on Termux")
         return ""
     elif environ.get("EUID", None) == 0:
@@ -58,11 +57,6 @@ def update(manager: str) -> None:
     if has(manager):
         for command in managerList[manager]:
             run(command.split(" "), check=False)
-
-def updateAll() -> None:
-    """update all availible packages"""
-    for manager in managerList:
-        update(manager)
 
 ROOT_STRING = getRootString()
 managerList = {
@@ -155,7 +149,9 @@ if skip is not None:
 if listMode:
     print(getManagers())
 elif toUpdate is None or UPDATE_ALL:
-    updateAll()
+    #update all availible packages
+    for manager in managerList:
+        update(manager)
 else:
     print("Updating " + str(toUpdate) + ".")
     for selectedManager in toUpdate:
