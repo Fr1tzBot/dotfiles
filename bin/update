@@ -20,7 +20,8 @@ def getRootString() -> None:
     """return string to prepend to commands in order to run them as root"""
     if isTermux():
         rootString = ""
-        rootProgram = "Termux"
+        print("No Root Privileges on Termux")
+        return ""
     elif environ.get("EUID", None) == 0:
         rootString = ""
         rootProgram = "Root User"
