@@ -1,2 +1,0 @@
-#!/bin/bash
-pacmd load-module module-alsa-source device=hw:0,1,0
