@@ -26,6 +26,7 @@ has thefuck && eval "$(thefuck --alias)"
 has fuck && alias fk="fuck"
 has dd && alias dd="dd status=progress"
 has du && alias dush="du -sh"
+has gcc && alias gcc="gcc -Wall"
 
 #Text Editor eliases
 has vim && alias vi="vim"
@@ -62,11 +63,7 @@ elif has host ; then
     alias dns="host"
 fi
 
-if has iwgetid ; then
-    alias ssid="iwgetid -r"
-elif [ -f "/System/Library/PrivateFrameworks/Apple80211.framework/Resources/airport" ] ; then
-    alias ssid="/System/Library/PrivateFrameworks/Apple80211.framework/Resources/airport -I | awk -F: '/ SSID/{print \$2}' | sed 's/ //g'"
-fi
+has iwgetid && alias ssid="iwgetid -r"
 
 #Package Manager Aliases
 has port && alias port="port -v"
