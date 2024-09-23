@@ -127,6 +127,8 @@ if has dircolors ; then
     eval "$(dircolors "$HOME/.dir_colors")"
 fi
 
+bind 'set mark-symlinked-directories on' #put a slash at the end of symlinked directories (cuz dropbox)
+
 if [ -f "$HOME/.bash_aliases" ] ; then
     source "$HOME/.bash_aliases"
 fi
