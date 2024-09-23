@@ -2,5 +2,11 @@
 
 BASE_URL="https://xkcd.com/"
 
+# if $1 is random, go to https://c.xkcd.com/random/comic/
+if [ "$1" == "random" ]; then
+    curl -s "$(curl -sL "https://c.xkcd.com/random/comic/" | grep -oP -m 1 'https://imgs.xkcd.com/comics/.*\.(png|jpg)')" | viu -
+    exit 0
+fi
+
 
 curl -s "$(curl -s "$BASE_URL$1/" | grep -oP -m 1 'https://imgs.xkcd.com/comics/.*\.(png|jpg)')" | viu -
