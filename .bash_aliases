@@ -16,6 +16,7 @@ if has ls ; then
     alias l="ls -CF"
     alias ll="ls -Alh"
 fi
+has pwd && alias pwd="pwd -P"
 has trash && alias trash="trash -v -F"
 has clear && alias cls="clear"
 has exit && alias q="exit"
