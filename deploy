@@ -6,6 +6,11 @@ has() { type -p "$1" >/dev/null; }
 # Copy all files starting with . to ~
 find . -maxdepth 1 -type f -name ".*" -exec cp -v {} "$TRIMMED_HOME/" \;
 
+#ensure no residual copilot files are copied
+if [ -d "$TRIMMED_HOME/.vim/pack/github/start/copilot.vim" ] ; then
+    rm -rv "$TRIMMED_HOME/.vim/pack/github/start/copilot.vim"
+fi
+
 # Copy only specified directories
 cp -rv "./bin" "$TRIMMED_HOME/"
 cp -rv "./.vim" "$TRIMMED_HOME/"
