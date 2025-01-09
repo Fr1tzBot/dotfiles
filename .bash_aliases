@@ -27,6 +27,7 @@ has fuck && alias fk="fuck"
 has dd && alias dd="dd status=progress"
 has du && alias dush="du -sh"
 has gcc && alias gcc="gcc -Wall"
+has md5sum && alias md5="md5sum"
 
 #Text Editor eliases
 has vim && alias vi="vim"
