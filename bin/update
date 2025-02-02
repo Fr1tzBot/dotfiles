@@ -25,10 +25,10 @@ def getRootString() -> None:
         rootString = ""
         rootProgram = "Root User"
     elif has("doas"):
-        rootProgram = "Doas"
+        rootProgram = "doas"
         rootString = "doas "
     elif has("sudo"):
-        rootProgram = "Sudo"
+        rootProgram = "sudo"
         rootString = "sudo "
     else:
         print("ERROR: no root privileges found.")
