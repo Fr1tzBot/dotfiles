@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#a script exclusively for termux designed to replace obsidian-git
+
+VAULT_PATH="/data/data/com.termux/files/home/storage/shared/Documents/brain"
+INTERVAL=5 # in minutes
+
+while true; do
+    git -C "$VAULT_PATH" pull
+    git -C "$VAULT_PATH" add .
+    git -C "$VAULT_PATH" commit -m "vault backup: $(date "+%Y-%m-%d %H:%M:%S") (termux)"
+    if [ $? -eq 0 ]; then
+        printf "vault backup: %s (termux) - success\n" "$(date "+%Y-%m-%d %H:%M:%S")"
+    fi
+    git -C "$VAULT_PATH" push
+    sleep $((INTERVAL * 60))
+done
