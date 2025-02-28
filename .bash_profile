@@ -122,6 +122,7 @@ if [ "$(has arch && arch)" = "i386" ] ; then
 fi
 export EDITOR
 has java && export CPPFLAGS="-I$prefix/opt/openjdk@17/include"
+has systemctl && export XDG_CONFIG_HOME="$HOME/.config"
 #Source remaining files
 if has dircolors ; then
     eval "$(dircolors "$HOME/.dir_colors")"
