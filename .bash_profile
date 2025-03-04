@@ -120,6 +120,11 @@ fi
 if [ "$(has arch && arch)" = "i386" ] ; then
     export BASH_SILENCE_DEPRECATION_WARNING=1
 fi
+
+if [ $XDG_SESSION_TYPE = "wayland" ] ; then
+    export ELECTRON_OZONE_PLATFORM_HINT="wayland"
+fi
+
 export EDITOR
 has java && export CPPFLAGS="-I$prefix/opt/openjdk@17/include"
 has systemctl && export XDG_CONFIG_HOME="$HOME/.config"
