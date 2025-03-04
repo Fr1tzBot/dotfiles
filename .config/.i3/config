@@ -21,7 +21,7 @@ set $menu rofi -show drun
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/fritz/Pictures/Background.jpg fill
+output "*" bg "/home/fritz/Pictures/Background.jpg" fill
 #
 # Example configuration:
 #
