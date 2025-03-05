@@ -29,7 +29,7 @@
         //"keyboard-state",
         //"sway/language",
         "battery",
-        "battery#bat2",
+        //"battery#bat2",
         "clock"
         //"tray",
         //"Custom/power"

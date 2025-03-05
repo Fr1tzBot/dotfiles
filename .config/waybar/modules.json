@@ -59,6 +59,11 @@
         "format": "  {}%",
 	"tooltip": true
     },
+    "backlight": {
+        "format": "{icon} {percent}%",
+        "format-icons": ["", ""],
+        "on-click": "brightnessctl s {percentage}"
+    },
     "temperature": {
         "interval": 10,
         "hwmon-path": "/sys/devices/platform/coretemp.0/hwmon/hwmon4/temp1_input",
