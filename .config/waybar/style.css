@@ -6,10 +6,10 @@
 }
 
 window#waybar {
-    background: rgba(26, 27, 38, 0.75);
+    background: rgba(0, 0, 0, 0);
     color: #c0caf5;
     font-family:
-        SpaceMono Nerd Font,
+        "Space Mono",
         feather;
     transition: background-color .5s;
 }
