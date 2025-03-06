@@ -26,10 +26,10 @@
     },
     "pulseaudio": {
         "format": "{icon}  {volume}%",
-        "format-bluetooth": "{icon} {volume}%  {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": " {format_source}",
-        "format-source": " {volume}%",
+        "format-bluetooth": "{icon}  {volume}%",
+        "format-bluetooth-muted": "{icon}   ",
+        "format-muted": " ",
+        "format-source": " ",
         "format-source-muted": "",
         "format-icons": {
             "headphone": "",
@@ -39,8 +39,7 @@
             "portable": "",
             "car": "",
             "default": ["", "", ""]
-        },
-        "on-click": "pavucontrol"
+        }
     },
     "network": {
         "format-wifi": "   {essid} ({signalStrength}%)",
@@ -70,11 +69,6 @@
         "critical-threshold": 100,
         "format-critical": " {temperatureC}",
         "format": " {temperatureC}°C"
-    },
-    "hyprland/language": {
-       "format": "  {}",
-       "format-en": "EN",
-       "format-ru": "RU"
     },
     "battery": {
         "states": {
