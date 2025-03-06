@@ -83,7 +83,7 @@
         "format-icons": ["", "", "", "", ""]
     },
     "clock": {
-        "format": "{:%m/%d/%y | %I:%M:%S %p}",
+        "format": "{:%m/%d/%y   %I:%M:%S %p}",
         "interval": 1,
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     }
