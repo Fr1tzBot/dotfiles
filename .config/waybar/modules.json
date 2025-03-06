@@ -88,9 +88,6 @@
         "format-alt": "{time}  {icon}",
         "format-icons": ["", "", "", "", ""]
     },
-    "battery#bat2": {
-        "bat": "BAT2"
-    },
     "clock": {
         "format": "{:%m/%d/%y | %I:%M:%S %p}",
         "interval": 1,
