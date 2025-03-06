@@ -24,6 +24,7 @@ fi
 basePaths=(
     "$HOME/bin"
     "/usr/local/bin"
+    "/usr/local/sbin"
     "/usr/bin"
     "/usr/sbin"
     "/sbin"
@@ -99,6 +100,10 @@ if has brew ; then
 
     #load brew bash completion script
     [[ -r "$prefix/etc/profile.d/bash_completion.sh" ]] && . "$prefix/etc/profile.d/bash_completion.sh"
+
+    if [ "$(has arch && arch)" = "i386" ] ; then
+        export BASH_SILENCE_DEPRECATION_WARNING=1
+    fi
 fi
 
 #Export env variables
@@ -117,9 +122,6 @@ elif has nano ; then
     EDITOR=$(command -v "nano")
 fi
 
-if [ "$(has arch && arch)" = "i386" ] ; then
-    export BASH_SILENCE_DEPRECATION_WARNING=1
-fi
 
 if [ $XDG_SESSION_TYPE = "wayland" ] ; then
     export ELECTRON_OZONE_PLATFORM_HINT="wayland"
