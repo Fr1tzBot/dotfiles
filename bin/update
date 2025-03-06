@@ -90,7 +90,7 @@ managerList = {
         ],
     "pacman":
         [
-            ROOT_STRING + "pacman -Syu"
+            "echo Skipped pacman for yay" if has("yay") else ROOT_STRING + "pacman -Syu"
         ],
     "pip":
         [
@@ -156,10 +156,6 @@ else:
     print("Updating " + str(toUpdate) + ".")
     for selectedManager in toUpdate:
         if selectedManager in managerList:
-            # don't update pacman if yay is installed
-            if (selectedManager == "pacman") and (has("yay")):
-                continue
-            else:
-                update(selectedManager)
+            update(selectedManager)
         else:
             print("WARNING: unrecognized package manager '" + str(selectedManager) + "'.")
