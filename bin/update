@@ -121,7 +121,7 @@ managerList = {
         ],
     "yay":
         [
-            "yay -Syu" --noconfirm
+            "yay -Syu --noconfirm"
         ]
 }
 
