@@ -123,9 +123,7 @@ elif has nano ; then
 fi
 
 
-if [ "$XDG_SESSION_TYPE" = "wayland" ] ; then
-    export ELECTRON_OZONE_PLATFORM_HINT="wayland"
-fi
+has "wayland-scanner" && export ELECTRON_OZONE_PLATFORM_HINT="wayland"
 
 export EDITOR
 has java && export CPPFLAGS="-I$prefix/opt/openjdk@17/include"
