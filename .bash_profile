@@ -123,7 +123,7 @@ elif has nano ; then
 fi
 
 
-if [ $XDG_SESSION_TYPE = "wayland" ] ; then
+if [ "$XDG_SESSION_TYPE" = "wayland" ] ; then
     export ELECTRON_OZONE_PLATFORM_HINT="wayland"
 fi
 
