@@ -2,10 +2,9 @@
     "custom/arch": {
         "format": "󰣇",
         "tooltip": true,
-        "tooltip-format": "btw"
+        "tooltip-format": "btw",
+        "on-click": "rofi -show p -modi p:rofi-power-menu"
     },
-
-
     "hyprland/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
@@ -15,13 +14,6 @@
             "urgent": "",
             "active": "",
             "default": ""
-        }
-    },
-    "idle_inhibitor": {
-        "format": "{icon}",
-        "format-icons": {
-            "activated": "",
-            "deactivated": ""
         }
     },
     "pulseaudio": {
@@ -60,15 +52,7 @@
     },
     "backlight": {
         "format": "{icon} {percent}%",
-        "format-icons": ["", ""],
-        "on-click": "brightnessctl s {percentage}"
-    },
-    "temperature": {
-        "interval": 10,
-        "hwmon-path": "/sys/devices/platform/coretemp.0/hwmon/hwmon4/temp1_input",
-        "critical-threshold": 100,
-        "format-critical": " {temperatureC}",
-        "format": " {temperatureC}°C"
+        "format-icons": ["", ""]
     },
     "battery": {
         "states": {
