@@ -400,8 +400,8 @@ nnoremap gb :!./gradlew build<CR>
 "nmap cl :CocList<CR>
 
 " indenting
-inoremap <tab> <Esc>:s/^/    /<CR>a
-imap <s-tab> <Esc>:s/^    //<CR>a
+"inoremap <tab> <Esc>:s/^/    /<CR>a
+"imap <s-tab> <Esc>:s/^    //<CR>a
 
 " KEYMAPS END
 
