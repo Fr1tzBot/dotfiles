@@ -5,7 +5,7 @@
         "tooltip-format": "btw",
         "on-click": "rofi -show p -modi p:rofi-power-menu"
     },
-    "hyprland/workspaces": {
+    "sway/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
         "warp-on-scroll": false,
