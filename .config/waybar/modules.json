@@ -35,9 +35,12 @@
     },
     "network": {
         "format-wifi": "   {essid} ({signalStrength}%)",
-        "format-ethernet": "{ipaddr}/{cidr} ",
-        "tooltip-format": "{ifname} via {gwaddr} ",
-        "format-linked": "{ifname} (No IP) ",
+        //"format-ethernet": "{ipaddr}/{cidr} 󰈀",
+        //"tooltip-format": "{ifname} via {gwaddr} 󰈀",
+        //"format-linked": "{ifname} (No IP) 󰈀",
+        "format-ethernet": "",
+        "tooltip-format": "",
+        "format-linked": "",
         "format-disconnected": "Disconnected ⚠",
 	"on-click": "rofi-wifi-menu"
 
