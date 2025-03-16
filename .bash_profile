@@ -83,7 +83,7 @@ if has brew ; then
         "/opt/llvm/bin"
         "/opt/curl/bin"
         "/opt/m4/bin"
-        "/opt/findutils/libexec/gnubin"
+        "/opt/uutils-findutils/libexec/uubin"
         "/opt/binutils/bin"
         "/opt/gnu-which/libexec/gnubin"
         "/opt/gnu-time/libexec/gnubin"
@@ -91,7 +91,7 @@ if has brew ; then
         "/opt/make/libexec/gnubin"
         "/opt/grep/libexec/gnubin"
         "/opt/util-linux/bin"
-        "/opt/coreutils/libexec/gnubin"
+        "/opt/uutils-coreutils/libexec/uubin"
     )
 
     for i in "${brewPaths[@]}" ; do
