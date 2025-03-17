@@ -34,6 +34,8 @@ basePaths=(
     "$HOME/.cargo/bin"
     "$HOME/.local/bin"
     "$HOME/scoop/shims"
+    "/usr/bin/core_perl"
+    "/usr/bin/vendor_perl"
     "/c/WINDOWS/System32/WindowsPowershell/v1.0"
     "/c/WINDOWS"
     "/c/WINDOWS/System32"
