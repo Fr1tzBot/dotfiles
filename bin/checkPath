@@ -5,7 +5,9 @@ has() { type -p "$1" > /dev/null; }
 paths=$(echo "$1" | sed "s/:/\n/g")
 
 for i in $paths ; do
-    if [ -d "$i" ] ; then
+    #ensure the dir we're checking actually exists,
+    #and don't do any checks if the dir is in the new PATH
+    if [[ -d "$i" && ! ":$PATH:" == *":$i:"* ]] ; then
         for j in $(find "$i" -maxdepth 1 -type f -executable -printf "%f\n") ; do
             if ! has "$j" ; then
                 printf '\033[31mWARNING: missing \"%s\" (%s) from default PATH\033[39m\n' "$j" "$i/$j"
