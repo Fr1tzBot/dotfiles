@@ -410,3 +410,6 @@ syntax on
 colorscheme gruvbox
 set bg=dark
 hi Normal guibg=NONE ctermbg=NONE
+" disable copilot on startup
+let g:copilot_enabled = v:false
+
