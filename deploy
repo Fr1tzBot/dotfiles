@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 TRIMMED_HOME=$(realpath -s "$HOME")
 has() { type -p "$1" >/dev/null; }
