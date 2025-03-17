@@ -22,7 +22,10 @@ set $menu rofi -show drun -show-icons
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 output "*" bg "~/.config/sway/Background.jpg" fill
-#
+output DP-1 transform 270 resolution 1680x1050 pos 0 0
+output HDMI-A-1 resolution 1600x1200 pos 2650 300
+output DVI-I-1 resolution 1600x1200 pos 1050 200
+
 # Example configuration:
 #
 #   output HDMI-A-1 resolution 1920x1080 position 1920,0
