@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 #if not running interactively, dont do anything
 [ -z "$PS1" ] && return
 
@@ -36,6 +37,7 @@ basePaths=(
     "$HOME/scoop/shims"
     "/usr/bin/core_perl"
     "/usr/bin/vendor_perl"
+    "/usr/lib/jvm/default/bin"
     "/c/WINDOWS/System32/WindowsPowershell/v1.0"
     "/c/WINDOWS"
     "/c/WINDOWS/System32"
