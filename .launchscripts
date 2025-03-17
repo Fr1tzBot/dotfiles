@@ -21,4 +21,5 @@ else
 fi
 
 printf 'Good day, welcome to %s\n' "$distro!"
-"$TRIMMED_HOME/bin/neofetch" #--ascii_colors 4 11 --colors 11 11 7 4 7 7 --ascii "$TRIMMED_HOME/.config/neofetch/lightningrobotics.ascii"
+"$TRIMMED_HOME/bin/neofetch"
+
