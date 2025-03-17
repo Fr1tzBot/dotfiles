@@ -16,7 +16,8 @@ brewPath() { prependPath "$prefix$1"; }
 #Notify if PATH is already set
 if [ -n "$PATH" ] ; then
     #if set, replace it
-    printf '\033[31mWARNING: reset path from %s \033[39m\n' "$PATH"
+    #printf '\033[31mWARNING: reset path from %s \033[39m\n' "$PATH"
+    OLD_PATH=$PATH
     export PATH=""
 fi
 
@@ -108,6 +109,7 @@ fi
 
 #Export env variables
 export PATH="$PATH"
+checkPath "$OLD_PATH"
 if [ "$COLUMNS" -gt 70 ] ; then
     export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
     # (for zsh) export PS1="%B%F{green}%n%f%b%B%F{green}@%f%b%B%F{green}%m%f%b:%F{blue}%~%f$ "

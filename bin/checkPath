@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+has() { type -p "$1" > /dev/null; }
+
+paths=$(echo "$1" | sed "s/:/\n/g")
+
+for i in $paths ; do
+    for j in $(find "$i" -maxdepth 1 -type f -executable -printf "%f\n") ; do
+        if ! has "$j" ; then
+            printf '\033[31mWARNING: missing %s\n' "$j"
+        fi
+    done
+done
+
