@@ -37,7 +37,7 @@ basePaths=(
     "/c/WINDOWS/System32/WindowsPowershell/v1.0"
     "/c/WINDOWS"
     "/c/WINDOWS/System32"
-    "opt/X11/bin"
+    "/opt/X11/bin"
     "/Applications/Firefox.app/Contents/MacOS"
     "/Applications/Discord.app/Contents/MacOS"
     "/Applications/Wireshark.app/Contents/MacOS"
