@@ -35,39 +35,12 @@ if [ ! -f "$TRIMMED_HOME/bin/neofetch" ] ; then
     ln -sv "$TRIMMED_HOME/Documents/neofetch/neofetch" "$TRIMMED_HOME/bin/neofetch"
 fi
 
-# check if ytfzf is already cloned
-if [ -d "$TRIMMED_HOME/Documents/ytfzf" ] ; then
-    # if it is, pull latest version
-    git -C "$TRIMMED_HOME/Documents/ytfzf" pull
-
-    # ensure ~/bin/ytfzf symlink exists
-    if [ ! -f "$TRIMMED_HOME/bin/ytfzf" ] ; then
-        ln -sv "$TRIMMED_HOME/Documents/ytfzf/ytfzf" "$TRIMMED_HOME/bin/ytfzf"
-    fi
-fi
-
-# check if zspotify is already cloned
-if [ -d "$TRIMMED_HOME/Documents/zspotify" ] ; then
-    # if it is, pull latest version
-    git -C "$TRIMMED_HOME/Documents/zspotify" pull
-# else
-#     # otherwise, clone zspotify from github and place it into ~/Documents/zspotify
-#     git clone "https://github.com/THIS-IS-NOT-A-BACKUP/zspotify" "$TRIMMED_HOME/Documents/zspotify"
-fi
-
 #Check if rayshud is already cloned
 if has "steam" && [ -d "$TRIMMED_HOME/Documents/rayshud" ] ; then
     # if it is, pull latest version
     git -C "$TRIMMED_HOME/Documents/rayshud" pull
 elif has "steam" ; then
     git clone "https://github.com/raysfire/rayshud.git" "$TRIMMED_HOME/Documents/rayshud"
-fi
-
-# ensure ~/bin/zspotify alias exists
-if [ ! -f "$TRIMMED_HOME/bin/zspotify" ] ; then
-    echo '#!/bin/bash
-python3 "$TRIMMED_HOME/Documents/zspotify/zspotify/__main__.py" "$@"' > "$TRIMMED_HOME/bin/zspotify";
-    chmod +x "$TRIMMED_HOME/bin/zspotify"
 fi
 
 if [ -d "/Applications/Obsidian.app" ] ; then
