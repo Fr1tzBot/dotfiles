@@ -51,7 +51,7 @@ vim.api.nvim_set_keymap("n", "q", ":q<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "Q", ":q!<CR>", { noremap = true, silent = true })
 
 vim.opt.syntax = "on"
-vim.cmd("colorscheme nord")
+vim.cmd("colorscheme gruvbox")
 vim.opt.background = "dark"
 --make bg transparent
 vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
