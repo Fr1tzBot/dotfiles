@@ -57,5 +57,5 @@ vim.opt.background = "dark"
 vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
 
 --disable copilot by default
-vim.g.copilot_disable = true
+vim.g.ai_cmp = true
 

@@ -6,7 +6,7 @@ return {
   opts = {
     suggestion = {
       enabled = not vim.g.ai_cmp,
-      auto_trigger = true,
+      auto_trigger = false,
       hide_during_completion = vim.g.ai_cmp,
       keymap = {
         accept = "<Tab>", -- handled by nvim-cmp / blink.cmp
