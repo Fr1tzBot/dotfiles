@@ -1,5 +1,11 @@
 require("config.lazy")
 
+require("nvim-treesitter.configs").setup({
+    ensure_installed = "all",
+    highlight = { enable = true },
+    indent = { enable = true }
+})
+
 vim.opt.termguicolors = true
 vim.opt.autoindent = true
 vim.opt.startofline = true
