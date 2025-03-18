@@ -31,8 +31,11 @@ has md5sum && alias md5="md5sum"
 has xdg-open && alias open="xdg-open"
 
 #Text Editor eliases
-has vim && alias vi="vim"
-has vim && alias nano="vim"
+has nvim && alias vim="nvim"
+has nvim && alias vi="nvim"
+has nvim && alias nano="nvim"
+! has nvim && has vim && alias vi="vim"
+! has nvim && has vim && alias nano="vim"
 has batcat && alias bat="batcat"
 
 # Zspotify Aliases
