@@ -56,6 +56,10 @@ vim.api.nvim_set_keymap("n", "q", ":q<CR>", { noremap = true, silent = true })
 --same for q!
 vim.api.nvim_set_keymap("n", "Q", ":q!<CR>", { noremap = true, silent = true })
 
+vim.api.nvim_set_keymap("i", "<Tab>", "<C-T>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "<S-Tab>", "<C-D>", { noremap = true, silent = true })
+
+
 vim.opt.syntax = "on"
 vim.cmd("colorscheme gruvbox")
 vim.opt.background = "dark"
