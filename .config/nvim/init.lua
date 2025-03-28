@@ -9,6 +9,7 @@ require("nvim-treesitter.configs").setup({
 require("mason-tool-installer").setup {
     ensure_installed = {
         "rust-analyzer",
+        "bash-language-server",
         "shellcheck",
         "pylint"
     },
