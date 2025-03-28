@@ -4,7 +4,7 @@ TRIMMED_HOME=$(realpath -s "$HOME")
 has() { type -p "$1" >/dev/null; }
 
 # Copy all files starting with . to ~
-find . -maxdepth 1 -type f -name ".*" -exec cp -v {} "$TRIMMED_HOME/" \;
+find . -maxdepth 1 -type f -name ".*" -exec cp -uv {} "$TRIMMED_HOME/" \;
 
 #ensure no residual copilot files are copied
 if [ -d "$TRIMMED_HOME/.vim/pack/github/start/copilot.vim" ] ; then
@@ -12,9 +12,9 @@ if [ -d "$TRIMMED_HOME/.vim/pack/github/start/copilot.vim" ] ; then
 fi
 
 # Copy only specified directories
-cp -rv "./bin" "$TRIMMED_HOME/"
-cp -rv "./.vim" "$TRIMMED_HOME/"
-cp -rv "./.config" "$TRIMMED_HOME/"
+cp -ruv "./bin" "$TRIMMED_HOME/"
+cp -ruv "./.vim" "$TRIMMED_HOME/"
+cp -ruv "./.config" "$TRIMMED_HOME/"
 
 # Ensure Documents folder (used for cloned code) exists
 if [ -d "$TRIMMED_HOME/Documents" ] ; then
