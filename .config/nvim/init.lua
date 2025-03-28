@@ -6,6 +6,16 @@ require("nvim-treesitter.configs").setup({
     indent = { enable = true }
 })
 
+require("mason-tool-installer").setup {
+    ensure_installed = {
+        "rust-analyzer",
+        "shellcheck",
+        "pylint"
+    },
+
+    auto_update = true,
+}
+
 vim.opt.termguicolors = true
 vim.opt.autoindent = true
 vim.opt.startofline = true
