@@ -3,7 +3,7 @@
 1. need-based install
     - only deploy configs for programs which are actually installed
     - never copy configs that may not work fully (looking at you nvim) if we know better
-2. centralized `dotfiles` program
+2. centralized `dfm` program
     - functionality:
         - deploy (copy files from ~/Documents/dotfiles to their respective locations)
         - sync (pull files from ~ to git repo)
