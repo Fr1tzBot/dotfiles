@@ -8,7 +8,7 @@ has egrep && alias egrep='egrep --color=auto'
 has diff && alias diff="diff --color=auto"
 has dir && alias dir='dir --color=auto'
 has vdir && alias vdir='vdir --color=auto'
-has ls && alias ls="ls --color=auto"
+has ls && alias ls="ls -A --color=auto"
 has tree && alias tree="tree -C"
 
 #Util aliases
