@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # quick script to list binaries in a directory that are not in the PATH
 
 
