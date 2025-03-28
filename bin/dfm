@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Check if at least one argument is given
+if [[ $# -lt 1 ]]; then
+    echo "Usage: $0 <dfm-command> [arguments...]"
+    exit 1
+fi
+
+SUBCOMMAND="git-$1"
+shift
+
+# Check if the corresponding Git subcommand exists in the PATH
+if command -v "$SUBCOMMAND" &> /dev/null; then
+    exec "$SUBCOMMAND" "$@"
+else
+    echo "Error: $SUBCOMMAND not found"
+    exit 1
+fi
+
