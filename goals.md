@@ -13,3 +13,6 @@
     - folders for each program
         - can collect programs that depend on others (eg swaylock can be in sway folder, as that's really the only time it can truly be used
     - add any important /etc files
+4. ssh configuration??
+    - no idea how this might work but it would be super nice
+
