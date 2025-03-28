@@ -15,4 +15,5 @@
     - add any important /etc files
 4. ssh configuration??
     - no idea how this might work but it would be super nice
+5. minimize essential dependencies
 
