@@ -26,3 +26,27 @@ has waybar && install "$DOTFILES/waybar" "$CONFIG"
 
 cp -ruv "$DOTFILES/bin" "$TRIMMED_HOME/"
 
+# ensure ~/bin/neofetch symlink exists
+if [ ! -f "$TRIMMED_HOME/bin/neofetch" ] ; then
+    ln -sv "$TRIMMED_HOME/Documents/neofetch/neofetch" "$TRIMMED_HOME/bin/neofetch"
+fi
+
+#Check if rayshud is already cloned
+if has "steam" && [ -d "$TRIMMED_HOME/Documents/rayshud" ] ; then
+    # if it is, pull latest version
+    git -C "$TRIMMED_HOME/Documents/rayshud" pull
+elif has "steam" ; then
+    git clone "https://github.com/raysfire/rayshud.git" "$TRIMMED_HOME/Documents/rayshud"
+fi
+
+if [ -d "/Applications/Obsidian.app" ] ; then
+    # ensure ~/bin/obsidian symlink exists
+    if [ ! -f "$TRIMMED_HOME/bin/obsidian" ] ; then
+        ln -sv "/Applications/Obsidian.app/Contents/MacOS/Obsidian" "$TRIMMED_HOME/bin/obsidian"
+    fi
+fi
+
+# nuke bashrc on termux to avoid double sourcing on startup
+if [ -n "$TERMUX_VERSION" ] ; then
+    rm -v "$TRIMMED_HOME/.bashrc"
+fi
