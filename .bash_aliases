@@ -88,6 +88,7 @@ has aria2c && alias ddl="aria2c --max-concurrent-downloads=20 --check-integrity=
 has Discord && alias discord="Discord"
 has mpv && alias mpv="mpv --no-input-default-bindings"
 has obsidian && alias obs="obsidian"
+has matlab && alias matlab="matlab -nodisplay -nosplash -nojvm -r"
 
 #Spelling aliases
 has ls && alias al="la"

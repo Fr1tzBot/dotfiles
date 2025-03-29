@@ -45,6 +45,7 @@ basePaths=(
     "/Applications/Firefox.app/Contents/MacOS"
     "/Applications/Discord.app/Contents/MacOS"
     "/Applications/Wireshark.app/Contents/MacOS"
+    "/Applications/MATLAB_R2024a.app/bin"
 )
 
 for i in "${basePaths[@]}" ; do
