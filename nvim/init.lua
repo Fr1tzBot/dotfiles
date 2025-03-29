@@ -9,11 +9,15 @@ require("nvim-treesitter.configs").setup({
 
 require("mason-tool-installer").setup {
     ensure_installed = {
-        "clangd",
-        "rust-analyzer",
         "bash-language-server",
+        "clangd",
+        "java-language-server",
+        "deno",
+        "matlab-language-server",
+        "pyright",
+        "pylint",
+        "rust-analyzer",
         "shellcheck",
-        "pylint"
     },
 
     auto_update = true,
