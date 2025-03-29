@@ -35,6 +35,7 @@ basePaths=(
     "$HOME/.cargo/bin"
     "$HOME/.local/bin"
     "$HOME/scoop/shims"
+    "/opt/cuda/bin"
     "/usr/bin/core_perl"
     "/usr/bin/vendor_perl"
     "/usr/lib/jvm/default/bin"
