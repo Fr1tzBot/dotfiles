@@ -3,6 +3,7 @@
 1. [WIP] need-based install
     - only deploy configs for programs which are actually installed
     - never copy configs that may not work fully (looking at you nvim) if we know better
+    - definitely don't try to install lsps that don't have the right deps
 2. [WIP] centralized `dfm` program
     - functionality:
         - deploy (copy files from ~/Documents/dotfiles to their respective locations)
