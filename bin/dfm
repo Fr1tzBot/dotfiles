@@ -6,7 +6,7 @@ if [[ $# -lt 1 ]]; then
     exit 1
 fi
 
-SUBCOMMAND="git-$1"
+SUBCOMMAND="dfm-$1"
 shift
 
 # Check if the corresponding Git subcommand exists in the PATH
