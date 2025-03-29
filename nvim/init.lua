@@ -1,7 +1,8 @@
 require("config.lazy")
 
 require("nvim-treesitter.configs").setup({
-    ensure_installed = {"c", "lua", "vim", "markdown", "bash"},
+    ensure_installed = {"c", "rust", "python", "lua", "vim", "markdown", "bash"},
+    auto_install = true,
     highlight = { enable = true },
     indent = { enable = true }
 })
