@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+TRIMMED_HOME=$(realpath -s "$HOME")
+has() { type -p "$1" > /dev/null; }
+install() {
+    mkdir -p "$2"
+    cp -ruv "$1" "$2"
+}
+
+DOTFILES="$TRIMMED_HOME/Documents/dotfiles"
+CONFIG="$TRIMMED_HOME/.config/"
+
+has bash && cp -uv "$DOTFILES"/bash/.* "$TRIMMED_HOME"
+has foot && install "$DOTFILES/foot" "$CONFIG"
+has kitty && install "$DOTFILES/kitty" "$CONFIG"
+has git && cp -uv "$DOTFILES"/git/.* "$TRIMMED_HOME"
+has mpv && install "$DOTFILES/mpv" "$CONFIG"
+has neofetch && install "$DOTFILES/neofetch" "$CONFIG"
+has nvim && install "$DOTFILES/nvim" "$CONFIG"
+has pylint && cp -uv "$DOTFILES"/pylint/.* "$TRIMMED_HOME"
+has rofi && install "$DOTFILES/rofi" "$CONFIG"
+has sway && install "$DOTFILES/sway" "$CONFIG"
+has swaylock && install "$DOTFILES/swaylock" "$CONFIG"
+has vim && cp -ruv "$DOTFILES"/vim/.* "$TRIMMED_HOME"
+has waybar && install "$DOTFILES/waybar" "$CONFIG"
+
+cp -ruv "$DOTFILES/bin" "$TRIMMED_HOME/"
+
