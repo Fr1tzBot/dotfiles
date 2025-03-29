@@ -125,37 +125,41 @@ managerList = {
         ]
 }
 
-parser = argparse.ArgumentParser(description="a program to automatically uppdate installed package managers")
+try:
+    parser = argparse.ArgumentParser(description="a program to automatically uppdate installed package managers")
 
-parser.add_argument("--toUpdate", dest="toUpdate", help="specify which managers to update", nargs="+", type=str)
-parser.add_argument("--skip", "-s", dest="skip", help="specify which managers to skip", nargs="+", type=str)
-parser.add_argument("--list", "-l", dest="listMode", action="store_true", help="list availible package managers")
-parser.add_argument("--all", "-a", dest="UPDATE_ALL", action="store_true", help="update all availible package managers, (this is the default)")
+    parser.add_argument("--toUpdate", dest="toUpdate", help="specify which managers to update", nargs="+", type=str)
+    parser.add_argument("--skip", "-s", dest="skip", help="specify which managers to skip", nargs="+", type=str)
+    parser.add_argument("--list", "-l", dest="listMode", action="store_true", help="list availible package managers")
+    parser.add_argument("--all", "-a", dest="UPDATE_ALL", action="store_true", help="update all availible package managers, (this is the default)")
 
-args = vars(parser.parse_args())
-toUpdate = args["toUpdate"]
-listMode = args["listMode"]
-skip = args["skip"]
-UPDATE_ALL = args["UPDATE_ALL"]
+    args = vars(parser.parse_args())
+    toUpdate = args["toUpdate"]
+    listMode = args["listMode"]
+    skip = args["skip"]
+    UPDATE_ALL = args["UPDATE_ALL"]
 
-# remove skipped managers
-if skip is not None:
-    for skippedManager in skip:
-        if skippedManager in managerList:
-            managerList.pop(skippedManager)
-        else:
-            print("WARNING: unrecognized package manager '" + str(skippedManager.keys()) + "'.")
+    # remove skipped managers
+    if skip is not None:
+        for skippedManager in skip:
+            if skippedManager in managerList:
+                managerList.pop(skippedManager)
+            else:
+                print("WARNING: unrecognized package manager '" + str(skippedManager.keys()) + "'.")
 
-if listMode:
-    print(getManagers())
-elif toUpdate is None or UPDATE_ALL:
-    #update all availible packages
-    for manager in managerList:
-        update(manager)
-else:
-    print("Updating " + str(toUpdate) + ".")
-    for selectedManager in toUpdate:
-        if selectedManager in managerList:
-            update(selectedManager)
-        else:
-            print("WARNING: unrecognized package manager '" + str(selectedManager) + "'.")
+    if listMode:
+        print(getManagers())
+    elif toUpdate is None or UPDATE_ALL:
+        #update all availible packages
+        for manager in managerList:
+            update(manager)
+    else:
+        print("Updating " + str(toUpdate) + ".")
+        for selectedManager in toUpdate:
+            if selectedManager in managerList:
+                update(selectedManager)
+            else:
+                print("WARNING: unrecognized package manager '" + str(selectedManager) + "'.")
+except KeyboardInterrupt:
+    sys.exit(1)
+

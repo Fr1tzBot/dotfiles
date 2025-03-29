@@ -1,10 +1,34 @@
 require("config.lazy")
 
 require("nvim-treesitter.configs").setup({
-    ensure_installed = {"c", "lua", "vim", "markdown", "bash"},
+    ensure_installed = {"c", "rust", "python", "lua", "vim", "markdown", "bash"},
+    auto_install = true,
     highlight = { enable = true },
     indent = { enable = true }
 })
+
+require("mason-tool-installer").setup {
+    ensure_installed = {
+        "bash-language-server",
+        "clangd",
+        "java-language-server",
+        "deno",
+        "matlab-language-server",
+        "pyright",
+        "pylint",
+        "rust-analyzer",
+        "shellcheck",
+    },
+
+    auto_update = true,
+}
+
+vim.diagnostic.config {
+    virtual_text = true,
+    signs = true,
+    underline = true,
+    update_in_insert = false,
+}
 
 vim.opt.termguicolors = true
 vim.opt.autoindent = true
@@ -55,6 +79,8 @@ vim.cmd("autocmd BufReadPost * if line(\"'\\\"\") > 0 && line(\"'\\\"\") <= line
 vim.api.nvim_set_keymap("n", "q", ":q<CR>", { noremap = true, silent = true })
 --same for q!
 vim.api.nvim_set_keymap("n", "Q", ":q!<CR>", { noremap = true, silent = true })
+--Wq typo alias
+vim.api.nvim_create_user_command('Wq', 'wq', {})
 
 vim.api.nvim_set_keymap("i", "<Tab>", "<C-T>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("i", "<S-Tab>", "<C-D>", { noremap = true, silent = true })
@@ -67,5 +93,4 @@ vim.opt.background = "dark"
 vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
 
 --disable copilot by default
-vim.g.ai_cmp = true
-
+vim.cmd("Copilot suggestion toggle_auto_trigger")
