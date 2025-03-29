@@ -8,6 +8,7 @@ require("nvim-treesitter.configs").setup({
 
 require("mason-tool-installer").setup {
     ensure_installed = {
+        "clangd",
         "rust-analyzer",
         "bash-language-server",
         "shellcheck",
@@ -15,6 +16,13 @@ require("mason-tool-installer").setup {
     },
 
     auto_update = true,
+}
+
+vim.diagnostic.config {
+    virtual_text = true,
+    signs = true,
+    underline = true,
+    update_in_insert = false,
 }
 
 vim.opt.termguicolors = true
