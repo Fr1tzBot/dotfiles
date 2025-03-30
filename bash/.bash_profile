@@ -39,6 +39,7 @@ basePaths=(
     "/usr/bin/core_perl"
     "/usr/bin/vendor_perl"
     "/usr/lib/jvm/default/bin"
+    "$HOME/.local/share/gem/ruby/3.3.0/bin"
     "/c/WINDOWS/System32/WindowsPowershell/v1.0"
     "/c/WINDOWS"
     "/c/WINDOWS/System32"
