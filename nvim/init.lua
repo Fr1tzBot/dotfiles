@@ -23,6 +23,17 @@ require("mason-tool-installer").setup {
     auto_update = true,
 }
 
+require('telescope').setup{
+    pickers = {
+        find_files = {
+            hidden = true
+        }
+    },
+    defaults = {
+       file_ignore_patterns = { "^.git/" }
+    }
+}
+
 vim.diagnostic.config {
     virtual_text = true,
     signs = true,
