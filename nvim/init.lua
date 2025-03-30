@@ -7,19 +7,23 @@ require("nvim-treesitter.configs").setup({
     indent = { enable = true }
 })
 
-require("mason-tool-installer").setup {
-    ensure_installed = {
-        "bash-language-server",
-        "clangd",
-        "java-language-server",
-        "deno",
-        "matlab-language-server",
-        "pyright",
-        "pylint",
-        "rust-analyzer",
-        "shellcheck",
-    },
+local ensure_installed = {
+    "bash-language-server",
+    "java-language-server",
+    "deno",
+    "matlab-language-server",
+    "pyright",
+    "pylint",
+    "rust-analyzer",
+    "shellcheck",
+}
 
+if vim.fn.executable("clangd") == 0 then
+    table.insert(ensure_installed, "clangd")
+end
+
+require("mason-tool-installer").setup {
+    ensure_installed = ensure_installed,
     auto_update = true,
 }
 
