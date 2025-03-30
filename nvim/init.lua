@@ -97,6 +97,8 @@ vim.api.nvim_set_keymap("n", "Q", ":q!<CR>", { noremap = true, silent = true })
 --Wq typo alias
 vim.api.nvim_create_user_command('Wq', 'wq', {})
 
+vim.api.nvim_create_user_command("Lg", ":LazyGit", {nargs = 0, desc = "Open LazyGit"})
+
 vim.api.nvim_set_keymap("i", "<Tab>", "<C-T>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("i", "<S-Tab>", "<C-D>", { noremap = true, silent = true })
 
