@@ -81,6 +81,7 @@ if has brew ; then
         "/opt/python@3.10/bin"
         "/opt/python@3.10/libexec/bin"
         "/opt/openjdk@17/bin"
+        "/lib/ruby/gems/3.4.0/bin"
         #Add archive tools
         "/opt/zip/bin"
         "/opt/unzip/bin"
