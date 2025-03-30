@@ -104,4 +104,5 @@ vim.opt.background = "dark"
 vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
 
 --disable copilot by default
-vim.cmd("Copilot suggestion toggle_auto_trigger")
+--vim.cmd("Copilot suggestion toggle_auto_trigger")
+
