@@ -14,12 +14,15 @@ local ensure_installed = {
     "matlab-language-server",
     "pyright",
     "pylint",
-    "rust-analyzer",
     "shellcheck",
 }
 
 if vim.fn.executable("clangd") == 0 then
     table.insert(ensure_installed, "clangd")
+end
+
+if vim.fn.executable("rust-analyzer") == 0 then
+    table.insert(ensure_installed, "rust-analyzer")
 end
 
 require("mason-tool-installer").setup {
