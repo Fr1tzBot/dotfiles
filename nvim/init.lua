@@ -23,6 +23,10 @@ require("mason-tool-installer").setup {
     auto_update = true,
 }
 
+require("mason").setup()
+
+require'lspconfig'.matlab_ls.setup{}
+
 require('telescope').setup{
     pickers = {
         find_files = {
