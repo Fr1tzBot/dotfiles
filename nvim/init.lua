@@ -7,19 +7,24 @@ require("nvim-treesitter.configs").setup({
     indent = { enable = true }
 })
 
-require("mason-tool-installer").setup {
-    ensure_installed = {
-        "bash-language-server",
-        "clangd",
-        "java-language-server",
-        "deno",
-        "matlab-language-server",
-        "pyright",
-        "pylint",
-        "rust-analyzer",
-        "shellcheck",
-    },
+local ensure_installed = {
+    "bash-language-server",
+    "deno",
+    "java-language-server",
+    "lua-language-server",
+    "matlab-language-server",
+    "pylint",
+    "pyright",
+    "rust-analyzer",
+    "shellcheck",
+}
 
+if vim.fn.executable("clangd") == 0 then
+    table.insert(ensure_installed, "clangd")
+end
+
+require("mason-tool-installer").setup {
+    ensure_installed = ensure_installed,
     auto_update = true,
 }
 
@@ -44,6 +49,15 @@ vim.diagnostic.config {
     underline = true,
     update_in_insert = false,
 }
+
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(ev)
+        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        if client:supports_method("textDocument/completion") then
+            vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+        end
+    end,
+})
 
 vim.opt.termguicolors = true
 vim.opt.autoindent = true
@@ -96,6 +110,8 @@ vim.api.nvim_set_keymap("n", "q", ":q<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "Q", ":q!<CR>", { noremap = true, silent = true })
 --Wq typo alias
 vim.api.nvim_create_user_command('Wq', 'wq', {})
+
+vim.api.nvim_create_user_command("Lg", ":LazyGit", {nargs = 0, desc = "Open LazyGit"})
 
 vim.api.nvim_set_keymap("i", "<Tab>", "<C-T>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("i", "<S-Tab>", "<C-D>", { noremap = true, silent = true })
