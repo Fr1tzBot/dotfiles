@@ -9,11 +9,12 @@ require("nvim-treesitter.configs").setup({
 
 local ensure_installed = {
     "bash-language-server",
-    "java-language-server",
     "deno",
+    "java-language-server",
+    "lua-language-server",
     "matlab-language-server",
-    "pyright",
     "pylint",
+    "pyright",
     "shellcheck",
 }
 
@@ -30,6 +31,10 @@ require("mason-tool-installer").setup {
     auto_update = true,
 }
 
+require("mason").setup()
+
+require'lspconfig'.matlab_ls.setup{}
+
 require('telescope').setup{
     pickers = {
         find_files = {
@@ -41,12 +46,40 @@ require('telescope').setup{
     }
 }
 
+require("lualine").setup {
+    options = {
+        theme = "gruvbox",
+        icons_enabled = true,
+    },
+    sections = {
+        lualine_a = {"mode"},
+        lualine_b = {"branch", "diff", "diagnostics"},
+        lualine_c = {"filename"},
+        lualine_x = {"encoding", "fileformat", "filetype"},
+        lualine_y = {"progress"},
+        lualine_z = {"location"}
+    }
+}
+-- disable default statusline
+vim.opt.laststatus = 3
+vim.opt.showtabline = 0
+
+
 vim.diagnostic.config {
     virtual_text = true,
     signs = true,
     underline = true,
     update_in_insert = false,
 }
+
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(ev)
+        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        if client:supports_method("textDocument/completion") then
+            vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+        end
+    end,
+})
 
 vim.opt.termguicolors = true
 vim.opt.autoindent = true
@@ -99,6 +132,8 @@ vim.api.nvim_set_keymap("n", "q", ":q<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "Q", ":q!<CR>", { noremap = true, silent = true })
 --Wq typo alias
 vim.api.nvim_create_user_command('Wq', 'wq', {})
+
+vim.api.nvim_create_user_command("Lg", ":LazyGit", {nargs = 0, desc = "Open LazyGit"})
 
 vim.api.nvim_set_keymap("i", "<Tab>", "<C-T>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("i", "<S-Tab>", "<C-D>", { noremap = true, silent = true })
