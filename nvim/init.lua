@@ -118,6 +118,7 @@ vim.opt.shortmess:append("c")
 vim.opt.signcolumn = "yes"
 vim.opt.whichwrap = "<,>,[,]"
 vim.opt.backspace = "indent,eol,start"
+vim.opt.conceallevel = 2
 
 -- disable auto commenting new lines
 vim.cmd("autocmd BufEnter * set fo-=c fo-=r fo-=o")
