@@ -143,8 +143,10 @@ vim.api.nvim_set_keymap("i", "<S-Tab>", "<C-D>", { noremap = true, silent = true
 vim.opt.syntax = "on"
 vim.cmd("colorscheme gruvbox")
 vim.opt.background = "dark"
---make bg transparent
-vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
+--make bg transparent if sway is installed
+if vim.fn.executable("sway") == 1 then
+    vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
+end
 
 --disable copilot by default
 --vim.cmd("Copilot suggestion toggle_auto_trigger")
