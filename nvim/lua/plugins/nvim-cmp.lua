@@ -9,11 +9,15 @@ return {
         local cmp = require("cmp")
 
         cmp.setup({
+            preselect = cmp.PreselectMode.None,
+            completion = {
+                completeopt = 'menu,menuone,noinsert,noselect',
+            },
             mapping = {
-                ["<C-Space>"] = cmp.mapping.complete(),
-                ["<CR>"] = cmp.mapping.confirm({ select = true }),
-                ["<Down>"] = cmp.mapping.select_next_item(),
-                ["<Up>"] = cmp.mapping.select_prev_item(),
+                --["<C-Space>"] = cmp.mapping.complete(),
+                ["<S-CR>"] = cmp.mapping.confirm({ select = false }),
+                ["<Tab>"] = cmp.mapping.select_next_item(),
+                ["<S-Tab>"] = cmp.mapping.select_prev_item(),
             },
             sources = cmp.config.sources({
                 { name = "nvim_lsp" },
@@ -21,9 +25,9 @@ return {
                 { name = "path" },
             }),
             snippet = {
-                expand = function(args)
-                    vim.fn["vsnip#anonymous"](args.body)
-                end,
+                -- expand = function(args)
+                --     vim.fn["vsnip#anonymous"](args.body)
+                -- end,
             },
         })
     end,
