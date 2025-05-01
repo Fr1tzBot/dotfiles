@@ -18,19 +18,14 @@ set $term foot
 # Your preferred application launcher
 set $menu rofi -show drun -show-icons
 
+# Enable Machine-Specific Configs
+include "~/.config/sway/osspecific.config"
+
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 output "*" bg "~/.config/sway/Background.jpg" fill
-output DP-1 transform 270 resolution 1680x1050 pos 0 0
-output DVI-I-1 resolution 1600x1200 pos 1050 200
-output HDMI-A-1 resolution 1600x1200 pos 2650 300
 
-output eDP-1 scale 1.5
-
-workspace 1 output DP-1
-workspace 2 output DVI-I-1
-workspace 3 output HDMI-A-1
 
 # Example configuration:
 #
@@ -247,3 +242,4 @@ default_border none
 gaps inner 10
 
 include /etc/sway/config.d/*
+
