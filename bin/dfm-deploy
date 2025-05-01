@@ -15,7 +15,7 @@ has foot && install "$DOTFILES/foot" "$CONFIG"
 has kitty && install "$DOTFILES/kitty" "$CONFIG"
 has git && cp -uv "$DOTFILES"/git/.* "$TRIMMED_HOME"
 has mpv && install "$DOTFILES/mpv" "$CONFIG"
-has neofetch && install "$DOTFILES/neofetch" "$CONFIG"
+has fastfetch && install "$DOTFILES/fastfetch" "$CONFIG"
 has nvim && install "$DOTFILES/nvim" "$CONFIG"
 has rofi && install "$DOTFILES/rofi" "$CONFIG"
 has sway && install "$DOTFILES/sway" "$CONFIG"
@@ -25,11 +25,6 @@ has vim && cp -ruv "$DOTFILES"/vim/.* "$TRIMMED_HOME"
 has waybar && install "$DOTFILES/waybar" "$CONFIG"
 
 cp -ruv "$DOTFILES/bin" "$TRIMMED_HOME/"
-
-# ensure ~/bin/neofetch symlink exists
-if [ ! -f "$TRIMMED_HOME/bin/neofetch" ] ; then
-    ln -sv "$TRIMMED_HOME/Documents/neofetch/neofetch" "$TRIMMED_HOME/bin/neofetch"
-fi
 
 #Check if rayshud is already cloned
 if has "steam" && [ -d "$TRIMMED_HOME/Documents/rayshud" ] ; then
