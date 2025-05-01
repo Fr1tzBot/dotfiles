@@ -80,10 +80,6 @@ managerList = {
         [
             ROOT_STRING + "flatpak update"
         ],
-    "git":
-        [
-            "git -C " + getHome() + "Documents/neofetch pull",
-        ],
     "softwareupdate":
         [
             "softwareupdate --verbose -lir --agree-to-license"
