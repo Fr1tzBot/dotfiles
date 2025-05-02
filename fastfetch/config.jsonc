@@ -22,7 +22,7 @@
     // "cpu",
     // "gpu",
     "memory",
-    "swap",
+    // "swap",
     // "disk",
     "localip",
     "battery",
