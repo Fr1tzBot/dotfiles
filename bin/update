@@ -88,10 +88,6 @@ managerList = {
         [
             "echo Skipped pacman for yay" if has("yay") else ROOT_STRING + "pacman -Syu"
         ],
-    "pip":
-        [
-            "echo Skipped Pip Install for Termux/Pacman" if isTermux() or has("pacman") else "python -m pip install --upgrade pip"
-        ],
     "pkg":
         [
             "pkg upgrade",
