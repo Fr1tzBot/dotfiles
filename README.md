@@ -1,12 +1,28 @@
 # dotfiles
-A collection of dotfiles and config files for bash, (neo)vim, and lots of other stuff
+My dotfiles and config files for:
+- bash,
+- fastfetch
+- foot terminal
+- git
+- kitty terminal
+- mpv
+- neovim
+- rofi
+- sway wm
+- swaylock
+- vim
+- waybar
 
 ## Installation
-Everything can be installed by running the deploy script with `./deploy`
+Everything can be installed by running the deploy script with `./bin/dfm-deploy`
+
+## Updating
+Once Dotfiles have been installed, you can update them with:
+
+`dfm update` to pull the latest version from git
+
+followed by `dfm deploy` to copy over the new files
 
 ## Dependencies
-to get the most of these you'll want:
-- bash
-- python (used for some scripts in `bin/`)
-- neovim
-- swaywm
+The scripts in `bin/` are written in **Python** or **Bash**
+
