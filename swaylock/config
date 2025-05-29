@@ -1,5 +1,5 @@
 ignore-empty-password
-font="Fira Sans Semibold"
+font="Space Mono Nerd Font"
 
 clock
 timestr=%R
@@ -34,32 +34,37 @@ key-hl-color=00000066
 separator-color=00000000
 
 inside-color=00000033
-inside-clear-color=ffffff00
-inside-caps-lock-color=ffffff00
-inside-ver-color=ffffff00
-inside-wrong-color=ffffff00
+inside-clear-color=00000033
+inside-caps-lock-color=00000033
+inside-ver-color=00000033
+inside-wrong-color=00000033
 
-ring-color=ffffff
-ring-clear-color=ffffff
-ring-caps-lock-color=ffffff
-ring-ver-color=ffffff
-ring-wrong-color=ffffff
+ring-color=0000084C
+ring-clear-color=0000084C
+ring-caps-lock-color=0000084C
+ring-ver-color=0000084C
+ring-wrong-color=0000084C
 
 line-color=00000000
-line-clear-color=ffffffFF
-line-caps-lock-color=ffffffFF
-line-ver-color=ffffffFF
-line-wrong-color=ffffffFF
+line-clear-color=00000000
+line-caps-lock-color=00000000
+line-ver-color=00000000
+line-wrong-color=00000000
 
-text-color=ffffff
-text-clear-color=ffffff
-text-ver-color=ffffff
-text-wrong-color=ffffff
+text-color=C0CAF5
+text-clear-color=C0CAF5
+text-ver-color=C0CAF5
+text-wrong-color=CC241D
+text-caps-lock-color=C0CAF5
 
-bs-hl-color=ffffff
+text-clear=Cleared
+text-caps-lock=Caps On
+text-ver=Verifying...
+text-wrong=Incorrect
+
+bs-hl-color=1793d1
 caps-lock-key-hl-color=ffffffFF
 caps-lock-bs-hl-color=ffffffFF
-disable-caps-lock-text
-text-caps-lock-color=ffffff
+#disable-caps-lock-text
 
 
