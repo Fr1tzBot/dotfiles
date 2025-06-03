@@ -76,6 +76,12 @@ input type:touchpad {
 #
 # Basics:
 #
+    # Use swaylock to idl
+    exec "swayidle lock swaylock"
+
+    # Power Menu
+    bindsym $mod+Mod1+Backspace exec "rofi -show p -modi p:rofi-power-menu"
+
     # Start a terminal
     bindsym $mod+Return exec $term
 
