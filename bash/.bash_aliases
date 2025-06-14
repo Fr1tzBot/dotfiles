@@ -96,3 +96,5 @@ has matlab && alias matlab="matlab -nodisplay -nosplash -nojvm -r"
 has ls && alias al="la"
 has ls && alias sl="ls"
 has lazygit && alias gl="lg"
+has fastfetch $$ alias neofetch="fastfetch"
+
