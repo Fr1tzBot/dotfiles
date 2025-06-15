@@ -1,5 +1,4 @@
-# Goals:
-
+## Features:
 1. [WIP] need-based install
     - only deploy configs for programs which are actually installed
     - never copy configs that may not work fully (looking at you nvim) if we know better
@@ -17,4 +16,7 @@
 4. ssh configuration??
     - no idea how this might work but it would be super nice
 5. minimize essential dependencies
+
+## Bugs:
+- waybar doesn't refresh automatically sometimes
 
