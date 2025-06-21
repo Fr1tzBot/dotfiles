@@ -148,5 +148,8 @@ if vim.fn.executable("sway") == 1 then
     vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
 end
 
-require("lazy").update()
+require("lazy").update({
+    show = false,
+    wait = false,
+})
 
