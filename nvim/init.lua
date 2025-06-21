@@ -148,6 +148,5 @@ if vim.fn.executable("sway") == 1 then
     vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
 end
 
---disable copilot by default
---vim.cmd("Copilot suggestion toggle_auto_trigger")
+require("lazy").update()
 
