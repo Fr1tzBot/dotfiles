@@ -10,152 +10,16 @@ let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 " <leader>
 let mapleader=","
 
-" ale
-"let g:ale_disable_lsp=1
-"let g:ale_sign_column_always=1
-"let g:ale_sign_error='✘'
-"let g:ale_sign_warning=''
-
-" coc
-"let g:coc_snippet_next = '<Tab>'
-"let g:coc_snippet_prev = '<S-Tab>'
-"let g:coc_global_extensions = [
-"            \ 'coc-html',
-"            \ 'coc-highlight',
-"            \ 'coc-dot-complete',
-"            \ 'coc-dash-complete',
-"            \ 'coc-calc',
-"            \ 'coc-yaml',
-"            \ 'coc-xml',
-"            \ 'coc-sql',
-"            \ 'coc-sh',
-"            \ 'coc-python',
-"            \ 'coc-pyright',
-"            \ 'coc-omnisharp',
-"            \ 'coc-markdownlint',
-"            \ 'coc-syntax',
-"            \ 'coc-go',
-"            \ 'coc-json',
-"            \ 'coc-java',
-"            \ 'coc-clangd',
-"            \ ]
-
-" startify
-"let g:startify_padding_left = 10
-"let g:startify_session_persistence = 1
-"let g:startify_enable_special = 0
-"let g:startify_change_to_vcs_root = 1
-"let g:startify_lists = [
-"            \ {'type': 'dir'},
-"            \ {'type': 'files'},
-"            \ {'type': 'sessions'},
-"            \ {'type': 'bookmarks'},
-"            \ {'type': 'commands'},
-"            \ ]
-"let g:startify_bookmarks =  [
-"            \ {'v': '~/.config/nvim'},
-"            \ ]
-"let g:startify_commands = [
-"            \ {'ch': ['Health Check', ':checkhealth']},
-"            \ {'ps': ['Plugins Status', ':PluginStatus']},
-"            \ {'pc': ['Offload Unused Plugins', ':PluginClean']},
-"            \ {'pi': ['Install Plugins', ':PluginInstall']},
-"            \ {'pu': ['Update Vim Plugins',':PluginUpdate | PluginUpgrade']},
-"            \ {'uc': ['Update Coc Plugins', ':CocUpdate']},
-"            \ {'h':  ['Help', ':help']},
-"            \ ]
-
-" rainbow
-"let g:rainbow_active=1
-
-" fzf
-"let g:fzf_action = {
-"            \ 'ctrl-t': 'tab split',
-"            \ 'ctrl-x': 'split',
-"            \ 'ctrl-v': 'vsplit' }
-"let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'border': 'sharp' } }
-"let g:fzf_tags_command = 'ctags -R'
-"let $FZF_DEFAULT_OPTS = '--layout=reverse --inline-info'
-"let $FZF_DEFAULT_COMMAND = "rg --files --hidden --glob '!.git/**' --glob '!build/**' --glob '!.dart_tool/**' --glob '!.idea' --glob '!node_modules'"
-
-" nerdtree
-"let NERDTreeShowHidden=1
-"let g:NERDTreeChDirMode=2
-"let g:NERDTreeMapOpenSplit='$'
-
-" autoformat
-"let g:python3_host_prog="/usr/bin/python3" " Location of python3 installation for vim-autoformat
-"let g:formatterpath= ['$HOME/.config/nvim/fmt'] " Path to directory where formatters are installed for vim-autoformat
-
-" context
-"let g:context_nvim_no_redraw=1
-
-" CONFIGURATION VARS END
-
-
-" PLUGINS
-
-" configurations for Vundle
-" https://github.com/VundleVim/Vundle.vim
-" set nocompatible
-" filetype off
-
-" install plugins
-" note that most (all?) plugins have
-" GitHub repos with the same name
-"set rtp+=~/.vim/bundle/Vundle.vim " add vundle to runtime path
-
-" setup Vundle
-"call vundle#begin()
-"Plugin 'VundleVim/Vundle.vim'
-
-" themes, graphics, etc.
-"Plugin 'kaicataldo/material.vim', { 'branch': 'main' } " colorscheme
-"Plugin 'jaredgorski/spacecamp' " colorscheme
-"Plugin 'dracula/vim', { 'as': 'dracula' } " colorscheme
-"Plugin 'chriskempson/tomorrow-theme', { 'rtp': 'vim' } " colorscheme
-"Plugin 'rhysd/vim-color-spring-night' " colorscheme
-"Plugin 'ryanoasis/vim-devicons' " filetype icons
-"Plugin 'bryanmylee/vim-colorscheme-icons' " filetype icons
-"Plugin 'luochen1990/rainbow' " highlight parenthesis
-"Plugin 'gregsexton/MatchTag' " highlight match html tags
-"Plugin 'airblade/vim-gitgutter' " git status in gutter
-"Plugin 'jiangmiao/auto-pairs' " automatically close all open parenthesis/brackets
-
-" utilities
-"Plugin 'preservim/nerdtree' " file tree explorer
-"Plugin 'Xuyuanp/nerdtree-git-plugin' " git status by file in nerdtree
-"Plugin 'neoclide/coc.nvim', {'branch': 'release'} " LSP, etc.
-"Plugin 'dense-analysis/ale' " linting
-"Plugin 'mhinz/vim-startify' " cool start up screen
-"Plugin 'Chiel92/vim-autoformat' " auto format
-"Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } } " fuzzy search
-"Plugin 'junegunn/fzf.vim' " fuzzy vim integration
-"Plugin 'itchyny/vim-gitbranch' " git branch name
-"Plugin 'tpope/vim-fugitive' " git integration
-"Plugin 'scrooloose/nerdcommenter' " comment shortcuts
-"Plugin 'wellle/context.vim' " show context of buffer
-"Plugin 'dansomething/vim-hackernews' " why not
-"Plugin 'kevinoid/vim-jsonc' " jsonc (json w/ comments) integration
-
-" let Vundle know it is done
-"call vundle#end()
-
 " indent based on filetype
 "filetype plugin indent on
 filetype indent on
-" plugin on
-
-" PLUGINS END
-
 
 " COLORSCHEME
 
-"syntax on
-"colorscheme gruvbox_dark
+syntax on
+colorscheme gruvbox
 
 " COLORSCHEME END
-
 
 " SETTINGS
 
@@ -176,7 +40,6 @@ set showcmd
 set cursorline
 set wildmenu
 set showmatch
-"set visualbell
 set emoji
 set noshowcmd
 set noshowmode
@@ -304,14 +167,14 @@ noremap q! :q!<CR>
 noremap qa :qa<CR>
 
 " switch between splits using ctrl + {h,j,k,l}
-"inoremap <C-h> <C-\><C-N><C-w>h
-"inoremap <C-j> <C-\><C-N><C-w>j
-"inoremap <C-k> <C-\><C-N><C-w>k
-"inoremap <C-l> <C-\><C-N><C-w>l
-"nnoremap <C-h> <C-w>h
-"noremap <C-j> <C-w>j
-"nnoremap <C-k> <C-w>k
-"nnoremap <C-l> <C-w>l
+inoremap <C-h> <C-\><C-N><C-w>h
+inoremap <C-j> <C-\><C-N><C-w>j
+inoremap <C-k> <C-\><C-N><C-w>k
+inoremap <C-l> <C-\><C-N><C-w>l
+nnoremap <C-h> <C-w>h
+noremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
 " show mapping on all modes with F1
 "nmap <F1> <plug>(fzf-maps-n)
@@ -360,8 +223,8 @@ nmap cs <leader>c
 "nmap <leader>h hn
 
 " gradle key maps
-nnoremap <F5> :!./gradlew deploy<CR>
-nnoremap gb :!./gradlew build<CR>
+"nnoremap <F5> :!./gradlew deploy<CR>
+"nnoremap gb :!./gradlew build<CR>
 
 " formatter
 "nnoremap <F3> :Autoformat<CR>
@@ -399,15 +262,9 @@ nnoremap gb :!./gradlew build<CR>
 "nmap co :CocConfig<CR>
 "nmap cl :CocList<CR>
 
-" indenting
-"inoremap <tab> <Esc>:s/^/    /<CR>a
-"imap <s-tab> <Esc>:s/^    //<CR>a
-
 " KEYMAPS END
 
 
-syntax on
-colorscheme gruvbox
 set bg=dark
 hi Normal guibg=NONE ctermbg=NONE
 
