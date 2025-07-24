@@ -70,33 +70,32 @@ set t_ut=
 
 " STATUSLINE
 
-"set laststatus=2 " make statusline visible
-"set stl= " initialize
-"set stl+=%#CursorIM#
-"set stl+=\ %(%{$USER}%)\  " print username
-"set stl+=%#DiffAdd#%{(mode()=='n')?'\ \ NORMAL\ \ ':''} " editor mode
-"set stl+=%#DiffChange#%{(mode()=='i')?'\ \ INSERT\ \ ':''} " editor mode
-"set stl+=%#Cursor#%{(mode()=='r')?'\ \ REPLACE\ \ ':''} " editor mode
-"set stl+=%#DiffDelete#%{(mode()=='v')?'\ \ VISUAL\ \ ':''} " editor mode
-"set stl+=%#CursorLineNR# " visual mode background
-"set stl+=%(\ %{gitbranch#name()}\ %) " print git branch
-"set stl+=%#Visual# " visual mode background
-"set stl+=%{&paste?'\ PASTE\ ':''}
-"set stl+=%{&spell?'\ SPELL\ ':''}
-"set stl+=%#DiffChange#%R " readonly flag
-"set stl+=%#DiffDelete#%{&mod?'\ UNSAVED\ ':''} " add "UNSAVED" if file has changed
-"set stl+=%#Cursor#
-"set stl+=\ %t\  " filename
-"set stl+=%#CursorLineNR#
-"set stl+=%= " allign to right
-"set stl+=%#CursorIM#
-"set stl+=\ %p%% " percent through file
-"set stl+=\ \|\ Line%3l\ \| " line number and formatting
-"set stl+=\ %Y\ \| " file type
-"set stl+=\ %{&fileencoding?&fileencoding:&encoding}\ -\  " file encoding
-"set stl+=\[%{&fileformat}]\ \  " file formt
-"set stl+=\|\ %3l:%-2c\  " linenum:columnum
-"set stl+= " end
+set laststatus=2 " make statusline visible
+set stl= " initialize
+set stl+=%#CursorIM#
+set stl+=\ %(%{$USER}%)\  " print username
+set stl+=%#DiffAdd#%{(mode()=='n')?'\ \ NORMAL\ \ ':''} " editor mode
+set stl+=%#DiffChange#%{(mode()=='i')?'\ \ INSERT\ \ ':''} " editor mode
+set stl+=%#Cursor#%{(mode()=='r')?'\ \ REPLACE\ \ ':''} " editor mode
+set stl+=%#DiffDelete#%{(mode()=='v')?'\ \ VISUAL\ \ ':''} " editor mode
+set stl+=%#CursorLineNR# " visual mode background
+set stl+=%#Visual# " visual mode background
+set stl+=%{&paste?'\ PASTE\ ':''}
+set stl+=%{&spell?'\ SPELL\ ':''}
+set stl+=%#DiffChange#%R " readonly flag
+set stl+=%#DiffDelete#%{&mod?'\ UNSAVED\ ':''} " add "UNSAVED" if file has changed
+set stl+=%#Cursor#
+set stl+=\ %t\  " filename
+set stl+=%#CursorLineNR#
+set stl+=%= " allign to right
+set stl+=%#CursorIM#
+set stl+=\ %p%% " percent through file
+set stl+=\ \|\ Line%3l\ \| " line number and formatting
+set stl+=\ %Y\ \| " file type
+set stl+=\ %{&fileencoding?&fileencoding:&encoding}\ -\  " file encoding
+set stl+=\[%{&fileformat}]\ \  " file formt
+set stl+=\|\ %3l:%-2c\  " linenum:columnum
+set stl+= " end
 
 " STATUSLINE END
 
@@ -134,27 +133,6 @@ autocmd BufReadPost *
             \ if line("'\"") > 0 && line("'\"") <= line("$") |
             \   exe "normal! g`\"" |
             \ endif
-
-" nerdtree
-"autocmd BufWinEnter * silent NERDTreeMirror " Open the existing NERDTree on each new tab.
-"autocmd VimEnter * NERDTree | wincmd p " Open NERDTree when Vim is opened
-" Exit Vim if NERDTree is the only window left.
-"autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
-"            \ quit | endif
-
-" jsonc
-"autocmd FileType json syntax match Comment +\/\/.\+$+
-
-" coc
-"autocmd CursorHold * silent call CocActionAsync('highlight') " highlight the symbol and its references when holding the cursor
-"command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
-
-" autoformat
-"au BufWrite * :Autoformat " autoformat on write
-
-" fzf
-"command! -bang -nargs=? -complete=dir Files
-"            \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--inline-info']}), <bang>0)
 
 " COMMANDS END
 
