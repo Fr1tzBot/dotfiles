@@ -139,6 +139,11 @@ vim.api.nvim_create_user_command("Lg", ":LazyGit", {nargs = 0, desc = "Open Lazy
 vim.api.nvim_set_keymap("i", "<Tab>", "<C-T>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("i", "<S-Tab>", "<C-D>", { noremap = true, silent = true })
 
+-- Better window navigation
+vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
 
 vim.opt.syntax = "on"
 vim.cmd("colorscheme gruvbox")
