@@ -18,6 +18,7 @@ if has ls ; then
     alias ll="ls -Alh"
 fi
 has pwd && alias pwd="pwd -P"
+has doas && alias sudo="doas"
 has trash && alias trash="trash -v -F"
 has clear && alias cls="clear"
 has exit && alias q="exit"
