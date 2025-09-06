@@ -10,6 +10,7 @@ has dir && alias dir='dir --color=auto'
 has vdir && alias vdir='vdir --color=auto'
 has ls && alias ls="ls -A --color=auto"
 has tree && alias tree="tree -C"
+has ip && alias ip="ip -c"
 
 #Util aliases
 if has ls ; then
