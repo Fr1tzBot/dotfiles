@@ -144,6 +144,9 @@ if has dircolors ; then
 fi
 
 bind 'set mark-symlinked-directories on' #put a slash at the end of symlinked directories (cuz dropbox)
+shopt -s dotglob
+shopt -s cdspell
+
 
 if [ -f "$HOME/.bash_aliases" ] ; then
     source "$HOME/.bash_aliases"
