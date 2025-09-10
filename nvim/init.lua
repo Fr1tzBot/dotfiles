@@ -7,23 +7,23 @@ require("nvim-treesitter.configs").setup({
     indent = { enable = true }
 })
 
-local ensure_installed = {
-    "bash-language-server",
-    "deno",
-    "java-language-server",
-    "lua-language-server",
-    "matlab-language-server",
-    "pylint",
-    "pyright",
-    "shellcheck",
+local programs = {
+    ["bash"] = "bash-language-server",
+    ["clangd"] = "clangd",
+    ["java"] = "jdtls",
+    ["lua"] = "lua-language-server",
+    ["pylint"] = "pylint",
+    ["rust-analyzer"] = "rust-analyzer",
+    ["shellcheck"] = "shellcheck"
 }
 
-if vim.fn.executable("clangd") == 0 then
-    table.insert(ensure_installed, "clangd")
-end
+local ensure_installed = {}
 
-if vim.fn.executable("rust-analyzer") == 0 then
-    table.insert(ensure_installed, "rust-analyzer")
+for bin, server in ipairs(programs) do
+    if vim.fn.executable(bin) == 0 then
+        table.insert(ensure_installed, server)
+        print(server)
+    end
 end
 
 require("mason-tool-installer").setup {
@@ -33,7 +33,9 @@ require("mason-tool-installer").setup {
 
 require("mason").setup()
 
-require'lspconfig'.matlab_ls.setup{}
+for _, i in pairs(ensure_installed) do
+    vim.lsp.enable(i)
+end
 
 require('telescope').setup{
     pickers = {
