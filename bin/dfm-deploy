@@ -13,6 +13,7 @@ CONFIG="$TRIMMED_HOME/.config"
 shopt -s dotglob
 
 has bash && cp -uv "$DOTFILES"/bash/* "$TRIMMED_HOME"
+has ssh && cp -ruv "$DOTFILES"/ssh/* "$TRIMMED_HOME"
 has git && cp -uv "$DOTFILES"/git/* "$TRIMMED_HOME"
 has vim && cp -ruv "$DOTFILES"/vim/* "$TRIMMED_HOME"
 has foot && install "$DOTFILES/foot" "$CONFIG"
