@@ -42,8 +42,6 @@
         "tooltip-format": "",
         "format-linked": "",
         "format-disconnected": "Disconnected ⚠",
-	"on-click": "rofi-wifi-menu"
-
     },
     "cpu": {
         "format": "  {usage}%",
