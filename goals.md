@@ -13,9 +13,9 @@
     - create directory structure in code instead of having it in the actual git repo
     - folders for each program
     - add any important /etc files
-4. ssh configuration??
-    - no idea how this might work but it would be super nice
-5. minimize essential dependencies
+4. [x] ssh configuration??
+5. [ ] minimize essential dependencies
+    - eliminate python dep?
 
 ## Bugs:
 - waybar doesn't refresh automatically sometimes
