@@ -123,7 +123,7 @@ managerList = {
 }
 
 try:
-    parser = argparse.ArgumentParser(description="a program to automatically uppdate installed package managers")
+    parser = argparse.ArgumentParser(description="a program to automatically update installed package managers")
 
     parser.add_argument("--toUpdate", dest="toUpdate", help="specify which managers to update", nargs="+", type=str)
     parser.add_argument("--skip", "-s", dest="skip", help="specify which managers to skip", nargs="+", type=str)
