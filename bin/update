@@ -76,6 +76,11 @@ managerList = {
         [
             ROOT_STRING + "dnf upgrade"
         ],
+    "emerge":
+        [
+            ROOT_STRING + "emerge --sync",
+            ROOT_STRING + "emerge --update --deep --with-bdeps=y @world",
+            ROOT_STRING + "emerge --deepclean"
     "flatpak":
         [
             ROOT_STRING + "flatpak update"
