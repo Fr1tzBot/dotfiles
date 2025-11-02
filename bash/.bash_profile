@@ -110,6 +110,9 @@ if has brew ; then
     #load brew bash completion script
     [[ -r "$prefix/etc/profile.d/bash_completion.sh" ]] && . "$prefix/etc/profile.d/bash_completion.sh"
 
+    # doas root command completion
+    has doas && complete -F _root_command doas
+
     if [ "$(has arch && arch)" = "i386" ] ; then
         export BASH_SILENCE_DEPRECATION_WARNING=1
     fi
