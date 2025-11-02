@@ -130,7 +130,7 @@ vim.cmd("autocmd BufWritePre * %s/\\s\\+$//e")
 vim.cmd("autocmd BufReadPost * if line(\"'\\\"\") > 0 && line(\"'\\\"\") <= line(\"$\") | exe \"normal! g'\\\"\" | endif")
 
 --map q to quit in normal mode
-vim.api.nvim_set_keymap("n", "q", ":q<CR>", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("n", "q", ":q<CR>", { noremap = true, silent = true })
 --same for q!
 vim.api.nvim_set_keymap("n", "Q", ":q!<CR>", { noremap = true, silent = true })
 --Wq typo alias
