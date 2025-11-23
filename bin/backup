@@ -1,0 +1,40 @@
+#!/bin/bash
+
+has() { type -p "$1" > /dev/null; }
+
+BACKUP_DIRS=("$HOME" "/etc")
+HOSTNAME="$(hostname)"
+SERVER_DIR="/media/4tbRaid/Backups/"
+SERVER="fritz@rex"
+
+if [ -n "$TERMUX_VERSION" ] ; then
+    HOSTNAME="Termux"
+fi
+
+if ! has restic ; then
+    printf "restic not found. This backup script will not work.\n"
+    exit 1
+fi
+
+# First, dump package lists to a temp directory
+TMP="$(mktemp -d ~/packages.XXXXXXXXXX)"
+trap 'rm -rvf "$TMP"' EXIT #Automatically clear this dir when we exit the script
+has pacman && printf "Dumping packages from pacman...\n" && pacman -Qe > "$TMP/pacman.list"
+has yay && printf "Dumping packages from yay...\n" && yay -Qe > "$TMP/yay.list"
+has apt && printf "Dumping packages from apt...\n" && apt list --installed > "$TMP/apt.list"
+
+#Do a quick test connection with the server
+if ssh -o ConnectTimeout=5 "$SERVER" "exit" 2> /dev/null ; then
+    printf "Successfully connected to %s.\n" "$SERVER"
+else
+    printf "Failed to connect to %s.\n" "$SERVER"
+    exit 1
+fi
+
+if [ "$1" == "init" ] ; then
+    restic -r "sftp:$SERVER:${SERVER_DIR}${HOSTNAME}" init
+else
+    #Finally We do our backup
+    restic -r "sftp:$SERVER:${SERVER_DIR}${HOSTNAME}" backup "${BACKUP_DIRS[@]}"
+fi
+
