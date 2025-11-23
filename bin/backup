@@ -11,8 +11,10 @@ if [ -n "$TERMUX_VERSION" ] ; then
     HOSTNAME="Termux"
 fi
 
-if ! has restic ; then
-    printf "restic not found. This backup script will not work.\n"
+if has restic ; then
+    printf "\e[0;32mFound restic.\n\033[0m"
+else
+    printf "\e[0;31mrestic not found. This backup script will not work.\n\033[0m"
     exit 1
 fi
 
@@ -25,14 +27,16 @@ has apt && printf "Dumping packages from apt...\n" && apt list --installed > "$T
 
 #Do a quick test connection with the server
 if ssh -o ConnectTimeout=5 "$SERVER" "exit" 2> /dev/null ; then
-    printf "Successfully connected to %s.\n" "$SERVER"
+    printf "\e[0;32mSuccessfully connected to %s.\n\033[0m" "$SERVER"
 else
-    printf "Failed to connect to %s.\n" "$SERVER"
+    printf "\e[0;31mFailed to connect to %s.\n\033[0m" "$SERVER"
     exit 1
 fi
 
 if [ "$1" == "init" ] ; then
     restic -r "sftp:$SERVER:${SERVER_DIR}${HOSTNAME}" init
+elif [ "$1" == "list" ] ; then
+    restic -r "sftp:$SERVER:${SERVER_DIR}${HOSTNAME}" snapshots
 else
     #Finally We do our backup
     restic -r "sftp:$SERVER:${SERVER_DIR}${HOSTNAME}" backup "${BACKUP_DIRS[@]}"
