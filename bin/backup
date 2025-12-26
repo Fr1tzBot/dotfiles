@@ -25,6 +25,13 @@ has pacman && printf "Dumping packages from pacman...\n" && pacman -Qe > "$TMP/p
 has yay && printf "Dumping packages from yay...\n" && yay -Qe > "$TMP/yay.list"
 has apt && printf "Dumping packages from apt...\n" && apt list --installed > "$TMP/apt.list"
 
+#purge yay/pacman cache to save backup space
+if has yay ; then
+    yay -Sc
+elif has pacman ; then
+    sudo pacman -Sc
+fi
+
 #Do a quick test connection with the server
 if ssh -o ConnectTimeout=5 "$SERVER" "exit" 2> /dev/null ; then
     printf "\e[0;32mSuccessfully connected to %s.\n\033[0m" "$SERVER"
