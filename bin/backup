@@ -2,10 +2,19 @@
 
 has() { type -p "$1" > /dev/null; }
 
-BACKUP_DIRS=("$HOME" "/etc")
-HOSTNAME="$(hostname)"
-SERVER_DIR="/media/4tbRaid/Backups/"
-SERVER="fritz@rex"
+if [ "$HOSTNAME" == "rex" ] ; then
+    #if we are on the server we back up to the cloud.
+    BACKUP_DIRS=("$HOME" "/media/4tbRaid" "/etc" "/opt")
+    SERVER_DIR=""
+    PROTOCOL="rclone"
+    SERVER="dropbox"
+else
+    BACKUP_DIRS=("$HOME" "/etc")
+    # HOSTNAME="$(hostname)"
+    SERVER_DIR="/media/4tbRaid/Backups/"
+    PROTOCOL="sftp"
+    SERVER="fritz@rex"
+fi
 
 if [ -n "$TERMUX_VERSION" ] ; then
     HOSTNAME="Termux"
@@ -41,11 +50,11 @@ else
 fi
 
 if [ "$1" == "init" ] ; then
-    restic -r "sftp:$SERVER:${SERVER_DIR}${HOSTNAME}" init
+    restic -r "$PROTOCOL:$SERVER:${SERVER_DIR}${HOSTNAME}" init
 elif [ "$1" == "list" ] ; then
-    restic -r "sftp:$SERVER:${SERVER_DIR}${HOSTNAME}" snapshots
+    restic -r "$PROTOCOL:$SERVER:${SERVER_DIR}${HOSTNAME}" snapshots
 else
     #Finally We do our backup
-    restic -r "sftp:$SERVER:${SERVER_DIR}${HOSTNAME}" backup "${BACKUP_DIRS[@]}"
+    restic -r "$PROTOCOL:$SERVER:${SERVER_DIR}${HOSTNAME}" backup "${BACKUP_DIRS[@]}"
 fi
 
