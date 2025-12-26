@@ -42,7 +42,9 @@ elif has pacman ; then
 fi
 
 #Do a quick test connection with the server
-if ssh -o ConnectTimeout=5 "$SERVER" "exit" 2> /dev/null ; then
+if [ "$HOSTNAME" == "rex" ] && rclone lsd dropbox: 2> /dev/null ; then
+    printf "\e[0;32mSuccessfully connected to %s.\n\033[0m" "$SERVER"
+elif ssh -o ConnectTimeout=5 "$SERVER" "exit" 2> /dev/null ; then
     printf "\e[0;32mSuccessfully connected to %s.\n\033[0m" "$SERVER"
 else
     printf "\e[0;31mFailed to connect to %s.\n\033[0m" "$SERVER"
