@@ -36,9 +36,9 @@ has apt && printf "Dumping packages from apt...\n" && apt list --installed > "$T
 
 #purge yay/pacman cache to save backup space
 if has yay ; then
-    yay -Sc
+    yay -Sc --noconfirm
 elif has pacman ; then
-    sudo pacman -Sc
+    sudo pacman -Sc --noconfirm
 fi
 
 #Do a quick test connection with the server
