@@ -27,6 +27,17 @@ else
     exit 1
 fi
 
+#restic as root is useful for root-owned files in /etc
+#no termux detection needed
+if has doas ; then
+    ROOT_STRING="doas"
+elif has sudo ; then
+    ROOT_STRING="sudo"
+else
+    ROOT_STRING=""
+fi
+
+
 # First, dump package lists to a temp directory
 TMP="$(mktemp -d ~/packages.XXXXXXXXXX)"
 trap 'rm -rvf "$TMP"' EXIT #Automatically clear this dir when we exit the script
@@ -38,7 +49,7 @@ has apt && printf "Dumping packages from apt...\n" && apt list --installed > "$T
 if has yay ; then
     yay -Sc --noconfirm
 elif has pacman ; then
-    sudo pacman -Sc --noconfirm
+    $ROOT_STRING pacman -Sc --noconfirm
 fi
 
 #Do a quick test connection with the server
@@ -57,6 +68,6 @@ elif [ "$1" == "list" ] ; then
     restic -r "$PROTOCOL:$SERVER:${SERVER_DIR}${HOSTNAME}" snapshots
 else
     #Finally We do our backup
-    restic -r "$PROTOCOL:$SERVER:${SERVER_DIR}${HOSTNAME}" backup "${BACKUP_DIRS[@]}"
+    $ROOT_STRING restic -r "$PROTOCOL:$SERVER:${SERVER_DIR}${HOSTNAME}" backup "${BACKUP_DIRS[@]}"
 fi
 
