@@ -173,6 +173,7 @@ EXEC 01;32
 .yuv 01;35
 .cgm 01;35
 .emf 01;35
+.ico 01;35
 # https://wiki.xiph.org/MIME_Types_and_File_Extensions
 .ogv 01;35
 .ogx 01;35
