@@ -39,8 +39,8 @@ has nvim && alias vi="nvim"
 has nvim && alias nano="nvim"
 ! has nvim && has vim && alias vi="vim"
 ! has nvim && has vim && alias nano="vim"
-has batcat && alias bat="batcat -p"
 has bat && alias bat="bat -p"
+has batcat && alias bat="batcat -p"
 
 # Zspotify Aliases
 has zspotify && alias zspotify="zspotify -s"
