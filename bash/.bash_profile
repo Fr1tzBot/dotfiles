@@ -129,7 +129,9 @@ else
 fi
 export MANPATH
 
-if has vim ; then
+if has nvim ; then
+    EDITOR=$(command -v "nvim")
+elif has vim ; then
     EDITOR=$(command -v "vim")
 elif has nano ; then
     EDITOR=$(command -v "nano")

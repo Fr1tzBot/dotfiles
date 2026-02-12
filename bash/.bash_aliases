@@ -1,26 +1,25 @@
 #!/bin/bash
 has() { type -p "$1" &> /dev/null; }
 
-#Color auto aliases
+#Color aliases
 has grep && alias grep="grep --color=auto"
 has fgrep && alias fgrep='fgrep --color=auto'
 has egrep && alias egrep='egrep --color=auto'
 has diff && alias diff="diff --color=auto"
 has dir && alias dir='dir --color=auto'
 has vdir && alias vdir='vdir --color=auto'
-has ls && alias ls="ls -A --color=auto"
-has tree && alias tree="tree -C"
+has tree && alias tree="tree -a -C"
 has ip && alias ip="ip -c"
 
 #Util aliases
 if has ls ; then
-    alias la="ls -A"
-    alias l="ls -CF"
-    alias ll="ls -Alh"
+    alias ls="ls -A --color=auto"
+    alias la="ls -A --color=auto"
+    alias l="ls -CF --color=auto"
+    alias ll="ls -Alh --color=auto"
 fi
 has pwd && alias pwd="pwd -P"
 has doas && alias sudo="doas"
-has trash && alias trash="trash -v -F"
 has clear && alias cls="clear"
 has exit && alias q="exit"
 has which && alias which="which -a"
@@ -33,14 +32,42 @@ has gcc && alias gcc="gcc -Wall"
 has md5sum && alias md5="md5sum"
 has xdg-open && alias open="xdg-open"
 
-#Text Editor eliases
-has nvim && alias vim="nvim"
-has nvim && alias vi="nvim"
-has nvim && alias nano="nvim"
-! has nvim && has vim && alias vi="vim"
-! has nvim && has vim && alias nano="vim"
-has bat && alias bat="bat -p"
-has batcat && alias bat="batcat -p"
+#Text Editor Aliases
+setEditor() {
+    [ "$1" != "vim" ] && alias vim="$1";
+    [ "$1" != "vi" ] && alias vi="$1";
+    [ "$1" != "nvim" ] && alias nvim="$1";
+    [ "$1" != "nano" ] && alias nano="$1";
+}
+
+if has nvim ; then
+    setEditor nvim
+elif has vim ; then
+    setEditor vim
+elif has vi ; then
+    setEditor vi
+elif has nano ; then
+    setEditor nano
+fi
+
+unset setEditor
+
+# Text Viewer Aliases
+setViewer() {
+    alias bat="$1";
+    alias batcat="$1";
+    alias cat="$1";
+}
+
+if has bat ; then
+    setViewer "bat -pp"
+elif has batcat ; then
+    setViewer "batcat -pp"
+elif has cat ; then
+    setViewer "cat"
+fi
+
+unset setViewer
 
 # Zspotify Aliases
 has zspotify && alias zspotify="zspotify -s"
