@@ -2,7 +2,7 @@ require("config.lazy")
 
 -- in init.lua or a dedicated plugin config, AFTER mason.setup():
 require("mason-lspconfig").setup({
-    ensure_installed = {"lua_ls", "pylsp", "rust_analyzer", "bashls", "jdtls", "matlab-language-server", "clangd", "asm-lsp", "verible", "deno"},
+    ensure_installed = {"lua_ls", "pylsp", "rust_analyzer", "bashls", "jdtls", "matlab_ls", "clangd", "asm_lsp", "verible", "denols"},
     automatic_installation = true,
     handlers = {
         function(server_name)  -- default handler
@@ -10,11 +10,6 @@ require("mason-lspconfig").setup({
         end,
     },
 })
-
-require("mason-tool-installer").setup {
-    ensure_installed = {},
-    auto_update = true,
-}
 
 require("mason").setup()
 
