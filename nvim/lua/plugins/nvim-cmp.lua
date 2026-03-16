@@ -25,9 +25,9 @@ return {
                 { name = "path" },
             }),
             snippet = {
-                -- expand = function(args)
-                --     vim.fn["vsnip#anonymous"](args.body)
-                -- end,
+                expand = function(args)
+                    vim.fn["vsnip#anonymous"](args.body)
+                end,
             },
         })
     end,

@@ -18,5 +18,10 @@
     - eliminate python dep?
 
 ## Bugs:
-- waybar doesn't refresh automatically sometimes
+- [ ] waybar doesn't refresh automatically sometimes
+- [ ] nvim: clangd fails to install sometimes
+- [ ] nvim: asm_lsp doesn't detect architectures
+- [ ] nvim: verible doesn't autofill
+- [ ] nvim: jdtls throws error whenever a .java file is opened
+- [ ] nvim: matlab_language_server doesn't autofill
 

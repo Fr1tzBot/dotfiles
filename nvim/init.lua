@@ -1,41 +1,22 @@
 require("config.lazy")
 
-require("nvim-treesitter.configs").setup({
-    ensure_installed = {"c", "rust", "python", "lua", "vim", "markdown", "bash"},
-    auto_install = true,
-    highlight = { enable = true },
-    indent = { enable = true }
+-- in init.lua or a dedicated plugin config, AFTER mason.setup():
+require("mason-lspconfig").setup({
+    ensure_installed = {"lua_ls", "pylsp", "rust_analyzer", "bashls", "jdtls", "matlab-language-server", "clangd", "asm-lsp", "verible", "deno"},
+    automatic_installation = true,
+    handlers = {
+        function(server_name)  -- default handler
+            require("lspconfig")[server_name].setup({})
+        end,
+    },
 })
 
-local programs = {
-    ["bash"] = "bash-language-server",
-    ["clangd"] = "clangd",
-    ["java"] = "jdtls",
-    ["lua"] = "lua-language-server",
-    ["pylint"] = "pylint",
-    ["rust-analyzer"] = "rust-analyzer",
-    ["shellcheck"] = "shellcheck"
-}
-
-local ensure_installed = {}
-
-for bin, server in ipairs(programs) do
-    if vim.fn.executable(bin) == 0 then
-        table.insert(ensure_installed, server)
-        print(server)
-    end
-end
-
 require("mason-tool-installer").setup {
-    ensure_installed = ensure_installed,
+    ensure_installed = {},
     auto_update = true,
 }
 
 require("mason").setup()
-
-for _, i in pairs(ensure_installed) do
-    vim.lsp.enable(i)
-end
 
 require('telescope').setup{
     pickers = {
@@ -73,15 +54,6 @@ vim.diagnostic.config {
     underline = true,
     update_in_insert = false,
 }
-
-vim.api.nvim_create_autocmd("LspAttach", {
-    callback = function(ev)
-        local client = vim.lsp.get_client_by_id(ev.data.client_id)
-        if client:supports_method("textDocument/completion") then
-            vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-        end
-    end,
-})
 
 vim.opt.termguicolors = true
 vim.opt.autoindent = true
