@@ -76,6 +76,11 @@ managerList = {
         [
             ROOT_STRING + "dnf upgrade"
         ],
+    "dfm":
+        [
+            "dfm update",
+            "dfm deploy"
+        ],
     "emerge":
         [
             ROOT_STRING + "emerge --sync",
