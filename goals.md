@@ -24,4 +24,5 @@
 - [ ] nvim: verible doesn't autofill
 - [ ] nvim: jdtls throws error whenever a .java file is opened
 - [ ] nvim: matlab_language_server doesn't autofill
+- [ ] foot: erorr ([colors]: use [colors-dark] instead)
 
