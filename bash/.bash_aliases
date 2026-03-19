@@ -79,10 +79,9 @@ has youtube-dl && alias ytmp3="youtube-dl -x --audio-format=flac --audio-quality
 has ytfzf && alias ytsearch="ytfzf -L"
 
 #Archive Aliases
-has 7z && alias un7zip="7z x"
+has 7z && alias un7z="7z x" && alias unrar="7z x"
 has tar && alias untar="tar -xvf"
 has tar && alias ungz="tar -xvzf"
-has unrar && alias unrar="unrar x"
 
 #Networking Aliases
 has Wireshark && alias wireshark="Wireshark"
