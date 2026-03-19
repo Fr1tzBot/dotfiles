@@ -28,6 +28,7 @@ has sway && [ -f "$DOTFILES/sway/$HOSTNAME.config" ] && [ ! -e "$CONFIG/sway/oss
 has swaylock && install "$DOTFILES/swaylock" "$CONFIG"
 has waybar && install "$DOTFILES/waybar" "$CONFIG"
 has niri && install "$DOTFILES/niri" "$CONFIG"
+has dunst && install "$DOTFILES/dunst" "$CONFIG"
 
 cp -ruv "$DOTFILES/bin" "$TRIMMED_HOME/"
 
