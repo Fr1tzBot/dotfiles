@@ -19,10 +19,11 @@
 
 ## Bugs:
 - [ ] waybar doesn't refresh automatically sometimes
-- [ ] nvim: clangd fails to install sometimes
+    - this seems to be a sway bug...
+- [ ] nvim: clangd fails to install
 - [ ] nvim: asm_lsp doesn't detect architectures
 - [ ] nvim: verible doesn't autofill
 - [ ] nvim: jdtls throws error whenever a .java file is opened
 - [ ] nvim: matlab_language_server doesn't autofill
-- [ ] foot: erorr ([colors]: use [colors-dark] instead)
+- [x] foot: erorr ([colors]: use [colors-dark] instead)
 
