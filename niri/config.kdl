@@ -44,6 +44,7 @@ input {
 
 //Swaybg background
 spawn-at-startup "swaybg" "-o" "eDP-1" "-i" "/home/fritz/.config/sway/Background.jpg" "-m" "fill"
+spawn-at-startup "swayosd-server"
 
 output "eDP-1" {
     mode "2560x1600@60"
@@ -302,8 +303,6 @@ binds {
 
     //Mac specific binds
     XF86Search allow-when-locked=false { spawn "fuzzel"; }
-    //Unused for now:
-    XF86LaunchA repeat=false { toggle-overview; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
@@ -312,28 +311,39 @@ binds {
     // The allow-when-locked=true property makes them work even when the session is locked.
     // Using spawn-sh allows to pass multiple arguments together with the command.
     // "-l 1.0" limits the volume to 100%.
-    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
-    XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
-    XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+    // XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }
+    // XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
+    // XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+    // XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+    XF86AudioRaiseVolume { spawn "swayosd-client" "--output-volume" "raise"; }
+    XF86AudioLowerVolume { spawn "swayosd-client" "--output-volume" "lower"; }
+    XF86AudioMute        { spawn "swayosd-client" "--output-volume" "mute-toggle"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn "swayosd-client" "--input-volume" "mute-toggle"; }
 
     // Example media keys mapping using playerctl.
     // This will work with any MPRIS-enabled media player.
-    XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl play-pause"; }
-    XF86AudioStop        allow-when-locked=true { spawn-sh "playerctl stop"; }
-    XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
-    XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
+    // XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+    // XF86AudioStop        allow-when-locked=true { spawn-sh "playerctl stop"; }
+    // XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
+    // XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
+    XF86AudioPlay        allow-when-locked=true { spawn "swayosd-client" "--playerctl" "play-pause"; }
+    XF86AudioStop        allow-when-locked=true { spawn "swayosd-client" "--playerctl" "stop"; }
+    XF86AudioPrev        allow-when-locked=true { spawn "swayosd-client" "--playerctl" "prev"; }
+    XF86AudioNext        allow-when-locked=true { spawn "swayosd-client" "--playerctl" "next"; }
 
     // Example brightness key mappings for brightnessctl.
     // You can use regular spawn with multiple arguments too (to avoid going through "sh"),
     // but you need to manually put each argument in separate "" quotes.
-    XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
+    // XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
+    // XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn "swayosd-client" "--brightness" "+10"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "swayosd-client" "--brightness" "-10"; }
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
     // or do a four-finger swipe up on a touchpad.
     Mod+O repeat=false { toggle-overview; }
+    XF86LaunchA repeat=false { toggle-overview; }
 
     //Need to readapt to mod+q to close windows lol
     Mod+Q repeat=false { close-window; }
@@ -568,6 +578,8 @@ binds {
 
     // The quit action will show a confirmation dialog to avoid accidental exits.
     Mod+Shift+E { quit; }
+    //Config reload for waybar
+    Mod+Shift+C { spawn-sh "killall -SIGUSR2 waybar"; }
     Ctrl+Alt+Delete { quit; }
 
     // Powers off the monitors. To turn them back on, do any input like

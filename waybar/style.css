@@ -14,6 +14,7 @@ window#waybar {
     transition: background-color .5s;
 }
 
+
 .modules-left,
 .modules-center,
 .modules-right
@@ -73,6 +74,11 @@ window#waybar {
     background: rgba(26, 27, 38, 0.9);
 }
 
+#custom-lyrics {
+  /* color: #ffffff; */
+  margin: 0 5px;
+  padding: 0 10px;
+}
 
 #workspaces button {
   background: transparent;
@@ -97,8 +103,8 @@ window#waybar {
 }
 
 #custom-arch {
-    margin-left: 5px;
-    padding: 0 10px;
+    margin-left: 0px;
+    padding: 0 12px;
     font-size: 20px;
     transition: color .5s;
 }

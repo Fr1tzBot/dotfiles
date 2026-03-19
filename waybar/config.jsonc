@@ -10,11 +10,13 @@
         "custom/arch",
         "sway/workspaces",
         "sway/mode",
-        "sway/scratchpad"
+        "sway/scratchpad",
         //"custom/media"
+        "custom/lyrics"
     ],
     "modules-center": [
-        "sway/window"
+        "sway/window",
+        "niri/window"
     ],
     "modules-right": [
         //"mpd",
@@ -34,6 +36,7 @@
         //"tray",
         //"Custom/power"
     ],
+
     "include": [
         "~/.config/waybar/modules.json"
     ]
