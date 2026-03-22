@@ -148,6 +148,10 @@ if has dircolors ; then
     eval "$(dircolors "$HOME/.dir_colors")"
 fi
 
+#Large histfile and histfilesize values, but not unlimitted
+HISTSIZE=250000
+HISTFILESIZE=800000
+
 bind 'set mark-symlinked-directories on' #put a slash at the end of symlinked directories (cuz dropbox)
 shopt -s dotglob
 shopt -s cdspell
