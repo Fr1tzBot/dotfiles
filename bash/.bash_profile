@@ -142,6 +142,7 @@ has "wayland-scanner" && export ELECTRON_OZONE_PLATFORM_HINT="wayland"
 
 export EDITOR
 has java && export CPPFLAGS="-I$prefix/opt/openjdk@17/include"
+has java && has niri && export _JAVA_AWT_WM_NONREPARENTING=1
 has systemctl && export XDG_CONFIG_HOME="$HOME/.config"
 #Source remaining files
 if has dircolors ; then
