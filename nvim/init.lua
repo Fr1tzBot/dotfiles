@@ -11,12 +11,12 @@ vim.pack.add({
     gh("hrsh7th/cmp-buffer"), --nvim-cmp dependency
     gh("hrsh7th/cmp-path"), --nvim-cmp dependency
     gh("L3MON4D3/LuaSnip"), --Snippet Engine (integrates with nvim-cmp)
-    gh("saadparwaiz1/cmp_luasnip"), --Abandoned, LuaSnip source for nvim-cmp
+    gh("saadparwaiz1/cmp_luasnip"), --Abandoned, so git latest is okay. LuaSnip source for nvim-cmp
     gh("hrsh7th/nvim-cmp"), --Autofill
-    gh("neovim/nvim-lspconfig"), --Default LSP configs
+    {src=gh("neovim/nvim-lspconfig"), version=vim.version.range("*")}, --Default LSP configs
     gh("folke/lazydev.nvim"), --Extensions for lua_ls lsp
     cb("mfussenegger/nvim-jdtls"), --Extensions for jdtls (java) lsp
-    gh("nvim-tree/nvim-tree.lua"), --File Browser
+    {src=gh("nvim-tree/nvim-tree.lua"), version=vim.version.range("*")}, --File Browser
     gh("nvim-lua/plenary.nvim"), --obsidian.nvim dependency
     {src=gh("obsidian-nvim/obsidian.nvim"), version=vim.version.range("*")}, --obsidian integration
 })
@@ -52,8 +52,9 @@ for i, lang in pairs(langs) do
 end
 
 -- vim.pack.update()
--- Skipped from lazy: mason-lspconfig, mason
-require("lazydev").setup{}
+if vim.fn.executable("lua-language-server") then
+    require("lazydev").setup{}
+end
 
 local cmp = require("cmp")
 cmp.setup({
@@ -181,6 +182,7 @@ vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
 
 vim.opt.syntax = "on"
+vim.cmd("set clipboard+=unnamedplus")
 vim.cmd("colorscheme gruvbox")
 vim.opt.background = "dark"
 
