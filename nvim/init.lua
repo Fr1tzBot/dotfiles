@@ -1,28 +1,86 @@
-require("config.lazy")
+local gh = function(x) return 'https://github.com/' .. x end
+local cb = function(x) return 'https://codeberg.org/' .. x end
 
--- in init.lua or a dedicated plugin config, AFTER mason.setup():
-require("mason-lspconfig").setup({
-    ensure_installed = {"lua_ls", "pylsp", "rust_analyzer", "bashls", "jdtls", "matlab_ls", "asm_lsp", "verible", "denols"},
-    automatic_installation = true,
-    handlers = {
-        function(server_name)  -- default handler
-            require("lspconfig")[server_name].setup({})
+--TODO: pin versions to releases where applicable
+vim.pack.add({
+    gh("ellisonleao/gruvbox.nvim"), --Theme
+    gh("kdheepak/lazygit.nvim"), --Lazygit integration
+    gh("nvim-tree/nvim-web-devicons"), --LuaLine/nvim-tree dependency
+    gh('nvim-lualine/lualine.nvim'), --Line
+    gh("hrsh7th/cmp-nvim-lsp"), --nvim-cmp dependency
+    gh("hrsh7th/cmp-buffer"), --nvim-cmp dependency
+    gh("hrsh7th/cmp-path"), --nvim-cmp dependency
+    gh("L3MON4D3/LuaSnip"), --Snippet Engine (integrates with nvim-cmp)
+    gh("saadparwaiz1/cmp_luasnip"), --Abandoned, so git latest is okay. LuaSnip source for nvim-cmp
+    gh("hrsh7th/nvim-cmp"), --Autofill
+    {src=gh("neovim/nvim-lspconfig"), version=vim.version.range("*")}, --Default LSP configs
+    gh("folke/lazydev.nvim"), --Extensions for lua_ls lsp
+    cb("mfussenegger/nvim-jdtls"), --Extensions for jdtls (java) lsp
+    {src=gh("nvim-tree/nvim-tree.lua"), version=vim.version.range("*")}, --File Browser
+    gh("nvim-lua/plenary.nvim"), --obsidian.nvim dependency
+    {src=gh("obsidian-nvim/obsidian.nvim"), version=vim.version.range("*")}, --obsidian integration
+})
+
+
+-- remove packages that aren't specifically installed
+local unused = vim.iter(vim.pack.get())
+ :filter(function(x) return not x.active end)
+ :map(function(x) return x.spec.name end)
+ :totable()
+
+for i, lang in pairs(unused) do
+    vim.pack.del(lang)
+end
+
+local langs = {
+    {prog="asm-lsp", lsp="asm_lsp"},
+    {prog="bash-language-server", lsp="bashls"},
+    {prog="clangd", lsp="clangd"},
+    {prog="jdtls", lsp="jdtls"},
+    {prog="lua-language-server", lsp="lua_ls"},
+    {prog="matlab-language-server", lsp="matlab_ls"},
+    {prog="pylsp", lsp="pylsp"},
+    {prog="verible-verilog-ls", lsp="verible"},
+    {prog="rust-analyzer", lsp="rust_analyzer"}
+}
+
+for i, lang in pairs(langs) do
+    if vim.fn.executable(lang.prog) == 1 then
+        vim.lsp.enable(lang.lsp)
+    else
+        print(lang.lsp..": failed to enable lsp, missing "..lang.prog)
+    end
+end
+
+-- vim.pack.update()
+if vim.fn.executable("lua-language-server") == 1 then
+    require("lazydev").setup{}
+end
+
+local cmp = require("cmp")
+cmp.setup({
+    preselect = cmp.PreselectMode.None,
+    completion = {completeopt = 'menu,menuone,noinsert,noselect'},
+    mapping = {
+        --["<C-Space>"] = cmp.mapping.complete(),
+        ["<S-CR>"] = cmp.mapping.confirm({ select = false }),
+        ["<Tab>"] = cmp.mapping.select_next_item(),
+        ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+    },
+    sources = cmp.config.sources({
+        { name = "nvim_lsp" },
+        { name = "buffer" },
+        { name = "path" },
+        { name = 'luasnip' },
+    }),
+    snippet = {
+        expand = function(args)
+            require('luasnip').lsp_expand(args.body)
         end,
     },
 })
 
-require("mason").setup()
-
-require('telescope').setup{
-    pickers = {
-        find_files = {
-            hidden = true
-        }
-    },
-    defaults = {
-       file_ignore_patterns = { "^.git/" }
-    }
-}
+require('nvim-tree').setup{}
 
 require("lualine").setup {
     options = {
@@ -36,6 +94,16 @@ require("lualine").setup {
         lualine_x = {"encoding", "fileformat", "filetype"},
         lualine_y = {"progress"},
         lualine_z = {"location"}
+    }
+}
+
+require("obsidian").setup {
+    workspaces = {
+        {name = "brain", path = "~/Documents/brain"}
+    },
+    completion = {
+        nvim_cmp = true,
+        min_chars = 2,
     }
 }
 -- disable default statusline
@@ -82,7 +150,7 @@ vim.opt.hidden = true
 vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.cmdheight = 1
-vim.opt.updatetime = 300
+vim.opt.updatetime = 2000 --Higher for nohlsearch pack
 vim.opt.shortmess:append("c")
 vim.opt.signcolumn = "yes"
 vim.opt.whichwrap = "<,>,[,]"
@@ -115,15 +183,14 @@ vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
 
 vim.opt.syntax = "on"
+vim.cmd("packadd! termdebug")
+vim.cmd("packadd! nohlsearch")
+vim.cmd("set clipboard+=unnamedplus")
 vim.cmd("colorscheme gruvbox")
 vim.opt.background = "dark"
+
 --make bg transparent if sway is installed
-if vim.fn.executable("sway") == 1 then
+if vim.fn.executable("sway") == 1 or vim.fn.executable("niri") == 1 then
     vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
 end
-
-require("lazy").update({
-    show = false,
-    wait = false,
-})
 
