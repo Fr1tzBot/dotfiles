@@ -1,9 +1,11 @@
 local gh = function(x) return 'https://github.com/' .. x end
 local cb = function(x) return 'https://codeberg.org/' .. x end
+
+--TODO: pin versions to releases where applicable
 vim.pack.add({
     gh("ellisonleao/gruvbox.nvim"),
     gh("kdheepak/lazygit.nvim"),
-    gh("nvim-tree/nvim-web-devicons"), --LuaLine/nvim-tree/which-key.nvim dependency
+    gh("nvim-tree/nvim-web-devicons"), --LuaLine/nvim-tree dependency
     gh('nvim-lualine/lualine.nvim'),
     gh("L3MON4D3/LuaSnip"),
     gh("hrsh7th/cmp-nvim-lsp"), --nvim-cmp dependency
@@ -14,11 +16,10 @@ vim.pack.add({
     gh("folke/lazydev.nvim"), --Extensions for lua_ls lsp
     cb("mfussenegger/nvim-jdtls"), --Extensions for jdtls (java) lsp
     gh("nvim-tree/nvim-tree.lua"),
-    gh("nvim-lua/plenary.nvim"), --obsidian.nvim/telescope.nvim dependency
-    gh("epwalsh/obsidian.nvim"),
+    gh("nvim-lua/plenary.nvim"), --obsidian.nvim dependency
+    {src=gh("obsidian-nvim/obsidian.nvim"), version=vim.version.range("*")},
 })
 
-vim.cmd("colorscheme gruvbox")
 
 -- remove packages that aren't specifically installed
 local unused = vim.iter(vim.pack.get())
@@ -91,6 +92,16 @@ require("lualine").setup {
         lualine_x = {"encoding", "fileformat", "filetype"},
         lualine_y = {"progress"},
         lualine_z = {"location"}
+    }
+}
+
+require("obsidian").setup {
+    workspaces = {
+        {name = "brain", path = "~/Documents/brain"}
+    },
+    completion = {
+        nvim_cmp = true,
+        min_chars = 2,
     }
 }
 -- disable default statusline
@@ -170,6 +181,7 @@ vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
 
 vim.opt.syntax = "on"
+vim.cmd("colorscheme gruvbox")
 vim.opt.background = "dark"
 
 --make bg transparent if sway is installed
