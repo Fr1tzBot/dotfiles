@@ -46,8 +46,9 @@ local langs = {
 
 for i, lang in pairs(langs) do
     if vim.fn.executable(lang.prog) then
-        -- print("Enabling "..lang.lsp)
         vim.lsp.enable(lang.lsp)
+    else
+        print(lang.lsp": failed to enable lsp, missing "..lang.prog)
     end
 end
 
@@ -149,7 +150,7 @@ vim.opt.hidden = true
 vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.cmdheight = 1
-vim.opt.updatetime = 300
+vim.opt.updatetime = 2000 --Higher for nohlsearch pack
 vim.opt.shortmess:append("c")
 vim.opt.signcolumn = "yes"
 vim.opt.whichwrap = "<,>,[,]"
@@ -182,6 +183,8 @@ vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
 
 vim.opt.syntax = "on"
+vim.cmd("packadd! termdebug")
+vim.cmd("packadd! nohlsearch")
 vim.cmd("set clipboard+=unnamedplus")
 vim.cmd("colorscheme gruvbox")
 vim.opt.background = "dark"
