@@ -1,4 +1,10 @@
 require("config.lazy")
+vim.pack.add({
+    "ellisonleao/gruvbox.nvim",
+    "kdheepak/lazygit.nvim",
+    'nvim-lualine/lualine.nvim',
+	"L3MON4D3/LuaSnip",
+})
 
 -- in init.lua or a dedicated plugin config, AFTER mason.setup():
 require("mason-lspconfig").setup({
