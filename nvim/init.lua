@@ -21,10 +21,14 @@ vim.pack.add({
 vim.cmd("colorscheme gruvbox")
 
 -- remove packages that aren't specifically installed
-vim.pack.del(vim.iter(vim.pack.get())
+local unused = vim.iter(vim.pack.get())
  :filter(function(x) return not x.active end)
  :map(function(x) return x.spec.name end)
- :totable())
+ :totable()
+
+for i, lang in pairs(unused) do
+    vim.pack.del(lang)
+end
 
 local langs = {
     {prog="asm-lsp", lsp="asm_lsp"},
