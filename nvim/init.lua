@@ -1,34 +1,79 @@
-require("config.lazy")
+local gh = function(x) return 'https://github.com/' .. x end
+local cb = function(x) return 'https://codeberg.org/' .. x end
 vim.pack.add({
-    "ellisonleao/gruvbox.nvim",
-    "kdheepak/lazygit.nvim",
-    'nvim-lualine/lualine.nvim',
-	"L3MON4D3/LuaSnip",
+    gh("ellisonleao/gruvbox.nvim"),
+    gh("kdheepak/lazygit.nvim"),
+    gh("nvim-tree/nvim-web-devicons"), --LuaLine/nvim-tree/which-key.nvim dependency
+    gh('nvim-lualine/lualine.nvim'),
+    gh("L3MON4D3/LuaSnip"),
+    gh("hrsh7th/cmp-nvim-lsp"), --nvim-cmp dependency
+    gh("hrsh7th/cmp-buffer"), --nvim-cmp dependency
+    gh("hrsh7th/cmp-path"), --nvim-cmp dependency
+    gh("hrsh7th/nvim-cmp"),
+    gh("neovim/nvim-lspconfig"),
+    gh("folke/lazydev.nvim"), --Extensions for lua_ls lsp
+    cb("mfussenegger/nvim-jdtls"), --Extensions for jdtls (java) lsp
+    gh("nvim-tree/nvim-tree.lua"),
+    gh("nvim-lua/plenary.nvim"), --obsidian.nvim/telescope.nvim dependency
+    gh("epwalsh/obsidian.nvim"),
 })
 
--- in init.lua or a dedicated plugin config, AFTER mason.setup():
-require("mason-lspconfig").setup({
-    ensure_installed = {"lua_ls", "pylsp", "rust_analyzer", "bashls", "jdtls", "matlab_ls", "asm_lsp", "verible", "denols"},
-    automatic_installation = true,
-    handlers = {
-        function(server_name)  -- default handler
-            require("lspconfig")[server_name].setup({})
+vim.cmd("colorscheme gruvbox")
+
+-- remove packages that aren't specifically installed
+vim.pack.del(vim.iter(vim.pack.get())
+ :filter(function(x) return not x.active end)
+ :map(function(x) return x.spec.name end)
+ :totable())
+
+local langs = {
+    {prog="asm-lsp", lsp="asm_lsp"},
+    {prog="bash-language-server", lsp="bashls"},
+    {prog="clangd", lsp="clangd"},
+    {prog="jdtls", lsp="jdtls"},
+    {prog="lua-language-server", lsp="lua_ls"},
+    {prog="matlab-language-server", lsp="matlab_ls"},
+    {prog="pylsp", lsp="pylsp"},
+    {prog="verible-verilog-ls", lsp="verible"},
+    {prog="rust-analyzer", lsp="rust_analyzer"}
+}
+
+for i, lang in pairs(langs) do
+    if vim.fn.executable(lang.prog) then
+        -- print("Enabling "..lang.lsp)
+        vim.lsp.enable(lang.lsp)
+    end
+end
+
+-- vim.pack.update()
+-- Skipped from lazy: mason-lspconfig, mason
+require("lazydev").setup{}
+
+local cmp = require("cmp")
+cmp.setup({
+    preselect = cmp.PreselectMode.None,
+    completion = {
+        completeopt = 'menu,menuone,noinsert,noselect',
+    },
+    mapping = {
+        --["<C-Space>"] = cmp.mapping.complete(),
+        ["<S-CR>"] = cmp.mapping.confirm({ select = false }),
+        ["<Tab>"] = cmp.mapping.select_next_item(),
+        ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+    },
+    sources = cmp.config.sources({
+        { name = "nvim_lsp" },
+        { name = "buffer" },
+        { name = "path" },
+    }),
+    snippet = {
+        expand = function(args)
+            vim.fn["vsnip#anonymous"](args.body)
         end,
     },
 })
 
-require("mason").setup()
-
-require('telescope').setup{
-    pickers = {
-        find_files = {
-            hidden = true
-        }
-    },
-    defaults = {
-       file_ignore_patterns = { "^.git/" }
-    }
-}
+require('nvim-tree').setup{}
 
 require("lualine").setup {
     options = {
@@ -121,15 +166,10 @@ vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
 
 vim.opt.syntax = "on"
-vim.cmd("colorscheme gruvbox")
 vim.opt.background = "dark"
+
 --make bg transparent if sway is installed
-if vim.fn.executable("sway") == 1 then
+if vim.fn.executable("sway") == 1 or vim.fn.executable("niri") then
     vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
 end
-
-require("lazy").update({
-    show = false,
-    wait = false,
-})
 
