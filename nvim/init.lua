@@ -3,21 +3,22 @@ local cb = function(x) return 'https://codeberg.org/' .. x end
 
 --TODO: pin versions to releases where applicable
 vim.pack.add({
-    gh("ellisonleao/gruvbox.nvim"),
-    gh("kdheepak/lazygit.nvim"),
+    gh("ellisonleao/gruvbox.nvim"), --Theme
+    gh("kdheepak/lazygit.nvim"), --Lazygit integration
     gh("nvim-tree/nvim-web-devicons"), --LuaLine/nvim-tree dependency
-    gh('nvim-lualine/lualine.nvim'),
-    gh("L3MON4D3/LuaSnip"),
+    gh('nvim-lualine/lualine.nvim'), --Line
     gh("hrsh7th/cmp-nvim-lsp"), --nvim-cmp dependency
     gh("hrsh7th/cmp-buffer"), --nvim-cmp dependency
     gh("hrsh7th/cmp-path"), --nvim-cmp dependency
-    gh("hrsh7th/nvim-cmp"),
-    gh("neovim/nvim-lspconfig"),
+    gh("L3MON4D3/LuaSnip"), --Snippet Engine (integrates with nvim-cmp)
+    gh("saadparwaiz1/cmp_luasnip"), --Abandoned, LuaSnip source for nvim-cmp
+    gh("hrsh7th/nvim-cmp"), --Autofill
+    gh("neovim/nvim-lspconfig"), --Default LSP configs
     gh("folke/lazydev.nvim"), --Extensions for lua_ls lsp
     cb("mfussenegger/nvim-jdtls"), --Extensions for jdtls (java) lsp
-    gh("nvim-tree/nvim-tree.lua"),
+    gh("nvim-tree/nvim-tree.lua"), --File Browser
     gh("nvim-lua/plenary.nvim"), --obsidian.nvim dependency
-    {src=gh("obsidian-nvim/obsidian.nvim"), version=vim.version.range("*")},
+    {src=gh("obsidian-nvim/obsidian.nvim"), version=vim.version.range("*")}, --obsidian integration
 })
 
 
@@ -57,9 +58,7 @@ require("lazydev").setup{}
 local cmp = require("cmp")
 cmp.setup({
     preselect = cmp.PreselectMode.None,
-    completion = {
-        completeopt = 'menu,menuone,noinsert,noselect',
-    },
+    completion = {completeopt = 'menu,menuone,noinsert,noselect'},
     mapping = {
         --["<C-Space>"] = cmp.mapping.complete(),
         ["<S-CR>"] = cmp.mapping.confirm({ select = false }),
@@ -70,10 +69,11 @@ cmp.setup({
         { name = "nvim_lsp" },
         { name = "buffer" },
         { name = "path" },
+        { name = 'luasnip' },
     }),
     snippet = {
         expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body)
+            require('luasnip').lsp_expand(args.body)
         end,
     },
 })
