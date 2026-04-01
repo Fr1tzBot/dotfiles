@@ -45,15 +45,15 @@ local langs = {
 }
 
 for i, lang in pairs(langs) do
-    if vim.fn.executable(lang.prog) then
+    if vim.fn.executable(lang.prog) == 1 then
         vim.lsp.enable(lang.lsp)
     else
-        print(lang.lsp": failed to enable lsp, missing "..lang.prog)
+        print(lang.lsp..": failed to enable lsp, missing "..lang.prog)
     end
 end
 
 -- vim.pack.update()
-if vim.fn.executable("lua-language-server") then
+if vim.fn.executable("lua-language-server") == 1 then
     require("lazydev").setup{}
 end
 
@@ -190,7 +190,7 @@ vim.cmd("colorscheme gruvbox")
 vim.opt.background = "dark"
 
 --make bg transparent if sway is installed
-if vim.fn.executable("sway") == 1 or vim.fn.executable("niri") then
+if vim.fn.executable("sway") == 1 or vim.fn.executable("niri") == 1 then
     vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
 end
 
