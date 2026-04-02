@@ -13,7 +13,7 @@ else
     # HOSTNAME="$(hostname)"
     SERVER_DIR="/media/4tbRaid/Backups/"
     PROTOCOL="sftp"
-    SERVER="fritz@rex"
+    SERVER="fritz@rex.local"
 fi
 
 if [ -n "$TERMUX_VERSION" ] ; then
