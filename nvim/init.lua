@@ -44,12 +44,18 @@ local langs = {
     {prog="rust-analyzer", lsp="rust_analyzer"}
 }
 
+local missing = {}
+
 for i, lang in pairs(langs) do
     if vim.fn.executable(lang.prog) == 1 then
         vim.lsp.enable(lang.lsp)
     else
-        print(lang.lsp..": failed to enable lsp, missing "..lang.prog)
+        table.insert(missing, lang.prog)
     end
+end
+
+if #missing > 0 then
+    print("LSP: Missing "..table.concat(missing, " "))
 end
 
 -- vim.pack.update()
