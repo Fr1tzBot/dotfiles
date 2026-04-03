@@ -3,6 +3,7 @@ local cb = function(x) return 'https://codeberg.org/' .. x end
 
 --TODO: pin versions to releases where applicable
 vim.pack.add({
+    gh("nvim-treesitter/nvim-treesitter"), --Treesitter auto downloading
     gh("ellisonleao/gruvbox.nvim"), --Theme
     gh("kdheepak/lazygit.nvim"), --Lazygit integration
     gh("nvim-tree/nvim-web-devicons"), --LuaLine/nvim-tree dependency
