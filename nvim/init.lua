@@ -97,15 +97,18 @@ require("lualine").setup {
     }
 }
 
-require("obsidian").setup {
-    workspaces = {
-        {name = "brain", path = "~/Documents/brain"}
-    },
-    completion = {
-        nvim_cmp = true,
-        min_chars = 2,
+if vim.fn.isdirectory("/home/fritz/Documents/brain") == 1 then
+    require("obsidian").setup {
+        workspaces = {
+            {name = "brain", path = "/home/fritz/Documents/brain"}
+        },
+        completion = {
+            nvim_cmp = true,
+            min_chars = 2,
+        }
     }
-}
+end
+
 -- disable default statusline
 vim.opt.laststatus = 3
 vim.opt.showtabline = 0
