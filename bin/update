@@ -21,20 +21,18 @@ def getRootString() -> None:
     if isTermux():
         print("No Root Privileges on Termux")
         return ""
-    elif environ.get("EUID", None) == 0:
-        rootProgram = "Root User"
+
+    if environ.get("EUID", None) == 0:
         rootString = ""
     elif has("doas"):
-        rootProgram = "doas"
         rootString = "doas"
     elif has("sudo"):
-        rootProgram = "sudo"
         rootString = "sudo"
     else:
         print("ERROR: no root privileges found.")
         print("You can try running this script as root or verifying that sudo or doas is in your PATH")
         sys.exit(1)
-    print("Using " + rootProgram + " for root privileges.")
+    print(f"Using '{rootString}' as root prefix")
     return rootString
 
 def getHome() -> str:
