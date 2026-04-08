@@ -56,75 +56,80 @@ def update(manager: str) -> None:
     """update a specified package manager"""
     if has(manager):
         for command in managerList[manager]:
-            run(command.split(" "), check=False)
+            run(command, check=False)
 
 ROOT_STRING = getRootString()
 managerList = {
     "apt-get":
         [
-            ROOT_STRING + "apt-get update",
-            ROOT_STRING + "apt-get upgrade",
-            ROOT_STRING + "apt-get autoremove"
+            [ROOT_STRING, "apt-get", "update"],
+            [ROOT_STRING, "apt-get", "upgrade"],
+            [ROOT_STRING, "apt-get", "autoremove"]
         ],
     "brew":
         [
-            "brew update",
-            "brew upgrade",
-            "brew autoremove"
+            ["brew", "update"],
+            ["brew", "upgrade"],
+            ["brew", "autoremove"]
         ],
     "dnf":
         [
-            ROOT_STRING + "dnf upgrade"
+            [ROOT_STRING, "dnf", "upgrade"]
         ],
     "dfm":
         [
-            "dfm update",
-            "dfm deploy"
+            ["dfm", "update"],
+            ["dfm", "deploy"]
         ],
     "emerge":
         [
-            ROOT_STRING + "emerge --sync",
-            ROOT_STRING + "emerge --update --deep --with-bdeps=y @world",
-            ROOT_STRING + "emerge --deepclean"
+            [ROOT_STRING, "emerge", "--sync"],
+            [ROOT_STRING, "emerge", "--update", "--deep", "--with-bdeps=y", "@world"],
+            [ROOT_STRING, "emerge", "--deepclean"]
         ],
     "flatpak":
         [
-            ROOT_STRING + "flatpak update"
+            [ROOT_STRING, "flatpak", "update"]
         ],
     "softwareupdate":
         [
-            "softwareupdate --verbose -lir --agree-to-license"
+            ["softwareupdate", "--verbose", "-lir", "--agree-to-license"]
+        ],
+    "nvim":
+        [
+            ["nvim", "--headless", "-c", "lua vim.pack.update()", "-c", "qa"],
+            ["echo"]
         ],
     "pacman":
         [
-            "echo Skipped pacman for yay" if has("yay") else ROOT_STRING + "pacman -Syu"
+            ["echo", "Skipped pacman for yay"] if has("yay") else [ROOT_STRING, "pacman", "-Syu"]
         ],
     "pkg":
         [
-            "pkg upgrade",
-            "pkg autoclean"
+            ["pkg", "upgrade"],
+            ["pkg", "autoclean"]
         ],
     "port":
         [
-            "port -v selfupdate"
-            "port -v upgrade outdated"
-            "port -v uninstall inactive"
+            ["port", "-v", "selfupdate"],
+            ["port", "-v", "upgrade", "outdated"],
+            ["port", "-v", "uninstall", "inactive"]
         ],
     "scoop":
         [
-            "scoop update"
+            ["scoop", "update"]
         ],
     "snap":
         [
-            ROOT_STRING + "snap refresh"
+            [ROOT_STRING, "snap", "refresh"]
         ],
     "tldr":
         [
-            "tldr -u"
+            ["tldr", "-u"]
         ],
     "yay":
         [
-            "yay -Syu --noconfirm"
+            ["yay", "-Syu", "--noconfirm"]
         ]
 }
 
@@ -165,4 +170,3 @@ try:
                 print("WARNING: unrecognized package manager '" + str(selectedManager) + "'.")
 except KeyboardInterrupt:
     sys.exit(1)
-
