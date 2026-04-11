@@ -192,8 +192,10 @@ vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
 
 vim.opt.syntax = "on"
-vim.cmd("packadd! termdebug")
-vim.cmd("packadd! nohlsearch")
+if vim.pack then
+    vim.cmd("packadd! termdebug")
+    vim.cmd("packadd! nohlsearch")
+end
 vim.cmd("set clipboard+=unnamedplus")
 vim.cmd("colorscheme gruvbox")
 vim.opt.background = "dark"
