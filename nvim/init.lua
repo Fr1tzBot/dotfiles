@@ -2,7 +2,7 @@ local gh = function(x) return 'https://github.com/' .. x end
 local cb = function(x) return 'https://codeberg.org/' .. x end
 
 --TODO: pin versions to releases where applicable
-vim.pack.add({
+if vim.pack then vim.pack.add({
     gh("ellisonleao/gruvbox.nvim"), --Theme
     gh("kdheepak/lazygit.nvim"), --Lazygit integration
     gh("nvim-tree/nvim-web-devicons"), --LuaLine/nvim-tree dependency
@@ -31,6 +31,7 @@ local unused = vim.iter(vim.pack.get())
 for i, lang in pairs(unused) do
     vim.pack.del(lang)
 end
+end
 
 local langs = {
     {prog="asm-lsp", lsp="asm_lsp"},
@@ -58,7 +59,6 @@ if #missing > 0 then
     print("LSP: Missing "..table.concat(missing, " "))
 end
 
--- vim.pack.update()
 if vim.fn.executable("lua-language-server") == 1 then
     require("lazydev").setup{}
 end
