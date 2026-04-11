@@ -95,7 +95,7 @@ managerList = {
         ],
     "nvim":
         [
-            ["nvim", "--headless", "-c", "lua vim.pack.update()", "-c", "qa"],
+            ["nvim", "--headless", "-c", "lua if vim.pack then vim.pack.update() end", "-c", "qa"],
             ["echo"]
         ],
     "pacman":
