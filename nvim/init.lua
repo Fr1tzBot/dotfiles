@@ -195,9 +195,9 @@ vim.opt.syntax = "on"
 if vim.pack then
     vim.cmd("packadd! termdebug")
     vim.cmd("packadd! nohlsearch")
+    vim.cmd("colorscheme gruvbox")
 end
 vim.cmd("set clipboard+=unnamedplus")
-vim.cmd("colorscheme gruvbox")
 vim.opt.background = "dark"
 
 --make bg transparent if sway is installed
