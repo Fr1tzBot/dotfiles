@@ -31,7 +31,6 @@ local unused = vim.iter(vim.pack.get())
 for i, lang in pairs(unused) do
     vim.pack.del(lang)
 end
-end
 
 local langs = {
     {prog="asm-lsp", lsp="asm_lsp"},
@@ -113,6 +112,7 @@ if vim.fn.isdirectory("/home/fritz/Documents/brain") == 1 then
             min_chars = 2,
         }
     }
+end
 end
 
 -- disable default statusline
