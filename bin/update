@@ -6,7 +6,7 @@ from os import environ
 from subprocess import run
 import sys
 #all above modules are built in to python 3.10
-import argparse #argparse, python module created by Thomas Waldmann
+import argparse
 
 def isTermux() -> bool:
     """Check if current os is termux"""
@@ -15,6 +15,19 @@ def isTermux() -> bool:
 def has(program: str) -> bool:
     """Check if specified program is in PATH"""
     return which(program) is not None
+
+class pkgManager:
+    def __init__(self, name: str, root: bool, cmds: list[list[str]]):
+        self.name = name
+        self.root = root
+        self.cmds = cmds
+
+    def getName(self):
+        return self.name
+    def usesRoot(self):
+        return self.root
+    def getCmds(self):
+        return self.cmds
 
 def getRootString() -> None:
     """return string to prepend to commands in order to run them as root"""
@@ -57,28 +70,28 @@ def update(manager: str) -> None:
             run(command, check=False)
 
 ROOT_STRING = getRootString()
-managerList = {
-    "apt-get":
+managerList = [
+    pkgManager("apt-get", True,
         [
             [ROOT_STRING, "apt-get", "update"],
             [ROOT_STRING, "apt-get", "upgrade"],
             [ROOT_STRING, "apt-get", "autoremove"]
-        ],
-    "brew":
+        ]),
+    pkgManager("brew", False,
         [
             ["brew", "update"],
             ["brew", "upgrade"],
             ["brew", "autoremove"]
-        ],
-    "dnf":
+        ]),
+    pkgManager("dnf", True,
         [
             [ROOT_STRING, "dnf", "upgrade"]
-        ],
-    "dfm":
+        ]),
+    pkgManager("dfm", False,
         [
             ["dfm", "update"],
             ["dfm", "deploy"]
-        ],
+        ]),
     "emerge":
         [
             [ROOT_STRING, "emerge", "--sync"],
@@ -129,7 +142,7 @@ managerList = {
         [
             ["yay", "-Syu", "--noconfirm"]
         ]
-}
+]
 
 try:
     parser = argparse.ArgumentParser(description="a program to automatically update installed package managers")
