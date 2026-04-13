@@ -1,51 +1,28 @@
 #!/usr/bin/env bash
 
 TRIMMED_HOME=$(realpath -s "$HOME")
-has() { type -p "$1" > /dev/null; }
-install() {
-    mkdir -p "$2"
-    cp -ruv "$1" "$2"
-}
-
 DOTFILES="$TRIMMED_HOME/Documents/dotfiles"
 CONFIG="$TRIMMED_HOME/.config"
 
+has() { type -p "$1" > /dev/null; }
+install_config() { has "$1" && mkdir -p "$CONFIG" && cp -ruv "$DOTFILES/$1" "$CONFIG"; }
+install_home() { has "$1" && cp -ruv "${DOTFILES}/$1/"* "$TRIMMED_HOME"; }
+
 shopt -s dotglob
 
-has bash && cp -uv "$DOTFILES"/bash/* "$TRIMMED_HOME"
-has ssh && cp -ruv "$DOTFILES"/ssh/* "$TRIMMED_HOME"
-has git && cp -uv "$DOTFILES"/git/* "$TRIMMED_HOME"
-has vim && cp -ruv "$DOTFILES"/vim/* "$TRIMMED_HOME"
-has foot && install "$DOTFILES/foot" "$CONFIG"
-has kitty && install "$DOTFILES/kitty" "$CONFIG"
-has mpv && install "$DOTFILES/mpv" "$CONFIG"
-has fastfetch && install "$DOTFILES/fastfetch" "$CONFIG"
-has neofetch && install "$DOTFILES/neofetch" "$CONFIG"
-has nvim && install "$DOTFILES/nvim" "$CONFIG"
-has rofi && install "$DOTFILES/rofi" "$CONFIG"
-has sway && install "$DOTFILES/sway" "$CONFIG"
+PROGS_HOME=("bash" "ssh" "git" "vim")
+for prog in "${PROGS_HOME[@]}"; do
+    install_home "$prog"
+done
+
+PROGS_CONFIG=("foot" "kitty" "mpv" "fastfetch" "neofetch" "nvim" "rofi" "sway" "swaylock" "waybar" "niri" "dunst")
+for prog in "${PROGS_CONFIG[@]}"; do
+    install_config "$prog"
+done
+
 has sway && [ -f "$DOTFILES/sway/$HOSTNAME.config" ] && [ ! -e "$CONFIG/sway/osspecific.config" ] && ln -sv "$CONFIG/sway/$HOSTNAME.config" "$CONFIG/sway/osspecific.config"
-has swaylock && install "$DOTFILES/swaylock" "$CONFIG"
-has waybar && install "$DOTFILES/waybar" "$CONFIG"
-has niri && install "$DOTFILES/niri" "$CONFIG"
-has dunst && install "$DOTFILES/dunst" "$CONFIG"
 
 cp -ruv "$DOTFILES/bin" "$TRIMMED_HOME/"
-
-#Check if rayshud is already cloned
-if has "steam" && [ -d "$TRIMMED_HOME/Documents/rayshud" ] ; then
-    # if it is, pull latest version
-    git -C "$TRIMMED_HOME/Documents/rayshud" pull
-elif has "steam" ; then
-    git clone "https://github.com/raysfire/rayshud.git" "$TRIMMED_HOME/Documents/rayshud"
-fi
-
-if [ -d "/Applications/Obsidian.app" ] ; then
-    # ensure ~/bin/obsidian symlink exists
-    if [ ! -f "$TRIMMED_HOME/bin/obsidian" ] ; then
-        ln -sv "/Applications/Obsidian.app/Contents/MacOS/Obsidian" "$TRIMMED_HOME/bin/obsidian"
-    fi
-fi
 
 # nuke bashrc on termux to avoid double sourcing on startup
 if [ -n "$TERMUX_VERSION" ] ; then

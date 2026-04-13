@@ -2,7 +2,7 @@ local gh = function(x) return 'https://github.com/' .. x end
 local cb = function(x) return 'https://codeberg.org/' .. x end
 
 --TODO: pin versions to releases where applicable
-vim.pack.add({
+if vim.pack then vim.pack.add({
     gh("nvim-treesitter/nvim-treesitter"), --Treesitter auto downloading
     gh("ellisonleao/gruvbox.nvim"), --Theme
     gh("kdheepak/lazygit.nvim"), --Lazygit integration
