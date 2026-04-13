@@ -8,7 +8,7 @@ import sys
 #all above modules are built in to python 3.10
 import argparse
 
-def isTermux() -> bool:
+def is_termux() -> bool:
     """Check if current os is termux"""
     return environ.get("TERMUX_VERSION", None) is not None
 
@@ -16,132 +16,144 @@ def has(program: str) -> bool:
     """Check if specified program is in PATH"""
     return which(program) is not None
 
-class pkgManager:
+def supports_color():
+    """Returns True if terminal supports color"""
+    return hasattr(sys.stdout, 'isatty') and sys.stdout.isatty() and sys.platform != "win32"
+
+def ok(string: str):
+    """Prints the specified string in green (if possible) prefixed with 'OK: '"""
+    if supports_color():
+        print(f"\033[92mOK: {string}\033[0m")
+    else:
+        print(f"OK: {string}")
+
+def warn(string: str):
+    """Prints the specified string in yellow (if possible) prefixed with 'WARN: '"""
+    if supports_color():
+        print(f"\033[93mWARN: {string}\033[0m")
+    else:
+        print(f"WARN: {string}")
+
+def error(string: str):
+    """Prints the specified string in red (if possible) prefixed with 'ERROR: ' and exits with code 1"""
+    if supports_color():
+        print(f"\033[91mERROR: {string}\033[0m")
+    else:
+        print(f"ERROR: {string}")
+    sys.exit(1)
+
+root_string = None
+if is_termux():
+    ok("No Root Privileges on Termux")
+    root_string = ""
+elif environ.get("EUID", None) == 0:
+    root_string = ""
+elif has("doas"):
+    root_string = "doas"
+elif has("sudo"):
+    root_string = "sudo"
+else:
+    #Ideally we would just skip managers which need root access here
+    error("ERROR: no root privileges found.\nYou can try running this script as root or verifying that sudo or doas is in your PATH")
+ok(f"Using '{root_string}' as root prefix")
+
+class PkgManager:
+    """PkgManager houses basic info needed to update a package manager"""
     def __init__(self, name: str, root: bool, cmds: list[list[str]]):
         self.name = name
         self.root = root
         self.cmds = cmds
-
-    def getName(self):
+    def get_name(self):
+        """Returns the name of the PkgManager's binary"""
         return self.name
-    def usesRoot(self):
+    def uses_root(self):
+        """Returns true if the PkgManager should be run as root"""
         return self.root
-    def getCmds(self):
+    def get_cmds(self):
+        """Returns a list of paramater lists to run in order to update the PkgManager"""
         return self.cmds
 
-def getRootString() -> None:
-    """return string to prepend to commands in order to run them as root"""
-    if isTermux():
-        print("No Root Privileges on Termux")
-        return ""
-
-    if environ.get("EUID", None) == 0:
-        rootString = ""
-    elif has("doas"):
-        rootString = "doas"
-    elif has("sudo"):
-        rootString = "sudo"
-    else:
-        print("ERROR: no root privileges found.")
-        print("You can try running this script as root or verifying that sudo or doas is in your PATH")
-        sys.exit(1)
-    print(f"Using '{rootString}' as root prefix")
-    return rootString
-
-def getHome() -> str:
+def get_home() -> str:
     """return the current users home directory, with a trailing slash"""
     home = environ.get("HOME")
     if home[-1] != "/":
         home += "/"
     return home
 
-def getManagers() -> None:
+def get_managers() -> None:
     """returns a list of all availible package managers"""
-    foundManagers = []
-    for manager in managerList:
-        if has(manager):
-            foundManagers.append(manager)
-    return foundManagers
+    found_managers = []
+    for pkg_manager in MANAGER_LIST:
+        if has(pkg_manager.get_name()):
+            found_managers.append(pkg_manager.get_name())
+    return found_managers
 
-def update(manager: str) -> None:
+def update(mgr: PkgManager) -> None:
     """update a specified package manager"""
-    if has(manager):
-        for command in managerList[manager]:
-            run(command, check=False)
+    if has(mgr.get_name()):
+        if mgr.uses_root() and mgr.uses_root() != "":
+            for cmd in mgr.get_cmds():
+                run([root_string, *cmd], check=False)
+        else:
+            for cmd in mgr.get_cmds():
+                run(cmd, check=False)
 
-ROOT_STRING = getRootString()
-managerList = [
-    pkgManager("apt-get", True,
+MANAGER_LIST = [
+    PkgManager("apt-get", True,
         [
-            [ROOT_STRING, "apt-get", "update"],
-            [ROOT_STRING, "apt-get", "upgrade"],
-            [ROOT_STRING, "apt-get", "autoremove"]
+            ["apt-get", "update"],
+            ["apt-get", "upgrade"],
+            ["apt-get", "autoremove"]
         ]),
-    pkgManager("brew", False,
+    PkgManager("brew", False,
         [
             ["brew", "update"],
             ["brew", "upgrade"],
             ["brew", "autoremove"]
         ]),
-    pkgManager("dnf", True,
-        [
-            [ROOT_STRING, "dnf", "upgrade"]
-        ]),
-    pkgManager("dfm", False,
+    PkgManager("dnf", True,
+        [["dnf", "upgrade"]]),
+    PkgManager("dfm", False,
         [
             ["dfm", "update"],
             ["dfm", "deploy"]
         ]),
-    "emerge":
+    PkgManager("emerge", True,
         [
-            [ROOT_STRING, "emerge", "--sync"],
-            [ROOT_STRING, "emerge", "--update", "--deep", "--with-bdeps=y", "@world"],
-            [ROOT_STRING, "emerge", "--deepclean"]
-        ],
-    "flatpak":
-        [
-            [ROOT_STRING, "flatpak", "update"]
-        ],
-    "softwareupdate":
-        [
-            ["softwareupdate", "--verbose", "-lir", "--agree-to-license"]
-        ],
-    "nvim":
+            ["emerge", "--sync"],
+            ["emerge", "--update", "--deep", "--with-bdeps=y", "@world"],
+            ["emerge", "--deepclean"]
+        ]),
+    PkgManager("flatpak", True,
+        [["flatpak", "update"]]),
+    PkgManager("softwareupdate", False,
+        [["softwareupdate", "--verbose", "-lir", "--agree-to-license"]]),
+    PkgManager("nvim", False,
         [
             ["nvim", "--headless", "-c", "lua if vim.pack then vim.pack.update() end", "-c", "qa"],
             ["echo"]
-        ],
-    "pacman":
-        [
-            ["echo", "Skipped pacman for yay"] if has("yay") else [ROOT_STRING, "pacman", "-Syu"]
-        ],
-    "pkg":
+        ]),
+    PkgManager("pacman", True,
+        [["echo", "Skipped pacman for yay"] if has("yay") else ["pacman", "-Syu"]]),
+    PkgManager("pkg", False,
         [
             ["pkg", "upgrade"],
             ["pkg", "autoclean"]
-        ],
-    "port":
+        ]),
+    PkgManager("port", False,
         [
             ["port", "-v", "selfupdate"],
             ["port", "-v", "upgrade", "outdated"],
             ["port", "-v", "uninstall", "inactive"]
-        ],
-    "scoop":
-        [
-            ["scoop", "update"]
-        ],
-    "snap":
-        [
-            [ROOT_STRING, "snap", "refresh"]
-        ],
-    "tldr":
-        [
-            ["tldr", "-u"]
-        ],
-    "yay":
-        [
-            ["yay", "-Syu", "--noconfirm"]
-        ]
+        ]),
+    PkgManager("scoop", False,
+        [["scoop", "update"]]),
+    PkgManager("snap", True,
+        [["snap", "refresh"]]),
+    PkgManager("tldr", False,
+        [["tldr", "-u"]]),
+    PkgManager("yay", False,
+        [["yay", "-Syu", "--noconfirm"]])
 ]
 
 try:
@@ -150,7 +162,8 @@ try:
     parser.add_argument("--toUpdate", dest="toUpdate", help="specify which managers to update", nargs="+", type=str)
     parser.add_argument("--skip", "-s", dest="skip", help="specify which managers to skip", nargs="+", type=str)
     parser.add_argument("--list", "-l", dest="listMode", action="store_true", help="list availible package managers")
-    parser.add_argument("--all", "-a", dest="UPDATE_ALL", action="store_true", help="update all availible package managers, (this is the default)")
+    parser.add_argument("--all", "-a", dest="UPDATE_ALL", action="store_true",
+                        help="update all availible package managers, (this is the default)")
 
     args = vars(parser.parse_args())
     toUpdate = args["toUpdate"]
@@ -161,23 +174,23 @@ try:
     # remove skipped managers
     if skip is not None:
         for skippedManager in skip:
-            if skippedManager in managerList:
-                managerList.pop(skippedManager)
+            if skippedManager in MANAGER_LIST:
+                MANAGER_LIST.pop(skippedManager)
             else:
-                print("WARNING: unrecognized package manager '" + str(skippedManager.keys()) + "'.")
+                warn("unrecognized package manager '" + str(skippedManager.keys()) + "'.")
 
     if listMode:
-        print(getManagers())
+        print(get_managers())
     elif toUpdate is None or UPDATE_ALL:
         #update all availible packages
-        for manager in managerList:
+        for manager in MANAGER_LIST:
             update(manager)
     else:
-        print("Updating " + str(toUpdate) + ".")
+        ok("Updating " + str(toUpdate) + ".")
         for selectedManager in toUpdate:
-            if selectedManager in managerList:
+            if selectedManager in MANAGER_LIST:
                 update(selectedManager)
             else:
-                print("WARNING: unrecognized package manager '" + str(selectedManager) + "'.")
+                warn("unrecognized package manager '" + str(selectedManager) + "'.")
 except KeyboardInterrupt:
-    sys.exit(1)
+    error("KeyboardInterrupt")
