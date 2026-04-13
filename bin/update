@@ -5,7 +5,6 @@ from shutil import which
 from os import environ
 from subprocess import run
 import sys
-#all above modules are built in to python 3.10
 import argparse
 
 def is_termux() -> bool:
