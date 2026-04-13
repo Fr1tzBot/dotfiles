@@ -3,7 +3,7 @@
 
 from shutil import which
 from os import environ
-from subprocess import run
+from subprocess import run, DEVNULL
 import sys
 import argparse
 
@@ -41,21 +41,6 @@ def error(string: str):
         print(f"ERROR: {string}")
     sys.exit(1)
 
-root_string = None
-if is_termux():
-    ok("No Root Privileges on Termux")
-    root_string = ""
-elif environ.get("EUID", None) == 0:
-    root_string = ""
-elif has("doas"):
-    root_string = "doas"
-elif has("sudo"):
-    root_string = "sudo"
-else:
-    #Ideally we would just skip managers which need root access here
-    error("ERROR: no root privileges found.\nYou can try running this script as root or verifying that sudo or doas is in your PATH")
-ok(f"Using '{root_string}' as root prefix")
-
 class PkgManager:
     """PkgManager houses basic info needed to update a package manager"""
     def __init__(self, name: str, root: bool, cmds: list[list[str]]):
@@ -92,10 +77,10 @@ def update(mgr: PkgManager) -> None:
     if has(mgr.get_name()):
         if mgr.uses_root() and mgr.uses_root() != "":
             for cmd in mgr.get_cmds():
-                run([root_string, *cmd], check=False)
+                run([root_string, *cmd], check=False, stderr=DEVNULL, stdout=DEVNULL)
         else:
             for cmd in mgr.get_cmds():
-                run(cmd, check=False)
+                run(cmd, check=False, stderr=DEVNULL, stdout=DEVNULL)
 
 MANAGER_LIST = [
     PkgManager("apt-get", True,
@@ -154,6 +139,21 @@ MANAGER_LIST = [
     PkgManager("yay", False,
         [["yay", "-Syu", "--noconfirm"]])
 ]
+
+root_string = None
+if is_termux():
+    ok("No Root Privileges on Termux")
+    root_string = ""
+elif environ.get("EUID", None) == 0:
+    root_string = ""
+elif has("doas"):
+    root_string = "doas"
+elif has("sudo"):
+    root_string = "sudo"
+else:
+    #Ideally we would just skip managers which need root access here
+    error("ERROR: no root privileges found.\nYou can try running this script as root or verifying that sudo or doas is in your PATH")
+ok(f"Using '{root_string}' as root prefix")
 
 try:
     parser = argparse.ArgumentParser(description="a program to automatically update installed package managers")
