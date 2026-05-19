@@ -104,6 +104,7 @@ require("lualine").setup {
 
 if vim.fn.isdirectory("/home/fritz/Documents/brain") == 1 then
     require("obsidian").setup {
+        legacy_commands = false,
         workspaces = {
             {name = "brain", path = "/home/fritz/Documents/brain"}
         },
