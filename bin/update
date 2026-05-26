@@ -76,19 +76,21 @@ def get_managers() -> None:
 def update(mgr: PkgManager) -> None:
     """update a specified package manager"""
     if has(mgr.get_name()):
-        match root_string:
-            case RootString.SUDO | RootString.DOAS:
-                for cmd in mgr.get_cmds():
-                    run([root_string, *cmd], check=False)#, stderr=DEVNULL, stdout=DEVNULL)
-            case RootString.ROOT_USER:
-                for cmd in mgr.get_cmds():
-                    run(cmd, check=False)#, stderr=DEVNULL, stdout=DEVNULL)
-            case RootString.NONE:
-                if mgr.uses_root():
-                    warn(f"Skipping manager {mgr.name} (no root priveleges)")
-                else:
+        if mgr.uses_root():
+            match root_string:
+                case RootString.SUDO | RootString.DOAS:
+                    for cmd in mgr.get_cmds():
+                        run([root_string.value, *cmd], check=False)#, stderr=DEVNULL, stdout=DEVNULL)
+                case RootString.ROOT_USER:
                     for cmd in mgr.get_cmds():
                         run(cmd, check=False)#, stderr=DEVNULL, stdout=DEVNULL)
+                case RootString.NONE:
+                    if mgr.uses_root():
+                        warn(f"Skipping manager {mgr.name} (no root priveleges)")
+                        return
+                    else:
+                        for cmd in mgr.get_cmds():
+                            run(cmd, check=False)#, stderr=DEVNULL, stdout=DEVNULL)
 
 
 MANAGER_LIST = [
