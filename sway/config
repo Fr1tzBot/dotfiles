@@ -16,7 +16,7 @@ set $right l
 # Your preferred terminal emulator
 set $term "foot -d none"
 # Your preferred application launcher
-set $menu rofi -show drun -show-icons
+set $menu fuzzel
 
 # Enable Machine-Specific Configs
 include "~/.config/sway/osspecific.config"
