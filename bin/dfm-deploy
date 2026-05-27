@@ -15,7 +15,7 @@ for prog in "${PROGS_HOME[@]}"; do
     install_home "$prog"
 done
 
-PROGS_CONFIG=("foot" "kitty" "mpv" "fastfetch" "neofetch" "nvim" "rofi" "sway" "swaylock" "waybar" "niri" "dunst")
+PROGS_CONFIG=("foot" "kitty" "mpv" "fastfetch" "neofetch" "nvim" "rofi" "sway" "swaylock" "waybar" "niri" "dunst" "fuzzel")
 for prog in "${PROGS_CONFIG[@]}"; do
     install_config "$prog"
 done
