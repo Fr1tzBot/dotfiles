@@ -1,6 +1,5 @@
 #!/bin/bash
 has() { type -p "$1" &> /dev/null; }
-TRIMMED_HOME=$(realpath -s "$HOME")
 
 if has ubuntu-bug ; then
     distro="Ubuntu"
