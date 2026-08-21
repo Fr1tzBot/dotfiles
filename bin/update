@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 # update: a script to automatically update software
+# Exit Codes:
+# 0 - Sucess
+# 1 - general error
+# 126 - no root privileges found
 
 # Check if specified program is in PATH
 has() { type -p "$1" > /dev/null; }
@@ -19,30 +23,41 @@ SUPPORTS_COLOR=true
 
 #Prints the specified string in green (if possible) prefixed with 'OK: '
 ok() {
-    if $SUPPORTS_COLOR ; then
-        printf "\033[92mOK: %s\033[0m\n" "$1"
-    else
-        printf "OK: %s\n" "$1"
+    if ! $quiet ; then
+        if $SUPPORTS_COLOR ; then
+            printf "\033[92mOK: %s\033[0m\n" "$1" >&2
+        else
+            printf "OK: %s\n" "$1" >&2
+        fi
     fi
 }
 
 #Prints the specified string in yellow (if possible) prefixed with 'WARN: '
 warn() {
-    if $SUPPORTS_COLOR ; then
-        printf "\033[93mWARN: %s\033[0m\n" "$1"
-    else
-        printf "WARN: %s\n" "$1"
+    if ! $quiet ; then
+        if $SUPPORTS_COLOR ; then
+            printf "\033[93mWARN: %s\033[0m\n" "$1" >&2
+        else
+            printf "WARN: %s\n" "$1" >&2
+        fi
     fi
 }
 
-#Prints the specified string in red (if possible) prefixed with 'ERROR: ' and exits with code 1
+#Prints the specified string in red (if possible) prefixed with 'ERROR: ' and exits with specified code or code 1 if no code is specified
 error() {
-    if $SUPPORTS_COLOR ; then
-        printf "\033[91mERROR: %s\033[0m\n" "$1"
-    else
-        printf "ERROR: %s\n" "$1"
+    if ! $quiet ; then
+        if $SUPPORTS_COLOR ; then
+            printf "\033[91mERROR: %s\033[0m\n" "$1" >&2
+        else
+            printf "ERROR: %s\n" "$1" >&2
+        fi
     fi
-    exit 1
+
+    if [ $# -ge 2 ] ; then
+        exit "$2"
+    else
+        exit 1
+    fi
 }
 
 ROOT_STRING=""
@@ -55,10 +70,8 @@ elif has doas ; then
 elif has sudo ; then
     ROOT_STRING="sudo"
 else
-    error "no root privileges found.\nYou can try running this script as root or verifying that sudo or doas is in your PATH"
+    error "no root privileges found.\nYou can try running this script as root or verifying that sudo or doas is in your PATH" 126
 fi
-
-ok "Using '$ROOT_STRING' as root prefix"
 
 declare -A MANAGER_LIST
 MANAGER_LIST["apt-get"]="$ROOT_STRING apt-get update &&
@@ -89,6 +102,7 @@ MANAGER_LIST["yay"]="yay -Syu --noconfirm"
 
 toUpdate=("${!MANAGER_LIST[@]}")
 listMode=false
+quiet=false
 toSkip=()
 
 while [ $# -gt 0 ] ; do
@@ -113,11 +127,17 @@ while [ $# -gt 0 ] ; do
             listMode=true
             shift
             ;;
+        -q|--quiet)
+            quiet=true
+            shift
+            ;;
         *)
             shift
             ;;
     esac
 done
+
+ok "Using '$ROOT_STRING' as root prefix"
 
 if $listMode ; then
     printf "Managers: "
@@ -137,3 +157,4 @@ done
 if $listMode ; then
     printf "\b\b \n"
 fi
+
