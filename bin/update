@@ -74,7 +74,7 @@ else
 fi
 
 declare -A MANAGER_LIST
-MANAGER_LIST["apt-get"]="$ROOT_STRING apt-get update &&
+MANAGER_LIST["apt-get"]="[ -z "$TERMUX_VERSION" ] && $ROOT_STRING apt-get update &&
                          $ROOT_STRING apt-get upgrade &&
                          $ROOT_STRING apt-get autoremove"
 MANAGER_LIST["brew"]="brew update &&
