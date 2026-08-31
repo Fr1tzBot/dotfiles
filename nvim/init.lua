@@ -40,7 +40,7 @@ local langs = {
     {prog="lua-language-server", lsp="lua_ls"},
     {prog="matlab-language-server", lsp="matlab_ls"},
     {prog="pylsp", lsp="pylsp"},
-    -- {prog="verible-verilog-ls", lsp="verible"},
+    {prog="verible-verilog-ls", lsp="verible"},
     {prog="rust-analyzer", lsp="rust_analyzer"}
 }
 

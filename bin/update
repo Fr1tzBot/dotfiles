@@ -74,7 +74,7 @@ else
 fi
 
 declare -A MANAGER_LIST
-MANAGER_LIST["apt-get"]="[ -z "$TERMUX_VERSION" ] && $ROOT_STRING apt-get update &&
+MANAGER_LIST["apt-get"]="[ -z \"$TERMUX_VERSION\" ] && $ROOT_STRING apt-get update &&
                          $ROOT_STRING apt-get upgrade &&
                          $ROOT_STRING apt-get autoremove"
 MANAGER_LIST["brew"]="brew update &&
@@ -82,7 +82,7 @@ MANAGER_LIST["brew"]="brew update &&
                       brew autoremove"
 MANAGER_LIST["dnf"]="$ROOT_STRING dnf upgrade"
 MANAGER_LIST["dfm"]="dfm update &&
-                     dfm upgrade"
+                     dfm deploy"
 MANAGER_LIST["emerge"]="$ROOT_STRING emerge --sync &&
                         $ROOT_STRING emerge --update --deep --with-bdeps=y @world &&
                         $ROOT_STRING emerge --deepclean"
