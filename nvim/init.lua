@@ -41,6 +41,7 @@ local langs = {
     {prog="matlab-language-server", lsp="matlab_ls"},
     {prog="pylsp", lsp="pylsp"},
     {prog="verible-verilog-ls", lsp="verible"},
+    {prog="R", lsp="r_language_server"},
     {prog="rust-analyzer", lsp="rust_analyzer"}
 }
 
