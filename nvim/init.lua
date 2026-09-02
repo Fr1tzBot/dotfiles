@@ -28,9 +28,7 @@ local unused = vim.iter(vim.pack.get())
  :map(function(x) return x.spec.name end)
  :totable()
 
-for i, lang in pairs(unused) do
-    vim.pack.del(lang)
-end
+vim.pack.del(unused)
 
 local langs = {
     {prog="asm-lsp", lsp="asm_lsp"},
@@ -153,10 +151,11 @@ vim.opt.ic = true
 vim.opt.is = true
 vim.opt.cursorcolumn = false
 vim.opt.scrolljump = 5
-vim.opt.lazyredraw = true
+-- vim.opt.lazyredraw = true
 vim.opt.redrawtime = 10000
 vim.opt.synmaxcol = 180
-vim.opt.re = 1
+-- Old Regex Library shouldnt be force-enabled
+-- vim.opt.re = 1
 vim.opt.hidden = true
 vim.opt.backup = false
 vim.opt.writebackup = false
