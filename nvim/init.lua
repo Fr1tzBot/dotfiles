@@ -28,7 +28,9 @@ local unused = vim.iter(vim.pack.get())
  :map(function(x) return x.spec.name end)
  :totable()
 
-vim.pack.del(unused)
+if #unused > 0 then
+    vim.pack.del(unused)
+end
 
 local langs = {
     {prog="asm-lsp", lsp="asm_lsp"},
