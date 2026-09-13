@@ -50,9 +50,22 @@ input {
 spawn-at-startup "swaybg" "-o" "eDP-1" "-i" "/home/fritz/.config/sway/Background.jpg" "-m" "fill"
 spawn-at-startup "swayosd-server"
 
+//Laptop Display
 output "eDP-1" {
     mode "2560x1600@60"
     scale 1.5
+    transform "normal"
+}
+
+//Desktop Monitors
+output "HDMI-A-1" {
+    mode "1600x1200@60"
+    scale 1
+    transform "270"
+}
+output "HDMI-A-2" {
+    mode "1680x1050"
+    scale 1
     transform "normal"
 }
 
