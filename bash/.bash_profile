@@ -15,7 +15,7 @@ prependPath() { if [ -d "$1" ] ; then PATH="$1:$PATH"; fi }
 brewPath() { prependPath "$prefix$1"; }
 
 #Notify if PATH is already set
-if [ -n "$PATH" ] ; then
+if [ -n "$PATH" ] && [ ! -e /etc/NIXOS ] ; then
     #if set, replace it
     #printf '\033[31mWARNING: reset path from %s \033[39m\n' "$PATH"
     OLD_PATH=$PATH
