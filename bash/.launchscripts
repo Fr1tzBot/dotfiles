@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 has() { type -p "$1" &> /dev/null; }
 
 if has ubuntu-bug ; then
@@ -15,6 +15,8 @@ elif has apt ; then
     distro="Debian"
 elif has scoop ; then
     distro="Windows"
+elif [ -e /etc/NIXOS ] ; then
+    distro="NixOS"
 else
     distro=$(uname -s)
 fi
