@@ -127,6 +127,8 @@ setPath() {
 # Don't touch PATH on nixos
 if [ ! -e /etc/NIXOS ] && ! has nix ; then
     setPath
+else
+    appendPath "$HOME/bin"
 fi
 
 if [ "$COLUMNS" -gt 70 ] ; then
