@@ -6,6 +6,8 @@ TRIMMED_HOME=$(realpath -s "$HOME")
 DOTFILES="$TRIMMED_HOME/Documents/dotfiles"
 ROOT_STRING=""
 
+# technically this is a bad check cuz nix can be installed on non-nixos systems...
+# TODO improve
 ! has nix && printf "nix not detected." && exit 1
 
 if [ -n "$TERMUX_VERSION" ] ; then
@@ -20,7 +22,7 @@ else
     error "no root privileges found.\nYou can try running this script as root or verifying that sudo or doas is in your PATH" 126
 fi
 
-$ROOT_STRING cp -ruv "$DOTFILES/nix" "/etc/"
+$ROOT_STRING cp -ruv "$DOTFILES/nixos" "/etc/"
 
 read -rp "Would you like to rebuild now? [Y/n]" response
 case "${response,,}" in
