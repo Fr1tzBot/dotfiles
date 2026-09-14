@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+TRIMMED_HOME=$(realpath -s "$HOME")
+DOTFILES="$TRIMMED_HOME/Documents/dotfiles"
+ROOT_STRING=""
+if [ -n "$TERMUX_VERSION" ] ; then
+    ok "No Root Privileges on Termux"
+elif [ $EUID -eq 0 ] ; then
+    true
+elif has doas ; then
+    ROOT_STRING="doas"
+elif has sudo ; then
+    ROOT_STRING="sudo"
+else
+    error "no root privileges found.\nYou can try running this script as root or verifying that sudo or doas is in your PATH" 126
+fi
+
+$ROOT_STRING cp -ruv "$DOTFILES/nix" "/etc/"
+
+read -rp "Would you like to rebuild now? [Y/n]" response
+case "${response,,}" in
+    yes|y) $ROOT_STRING nixos-rebuild switch
+esac
+
+exit 0
