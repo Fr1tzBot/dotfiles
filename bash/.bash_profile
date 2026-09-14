@@ -125,7 +125,7 @@ setPath() {
 }
 
 # Don't touch PATH on nixos
-if [ ! -e /etc/NIXOS ] || [ -z "$NIX_PATH" ] ; then
+if [ ! -e /etc/NIXOS ] && ! has nix ; then
     setPath
 fi
 
