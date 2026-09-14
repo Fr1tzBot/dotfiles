@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
+has() { type -p "$1" > /dev/null; }
+
 TRIMMED_HOME=$(realpath -s "$HOME")
 DOTFILES="$TRIMMED_HOME/Documents/dotfiles"
 ROOT_STRING=""
+
+! has nix && printf "nix not detected." && exit 1
+
 if [ -n "$TERMUX_VERSION" ] ; then
     ok "No Root Privileges on Termux"
 elif [ $EUID -eq 0 ] ; then
