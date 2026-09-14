@@ -55,21 +55,32 @@
     programs.firefox.enable = true;
     programs.foot.enable = true;
     programs.git.enable = true;
+    programs.lazygit.enable = true;
     programs.niri.enable = true;
     systemd.user.services.niri.enableDefaultPath = false;
 
     environment.systemPackages = with pkgs; [
+        pkgs.aria2
+        pkgs.baobab
         pkgs.btop
         pkgs.cava
         pkgs.fastfetch
         pkgs.fuzzel
+        pkgs.gimp
+        pkgs.gnome-firmware
+        pkgs.meld
         pkgs.mpv
         pkgs.neovim
+        pkgs.nmap
         pkgs.obsidian
+        pkgs.pavucontrol
+        pkgs.R
+        pkgs.restic #this should be done with services.restic later
         pkgs.spotify
         pkgs.swaybg
         pkgs.swaylock-effects
         pkgs.swayosd
+        pkgs.tealdeer
         pkgs.tree
         pkgs.viu
         pkgs.waybar
@@ -89,6 +100,7 @@
 # List services that you want to enable:
     services.avahi.enable = true;
     services.avahi.openFirewall = true;
+    services.blueman.enable = true;
     services.dunst.enable = true;
     services.greetd = {
         enable = true;
@@ -100,6 +112,7 @@
     services.libinput.enable = true;
     services.openssh.enable = true;
     services.printing.enable = false;
+    services.zerotierone.enable = true;
 
     security.doas.enable = true;
     security.doas.extraRules = [

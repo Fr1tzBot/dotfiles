@@ -24,9 +24,11 @@ fi
 
 $ROOT_STRING cp -ruv "$DOTFILES/nixos" "/etc/"
 
-read -rp "Would you like to rebuild now? [Y/n]" response
+read -rp "Would you like to rebuild now? [Y/n] " response
 case "${response,,}" in
-    yes|y) $ROOT_STRING nixos-rebuild switch
+    no|n) exit 0
 esac
 
+$ROOT_STRING nixos-rebuild switch
 exit 0
+
