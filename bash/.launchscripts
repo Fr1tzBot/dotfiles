@@ -15,7 +15,7 @@ elif has apt ; then
     distro="Debian"
 elif has scoop ; then
     distro="Windows"
-elif [ -e /etc/NIXOS ] ; then
+elif [ -e /etc/NIXOS ] || has nix ; then
     distro="NixOS"
 else
     distro=$(uname -s)
