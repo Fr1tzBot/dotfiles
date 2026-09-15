@@ -31,7 +31,7 @@
 # Use latest kernel.
     #boot.kernelPackages = pkgs.linuxPackages_latest; #changed for asahi
 
-    networking.hostName = "antilles"; # Define your hostname.
+    networking.hostName = "botzRus2"; # Define your hostname.
     networking.networkmanager.wifi.backend = "iwd"; #changed for asahi
 
 # Configure network connections interactively with nmcli or nmtui.
@@ -45,6 +45,7 @@
 
     fonts.packages = with pkgs; [
         nerd-fonts.space-mono
+        source-code-pro
     ];
 
 # Enable sound.
@@ -75,6 +76,7 @@
         pkgs.fuzzel
         pkgs.gimp
         pkgs.gnome-firmware
+        pkgs.htop
         pkgs.meld
         pkgs.mpv
         pkgs.neovim
