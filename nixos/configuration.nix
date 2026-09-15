@@ -107,8 +107,15 @@
 # };
 
 # List services that you want to enable:
-    services.avahi.enable = true;
-    services.avahi.openFirewall = true;
+    services.avahi = {
+        enable = true;
+        openFirewall = true;
+        nssmdns4 = true;
+        publish = {
+            enable = true;
+            addresses = true;
+        };
+    };
     services.blueman.enable = true;
     services.dunst.enable = true;
     services.greetd = {
