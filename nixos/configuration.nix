@@ -8,24 +8,31 @@
     imports =
         [ # Include the results of the hardware scan.
         ./hardware-configuration.nix
+
+	# changed for asahi
+	./apple-silicon-support
         ];
 
+    hardware.asahi.enable = true;
+
     hardware.graphics.enable = true;
-    swapDevices = [{
-        device="/swap";
-    }];
+    # changed for asahi
+    # swapDevices = [{
+    #     device="/swap";
+    # }];
 
     nixpkgs.config.allowUnfree = true;
 
 # Use the systemd-boot EFI boot loader.
     boot.loader.systemd-boot.enable = true;
     boot.loader.systemd-boot.configurationLimit = 5;
-    boot.loader.efi.canTouchEfiVariables = true;
+    boot.loader.efi.canTouchEfiVariables = false; # changed for asahi
 
 # Use latest kernel.
-    boot.kernelPackages = pkgs.linuxPackages_latest;
+    #boot.kernelPackages = pkgs.linuxPackages_latest; #changed for asahi
 
     networking.hostName = "antilles"; # Define your hostname.
+    networking.networkmanager.wifi.backend = "iwd"; #changed for asahi
 
 # Configure network connections interactively with nmcli or nmtui.
     networking.networkmanager.enable = true;
@@ -76,7 +83,7 @@
         pkgs.pavucontrol
         pkgs.R
         pkgs.restic #this should be done with services.restic later
-        pkgs.spotify
+        #pkgs.spotify # changed for asahi
         pkgs.swaybg
         pkgs.swaylock-effects
         pkgs.swayosd
