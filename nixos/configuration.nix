@@ -43,10 +43,16 @@
 # Select internationalisation properties.
     i18n.defaultLocale = "en_US.UTF-8";
 
-    fonts.packages = with pkgs; [
-        nerd-fonts.space-mono
-        source-code-pro
-    ];
+    fonts = {
+        packages = with pkgs; [
+            fira-sans
+            font-awesome
+            nerd-fonts.space-mono
+            source-code-pro
+        ];
+        fontconfig.enable = true;
+        fontconfig.defaultFonts.sansSerif = [ "DejaVu Sans" ];
+    };
 
 # Enable sound.
     services.pipewire = {
@@ -56,7 +62,7 @@
 
     users.users.fritz = {
         isNormalUser = true;
-        extraGroups = [ "networkmanager" ];
+        extraGroups = [ "networkmanager" "wheel" ];
     };
 
     programs.bat.enable = true;
