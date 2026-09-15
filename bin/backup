@@ -38,12 +38,14 @@ else
 fi
 
 
-# First, dump package lists to a temp directory
-TMP="$(mktemp -d ~/packages.XXXXXXXXXX)"
-trap 'rm -rvf "$TMP"' EXIT #Automatically clear this dir when we exit the script
-has pacman && printf "Dumping packages from pacman...\n" && pacman -Qe > "$TMP/pacman.list"
-has yay && printf "Dumping packages from yay...\n" && yay -Qe > "$TMP/yay.list"
-has apt && printf "Dumping packages from apt...\n" && apt list --installed > "$TMP/apt.list"
+if has pacman || has yay || has apt ; then
+    # First, dump package lists to a temp directory
+    TMP="$(mktemp -d ~/packages.XXXXXXXXXX)"
+    trap 'rm -rvf "$TMP"' EXIT #Automatically clear this dir when we exit the script
+    has pacman && printf "Dumping packages from pacman...\n" && pacman -Qe > "$TMP/pacman.list"
+    has yay && printf "Dumping packages from yay...\n" && yay -Qe > "$TMP/yay.list"
+    has apt && printf "Dumping packages from apt...\n" && apt list --installed > "$TMP/apt.list"
+fi
 
 #purge yay/pacman cache to save backup space
 if has yay ; then
