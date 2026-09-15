@@ -7,7 +7,7 @@
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": [
-        "custom/arch",
+        "custom/nix",
         "sway/workspaces",
         "sway/mode",
         "sway/scratchpad",

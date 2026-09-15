@@ -5,6 +5,11 @@
         "tooltip-format": "btw",
         "on-click": "rofi -show p -modi p:rofi-power-menu"
     },
+    "custom/nix": {
+        "format": " ",
+        "tooltip": true,
+        "tooltip-format": "btw"
+    },
     "custom/lyrics": {
             "return-type": "json",
             "format": "{icon} {0}",
