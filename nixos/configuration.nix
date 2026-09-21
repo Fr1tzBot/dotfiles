@@ -14,10 +14,6 @@
 
 
     hardware.graphics.enable = true;
-    # changed for asahi, need to autodetect swap
-    # swapDevices = [{
-    #     device="/swap";
-    # }];
 
     hardware.bluetooth.enable = true;
     hardware.bluetooth.powerOnBoot = true;
