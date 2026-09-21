@@ -94,13 +94,14 @@
         neovim
             asm-lsp
             bash-language-server
-            jdt-language-server
             clang-tools
+            jdt-language-server
             lua-language-server
             matlab-language-server
             nil
             python314Packages.python-lsp-server
             rust-analyzer
+            shellcheck
             verible
 
         nmap
