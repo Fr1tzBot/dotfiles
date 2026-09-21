@@ -111,8 +111,6 @@ setPath() {
         #load brew bash completion script
         [[ -r "$prefix/etc/profile.d/bash_completion.sh" ]] && . "$prefix/etc/profile.d/bash_completion.sh"
 
-        # doas root command completion
-        has doas && complete -F _root_command doas
 
         if [ "$(has arch && arch)" = "i386" ] ; then
             export BASH_SILENCE_DEPRECATION_WARNING=1
@@ -130,6 +128,23 @@ if [ ! -e /etc/NIXOS ] && ! has nix ; then
 else
     appendPath "$HOME/bin"
 fi
+
+# doas root command completion
+has doas && complete -F _root_command doas
+
+#dfm completion
+_dfm() {
+    local cur=${COMP_WORDS[COMP_CWORD]}
+
+    if (( COMP_CWORD == 1 )); then
+        local cmds
+        cmds=$(compgen -c -- "dfm-" | sed 's/^dfm-//' | sort -u)
+        mapfile -t COMPREPLY < <(compgen -W "$cmds" -- "$cur")
+    fi
+}
+
+complete -F _dfm dfm
+complete -W "" dfm-deploy dfm-nixdeploy dfm-update
 
 if [ "$COLUMNS" -gt 70 ] ; then
     export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
