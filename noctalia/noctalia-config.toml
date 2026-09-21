@@ -112,6 +112,9 @@ unit = "imperial"
 [widget.active_window]
 title_scroll = "on_hover"
 
+[widget.bluetooth]
+enabled = false
+
 [widget.clock]
 format = "{:%I:%M:%S %p}"
 
