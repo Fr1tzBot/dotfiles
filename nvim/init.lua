@@ -109,10 +109,6 @@ if vim.fn.isdirectory("/home/fritz/Documents/brain") == 1 then
         legacy_commands = false,
         workspaces = {
             {name = "brain", path = "/home/fritz/Documents/brain"}
-        },
-        completion = {
-            nvim_cmp = true,
-            min_chars = 2,
         }
     }
 end
