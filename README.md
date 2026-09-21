@@ -1,17 +1,31 @@
 # dotfiles
-My dotfiles and config files for:
-- bash,
-- fastfetch
-- foot terminal
-- git
-- kitty terminal
-- mpv
-- neovim
-- rofi
-- sway wm
+
+## Currently Maintained Configs:
+- CLI:
+    - bash
+    - cava
+    - fastfetch
+    - foot
+    - git
+    - neovim
+    - ssh
+- GUI:
+    - mpv
+    - niri
+    - nixos
+    - noctalia
+
+## Archive Configs:
+- dunst
+- fuzzel
+- kitty
+- neofetch
+- sway-wm
 - swaylock
 - vim
 - waybar
+
+Archived configs are still deployed if their respective program is detected.
 
 ## Installation
 Everything can be installed by running the deploy script with `./bin/dfm-deploy`
@@ -23,6 +37,8 @@ Once Dotfiles have been installed, you can update them with:
 
 followed by `dfm deploy` to copy over the new files
 
+on nixos, the config can be updated with `dfm nixdeploy`
+
 ## Dependencies
-The scripts in `bin/` are written in **Python** or **Bash**
+The scripts in `bin/` are written in **Bash**
 
