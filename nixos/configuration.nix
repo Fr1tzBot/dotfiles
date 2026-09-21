@@ -41,15 +41,19 @@
         dates = "weekly";
     };
 
-    fonts = {
-        packages = with pkgs; [
-            fira-sans
-            font-awesome
-            nerd-fonts.space-mono
-            source-code-pro
-        ];
-        fontconfig.enable = true;
-        fontconfig.defaultFonts.sansSerif = [ "DejaVu Sans" ];
+    fonts.packages = with pkgs; [
+        nerd-fonts.hack
+        dejavu_fonts
+        fira-sans
+        font-awesome
+        nerd-fonts.space-mono
+        source-code-pro
+    ];
+
+    fonts.fontconfig.defaultFonts = {
+        sansSerif = [ "DejaVu Sans" ];
+        serif = [ "DejaVu Sans Serif" ];
+        monospace = [ "DejaVu Sans Mono" ];
     };
 
 # Enable sound.
