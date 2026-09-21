@@ -46,12 +46,6 @@ input {
     // focus-follows-mouse max-scroll-amount="0%"
 }
 
-//Swaybg background
-spawn-at-startup "swaybg" "-o" "eDP-1" "-i" "/home/fritz/.config/niri/Background.jpg" "-m" "fill"
-spawn-at-startup "swaybg" "-o" "HDMI-A-1" "-i" "/home/fritz/.config/niri/Background.jpg" "-m" "fill"
-spawn-at-startup "swaybg" "-o" "HDMI-A-2" "-i" "/home/fritz/.config/niri/Background.jpg" "-m" "fill"
-spawn-at-startup "swayosd-server"
-
 //Laptop Display
 output "eDP-1" {
     mode "2560x1600@60"
@@ -222,7 +216,8 @@ layout {
 // See the binds section below for more spawn examples.
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
-spawn-at-startup "waybar"
+// spawn-at-startup "waybar"
+spawn-at-startup "noctalia"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
@@ -264,6 +259,19 @@ animations {
 
 // Work around WezTerm's initial configure bug
 // by setting an empty default-column-width.
+
+layer-rule {
+  match namespace="^noctalia-backdrop"
+  place-within-backdrop true
+}
+
+layer-rule {
+  match namespace="^noctalia-bar-"
+  background-effect {
+    blur false
+  }
+}
+
 window-rule {
     // This regular expression is intentionally made as specific as possible,
     // since this is the default config, and we want no false positives.
@@ -318,7 +326,6 @@ binds {
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+Return hotkey-overlay-title="Open a Terminal: foot" { spawn "foot"; }
     Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
-    Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
     //Mac specific binds
     XF86Search allow-when-locked=false { spawn "fuzzel"; }
@@ -326,53 +333,31 @@ binds {
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
 
-    // Example volume keys mappings for PipeWire & WirePlumber.
-    // The allow-when-locked=true property makes them work even when the session is locked.
-    // Using spawn-sh allows to pass multiple arguments together with the command.
-    // "-l 1.0" limits the volume to 100%.
-    // XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }
-    // XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
-    // XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
-    // XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
-
     //Coarse Volume Adjust
-    XF86AudioRaiseVolume { spawn "swayosd-client" "--output-volume" "raise"; }
-    XF86AudioLowerVolume { spawn "swayosd-client" "--output-volume" "lower"; }
+    XF86AudioRaiseVolume { spawn "noctalia" "msg" "volume-up"; }
+    XF86AudioLowerVolume { spawn "noctalia" "msg" "volume-down"; }
 
     //Fine Volume Adjust
-    Shift+XF86AudioRaiseVolume { spawn "swayosd-client" "--output-volume" "1"; }
-    Shift+XF86AudioLowerVolume{ spawn "swayosd-client" "--output-volume" "-1"; }
+    Shift+XF86AudioRaiseVolume { spawn "noctalia" "msg" "volume-up" "1%"; }
+    Shift+XF86AudioLowerVolume{ spawn "noctalia" "msg" "volume-down" "1%"; }
 
     //Audio/Mic Mute
-    XF86AudioMute        { spawn "swayosd-client" "--output-volume" "mute-toggle"; }
-    XF86AudioMicMute     allow-when-locked=true { spawn "swayosd-client" "--input-volume" "mute-toggle"; }
-
-    // Example media keys mapping using playerctl.
-    // This will work with any MPRIS-enabled media player.
-    // XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl play-pause"; }
-    // XF86AudioStop        allow-when-locked=true { spawn-sh "playerctl stop"; }
-    // XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
-    // XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
+    XF86AudioMute        { spawn "noctalia" "msg" "volume-mute"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn "noctalia" "msg" "mic-mute"; }
 
     //Media Controls
-    XF86AudioPlay        allow-when-locked=true { spawn "swayosd-client" "--playerctl" "play-pause"; }
-    XF86AudioStop        allow-when-locked=true { spawn "swayosd-client" "--playerctl" "stop"; }
-    XF86AudioPrev        allow-when-locked=true { spawn "swayosd-client" "--playerctl" "prev"; }
-    XF86AudioNext        allow-when-locked=true { spawn "swayosd-client" "--playerctl" "next"; }
-
-    // Example brightness key mappings for brightnessctl.
-    // You can use regular spawn with multiple arguments too (to avoid going through "sh"),
-    // but you need to manually put each argument in separate "" quotes.
-    // XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
-    // XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
+    XF86AudioPlay        allow-when-locked=true { spawn "noctalia" "msg" "media" "toggle"; }
+    XF86AudioStop        allow-when-locked=true { spawn "noctalia" "msg" "media" "stop"; }
+    XF86AudioPrev        allow-when-locked=true { spawn "noctalia" "msg" "media" "previous"; }
+    XF86AudioNext        allow-when-locked=true { spawn "noctalia" "msg" "media" "next"; }
 
     //Brightness Coarse Adjust
-    XF86MonBrightnessUp allow-when-locked=true { spawn "swayosd-client" "--brightness" "+10"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn "swayosd-client" "--brightness" "-10"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn "noctalia" "msg" "brightness-up"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "noctalia" "msg" "brightness-down"; }
 
     //Brightness Fine Adjust
-    Shift+XF86MonBrightnessUp allow-when-locked=true { spawn "swayosd-client" "--brightness" "+1"; }
-    Shift+XF86MonBrightnessDown allow-when-locked=true { spawn "swayosd-client" "--brightness" "-1"; }
+    Shift+XF86MonBrightnessUp allow-when-locked=true { spawn "noctalia" "msg" "brightness-up" "1"; }
+    Shift+XF86MonBrightnessDown allow-when-locked=true { spawn "noctalia" "msg" "brightness-down" "1"; }
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
