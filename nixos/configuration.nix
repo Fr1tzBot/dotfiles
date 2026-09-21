@@ -19,6 +19,9 @@
     #     device="/swap";
     # }];
 
+    hardware.bluetooth.enable = true;
+    hardware.bluetooth.powerOnBoot = true;
+
     nixpkgs.config.allowUnfree = true;
 
 # Use the systemd-boot EFI boot loader.
@@ -88,6 +91,7 @@
         meld
         mpv
         noctalia
+            ddcutil
         neovim
             asm-lsp
             bash-language-server
@@ -133,7 +137,6 @@
             addresses = true;
         };
     };
-    services.blueman.enable = true;
     services.greetd = {
         enable = true;
         settings.default_session = {
