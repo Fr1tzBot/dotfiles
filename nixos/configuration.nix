@@ -8,15 +8,13 @@
     imports =
         [ # Include the results of the hardware scan.
         ./hardware-configuration.nix
+        ./aarch64.nix
+        ./x86_64.nix
+        ] ++ lib.optional (builtins.pathExists ./apple-silicon-support) ./asahi.nix;
 
-	# changed for asahi
-	./apple-silicon-support
-        ];
-
-    hardware.asahi.enable = true;
 
     hardware.graphics.enable = true;
-    # changed for asahi
+    # changed for asahi, need to autodetect swap
     # swapDevices = [{
     #     device="/swap";
     # }];
@@ -26,13 +24,8 @@
 # Use the systemd-boot EFI boot loader.
     boot.loader.systemd-boot.enable = true;
     boot.loader.systemd-boot.configurationLimit = 5;
-    boot.loader.efi.canTouchEfiVariables = false; # changed for asahi
 
-# Use latest kernel.
-    #boot.kernelPackages = pkgs.linuxPackages_latest; #changed for asahi
-
-    networking.hostName = "botzRus2"; # Define your hostname.
-    networking.networkmanager.wifi.backend = "iwd"; #changed for asahi
+    networking.networkmanager.wifi.backend = "iwd";
 
 # Configure network connections interactively with nmcli or nmtui.
     networking.networkmanager.enable = true;
@@ -42,6 +35,11 @@
 
 # Select internationalisation properties.
     i18n.defaultLocale = "en_US.UTF-8";
+
+    nix.gc = {
+        automatic = true;
+        dates = "weekly";
+    };
 
     fonts = {
         packages = with pkgs; [
@@ -88,20 +86,20 @@
         neovim
             asm-lsp
             bash-language-server
-            libclang
             jdt-language-server
+            clang-tools
             lua-language-server
             matlab-language-server
+            nil
             python314Packages.python-lsp-server
-            verible
             rust-analyzer
+            verible
 
         nmap
         obsidian
         pavucontrol
         R
         restic #this should be done with services.restic later
-        #spotify # changed for asahi
         swaybg
         swaylock-effects
         swayosd
@@ -112,7 +110,8 @@
         waybar-lyric
         webcord
         wget
-    ];
+        wl-clipboard-rs
+    ] ++ lib.optional pkgs.stdenv.hostPlatform.isx86_64 pkgs.spotify;
 
 # Some programs need SUID wrappers, can be configured further or are
 # started in user sessions.
@@ -155,30 +154,5 @@
 
 # disable the firewall altogether.
     networking.firewall.enable = false;
-
-# Copy the NixOS configuration file and link it from the resulting system
-# (/run/current-system/configuration.nix). This is useful in case you
-# accidentally delete configuration.nix.
-# system.copySystemConfiguration = true;
-
-# This option defines the first version of NixOS you have installed on this particular machine,
-# and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
-#
-# Most users should NEVER change this value after the initial install, for any reason,
-# even if you've upgraded your system to a new NixOS release.
-#
-# This value does NOT affect the Nixpkgs version your packages and OS are pulled from,
-# so changing it will NOT upgrade your system - see https://nixos.org/manual/nixos/stable/#sec-upgrading for how
-# to actually do that.
-#
-# This value being lower than the current NixOS release does NOT mean your system is
-# out of date, out of support, or vulnerable.
-#
-# Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
-# and migrated your data accordingly.
-#
-# For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-    system.stateVersion = "26.05"; # Did you read the comment?
-
 }
 
