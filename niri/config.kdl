@@ -325,7 +325,7 @@ binds {
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+Return hotkey-overlay-title="Open a Terminal: foot" { spawn "foot"; }
-    Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
+    Mod+D hotkey-overlay-title="Run an Application: noctalia launcher" { spawn "noctalia" "msg" "panel-open" "launcher"; }
 
     //Mac specific binds
     XF86Search allow-when-locked=false { spawn "fuzzel"; }

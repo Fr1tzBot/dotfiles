@@ -84,7 +84,6 @@
         btop
         cava
         fastfetch
-        fuzzel
         gimp
         gnome-firmware
         htop
@@ -106,13 +105,10 @@
 
         nmap
         obsidian
-        pavucontrol
-        R
         restic #this should be done with services.restic later
         tealdeer
         tree
         viu
-        waybar
         waybar-lyric #last waybar dep still hanging around
         webcord
         wget
