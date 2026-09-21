@@ -25,7 +25,11 @@
     // "swap",
     // "disk",
     "localip",
-    "battery",
+    {
+        "type": "battery",
+        "key": "Battery",
+        "format": "{capacity} [{status}]"
+    },
     "poweradapter",
     // "locale",
     "break",
