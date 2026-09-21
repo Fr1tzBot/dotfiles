@@ -33,16 +33,17 @@ if #unused > 0 then
 end
 
 local langs = {
+    {prog="R", lsp="r_language_server"},
     {prog="asm-lsp", lsp="asm_lsp"},
     {prog="bash-language-server", lsp="bashls"},
     {prog="clangd", lsp="clangd"},
     {prog="jdtls", lsp="jdtls"},
     {prog="lua-language-server", lsp="lua_ls"},
     {prog="matlab-language-server", lsp="matlab_ls"},
+    {prog="nil", lsp="nil_ls"},
     {prog="pylsp", lsp="pylsp"},
+    {prog="rust-analyzer", lsp="rust_analyzer"},
     {prog="verible-verilog-ls", lsp="verible"},
-    {prog="R", lsp="r_language_server"},
-    {prog="rust-analyzer", lsp="rust_analyzer"}
 }
 
 local missing = {}
