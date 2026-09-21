@@ -85,8 +85,10 @@
         gimp
         gnome-firmware
         htop
+        iwgtk
         meld
         mpv
+        noctalia
         neovim
             asm-lsp
             bash-language-server
