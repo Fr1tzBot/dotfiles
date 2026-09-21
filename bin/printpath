@@ -6,13 +6,5 @@ else
     path="$1"
 fi
 
-for (( i = 0; i<${#path}; i++ )); do
-    case "${path:$i:1}" in
-        :)
-            printf "\n";;
-        *)
-            printf "%s" "${path:$i:1}"
-    esac
-done
-echo
+printf '%s\n' "$path" | tr ':' '\n'
 
