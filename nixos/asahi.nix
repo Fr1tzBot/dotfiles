@@ -52,6 +52,7 @@ in
     imports = [ ./apple-silicon-support ];
     hardware.asahi.enable = true;
     boot.loader.efi.canTouchEfiVariables = false;
+    boot.kernelParams = [ "hid_apple.fnmode=2" ];
     environment.sessionVariables.MOZ_GMP_PATH = "${widevineGmp}/gmp-widevinecdm/system-installed";
     programs.firefox = {
         enable = true;
