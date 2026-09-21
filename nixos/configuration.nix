@@ -85,7 +85,6 @@
         gimp
         gnome-firmware
         htop
-        iwgtk
         meld
         mpv
         noctalia
@@ -106,14 +105,11 @@
         pavucontrol
         R
         restic #this should be done with services.restic later
-        swaybg
-        swaylock-effects
-        swayosd
         tealdeer
         tree
         viu
         waybar
-        waybar-lyric
+        waybar-lyric #last waybar dep still hanging around
         webcord
         wget
         wl-clipboard-rs
@@ -138,7 +134,6 @@
         };
     };
     services.blueman.enable = true;
-    services.dunst.enable = true;
     services.greetd = {
         enable = true;
         settings.default_session = {
@@ -149,6 +144,7 @@
     services.libinput.enable = true;
     services.openssh.enable = true;
     services.printing.enable = false;
+    services.upower.enable = true;
     services.zerotierone.enable = true;
 
     security.doas.enable = true;
