@@ -88,7 +88,7 @@ MANAGER_LIST["emerge"]="$ROOT_STRING emerge --sync &&
                         $ROOT_STRING emerge --deepclean"
 MANAGER_LIST["flatpak"]="$ROOT_STRING flatpak update"
 MANAGER_LIST["softwareupdate"]="softwareupdate --verbose -lir --agree-to-license"
-MANAGER_LIST["nix"]="$ROOT_STRING nix-channel --update && $ROOT_STRING nix-collect-garbage -d && $ROOT_STRING nixos-rebuild switch --upgrade"
+MANAGER_LIST["nix"]="$ROOT_STRING nix-channel --update && $ROOT_STRING nixos-rebuild switch --upgrade"
 MANAGER_LIST["nvim"]="nvim --headless -c \"lua if vim.pack then vim.pack.update() end\" -c qa && echo"
 MANAGER_LIST["pacman"]="$ROOT_STRING pacman -Syu"
 MANAGER_LIST["pkg"]="pkg upgrade &&
