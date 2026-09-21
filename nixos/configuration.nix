@@ -24,19 +24,17 @@
 
     nixpkgs.config.allowUnfree = true;
 
-# Use the systemd-boot EFI boot loader.
+    # Use the systemd-boot EFI boot loader.
     boot.loader.systemd-boot.enable = true;
     boot.loader.systemd-boot.configurationLimit = 5;
 
     networking.networkmanager.wifi.backend = "iwd";
-
-# Configure network connections interactively with nmcli or nmtui.
     networking.networkmanager.enable = true;
 
-# Set your time zone.
+    # Set your time zone.
     time.timeZone = "America/Detroit";
 
-# Select internationalisation properties.
+    # Select internationalisation properties.
     i18n.defaultLocale = "en_US.UTF-8";
 
     nix.gc = {
@@ -59,11 +57,6 @@
         monospace = [ "DejaVu Sans Mono" ];
     };
 
-# Enable sound.
-    services.pipewire = {
-        enable = true;
-        pulse.enable = true;
-    };
 
     users.users.fritz = {
         isNormalUser = true;
@@ -116,15 +109,8 @@
         wl-clipboard-rs
     ] ++ lib.optional pkgs.stdenv.hostPlatform.isx86_64 pkgs.spotify;
 
-# Some programs need SUID wrappers, can be configured further or are
-# started in user sessions.
-# programs.mtr.enable = true;
-# programs.gnupg.agent = {
-#   enable = true;
-#   enableSSHSupport = true;
-# };
 
-# List services that you want to enable:
+    # List services that you want to enable:
     services.avahi = {
         enable = true;
         openFirewall = true;
@@ -134,14 +120,29 @@
             addresses = true;
         };
     };
-    services.greetd = {
+    # services.greetd = {
+    #     enable = true;
+    #     settings.default_session = {
+    #         command = "${config.programs.niri.package}/bin/niri-session";
+    #         user = "fritz";
+    #     };
+    # };
+    services.displayManager.noctalia-greeter = {
         enable = true;
-        settings.default_session = {
-            command = "${config.programs.niri.package}/bin/niri-session";
-            user = "fritz";
+        settings = {
+            cursor.size = 24;
+            keyboard.layout = "us";
+        };
+        cursorTheme = {
+            package = pkgs.bibata-cursors;
+            name = "Bibata-Modern-Ice";
         };
     };
     services.libinput.enable = true;
+    services.pipewire = {
+        enable = true;
+        pulse.enable = true;
+    };
     services.openssh.enable = true;
     services.printing.enable = false;
     services.upower.enable = true;
@@ -154,7 +155,6 @@
     security.polkit.enable = true;
     security.sudo.enable = false;
 
-# disable the firewall altogether.
     networking.firewall.enable = false;
 }
 
