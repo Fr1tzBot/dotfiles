@@ -74,34 +74,44 @@
     systemd.user.services.niri.enableDefaultPath = false;
 
     environment.systemPackages = with pkgs; [
-        pkgs.aria2
-        pkgs.baobab
-        pkgs.btop
-        pkgs.cava
-        pkgs.fastfetch
-        pkgs.fuzzel
-        pkgs.gimp
-        pkgs.gnome-firmware
-        pkgs.htop
-        pkgs.meld
-        pkgs.mpv
-        pkgs.neovim
-        pkgs.nmap
-        pkgs.obsidian
-        pkgs.pavucontrol
-        pkgs.R
-        pkgs.restic #this should be done with services.restic later
-        #pkgs.spotify # changed for asahi
-        pkgs.swaybg
-        pkgs.swaylock-effects
-        pkgs.swayosd
-        pkgs.tealdeer
-        pkgs.tree
-        pkgs.viu
-        pkgs.waybar
-        pkgs.waybar-lyric
-        pkgs.webcord
-        pkgs.wget
+        aria2
+        baobab
+        btop
+        cava
+        fastfetch
+        fuzzel
+        gimp
+        gnome-firmware
+        htop
+        meld
+        mpv
+        neovim
+            asm-lsp
+            bash-language-server
+            libclang
+            jdt-language-server
+            lua-language-server
+            matlab-language-server
+            python314Packages.python-lsp-server
+            verible
+            rust-analyzer
+
+        nmap
+        obsidian
+        pavucontrol
+        R
+        restic #this should be done with services.restic later
+        #spotify # changed for asahi
+        swaybg
+        swaylock-effects
+        swayosd
+        tealdeer
+        tree
+        viu
+        waybar
+        waybar-lyric
+        webcord
+        wget
     ];
 
 # Some programs need SUID wrappers, can be configured further or are
