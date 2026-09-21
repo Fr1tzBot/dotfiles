@@ -1,25 +1,27 @@
 ## Features:
-1. [WIP] need-based install
+1. [x] need-based install
     - only deploy configs for programs which are actually installed
-    - never copy configs that may not work fully (looking at you nvim) if we know better
-    - definitely don't try to install lsps that don't have the right deps
+    - has-checking seems to work
 2. [ ] dotfile manager:
     - functionality:
         - [x] deploy (copy files from ~/Documents/dotfiles to their respective locations)
         - [ ] sync (pull files from ~ to git repo)
+        - [ ] clean (clean up all dfm-deployed files
         - [ ] check (look for dependencies and explain what will/wont be installed)
-        - [ ] bash completion?
-3. [ ] iprove environment variable handling
+        - [x] bash completion?
+3. [x] iprove environment variable handling
     - work with fuzzel and ideally anything launched in user session
-4. [ ] nvim: switch to 0.12 package management:
-    - waiting for release
-5. [ ] niri: power, wifi, and bluetooth menus:
-    - probably with fuzzel using borrowed scripts
+    - solved with nixos
+4. [x] nvim: switch to 0.12 package management:
+5. [x] niri: power, wifi, and bluetooth menus:
+    - solved with noctalia
 
 ## Bugs:
-- [ ] waybar doesn't refresh automatically sometimes
+- [x] waybar doesn't refresh automatically sometimes
+    - solved with noctalia
     - this seems to be a sway bug...
-- [ ] nvim: clangd fails to install
+- [x] nvim: clangd fails to install
+    - solved with nvim 0.12 + system clangd
 - [ ] nvim: asm_lsp doesn't detect architectures
 - [ ] nvim: verible doesn't autofill
 - [ ] nvim: jdtls throws error whenever a .java file is opened
