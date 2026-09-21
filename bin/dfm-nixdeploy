@@ -1,6 +1,37 @@
 #!/usr/bin/env bash
 
 has() { type -p "$1" > /dev/null; }
+ok() {
+    if $SUPPORTS_COLOR ; then
+        printf "\033[92mOK: %s\033[0m\n" "$1" >&2
+    else
+        printf "OK: %s\n" "$1" >&2
+    fi
+}
+
+#Prints the specified string in yellow (if possible) prefixed with 'WARN: '
+warn() {
+    if $SUPPORTS_COLOR ; then
+        printf "\033[93mWARN: %s\033[0m\n" "$1" >&2
+    else
+        printf "WARN: %s\n" "$1" >&2
+    fi
+}
+
+#Prints the specified string in red (if possible) prefixed with 'ERROR: ' and exits with specified code or code 1 if no code is specified
+error() {
+    if $SUPPORTS_COLOR ; then
+        printf "\033[91mERROR: %s\033[0m\n" "$1" >&2
+    else
+        printf "ERROR: %s\n" "$1" >&2
+    fi
+
+    if [ $# -ge 2 ] ; then
+        exit "$2"
+    else
+        exit 1
+    fi
+}
 
 TRIMMED_HOME=$(realpath -s "$HOME")
 DOTFILES="$TRIMMED_HOME/Documents/dotfiles"
