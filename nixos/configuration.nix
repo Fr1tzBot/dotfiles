@@ -81,6 +81,7 @@
         noctalia
             ddcutil
         neovim
+            R
             asm-lsp
             bash-language-server
             clang-tools
