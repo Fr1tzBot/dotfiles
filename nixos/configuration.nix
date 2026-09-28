@@ -1,19 +1,12 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
 { config, lib, pkgs, ... }:
 
 {
-    imports =
-        [ # Include the results of the hardware scan.
+    imports = [
         ./hardware-configuration.nix
         ./aarch64.nix
         ./x86_64.nix
-        ]
-        ++ lib.optional (builtins.pathExists ./apple-silicon-support) ./asahi.nix
-        ++ lib.optional (builtins.pathExists ./wifi.nix) ./wifi.nix;
-
+    ] ++ lib.optional (builtins.pathExists ./apple-silicon-support) ./asahi.nix
+      ++ lib.optional (builtins.pathExists ./wifi.nix) ./wifi.nix;
 
     hardware.graphics.enable = true;
 
@@ -26,8 +19,8 @@
     boot.loader.systemd-boot.enable = true;
     boot.loader.systemd-boot.configurationLimit = 5;
 
-    # networking.networkmanager.wifi.backend = "iwd";
-    # networking.networkmanager.enable = true;
+    networking.networkmanager.wifi.backend = "iwd";
+    networking.networkmanager.enable = true;
 
     # Set your time zone.
     time.timeZone = "America/Detroit";
@@ -71,6 +64,7 @@
 
     environment.systemPackages = with pkgs; [
         aria2
+        adwaita-icon-theme
         baobab
         btop
         cava
@@ -110,8 +104,6 @@
         wl-clipboard-rs
     ] ++ lib.optional pkgs.stdenv.hostPlatform.isx86_64 pkgs.spotify;
 
-
-    # List services that you want to enable:
     services.avahi = {
         enable = true;
         openFirewall = true;
@@ -121,24 +113,19 @@
             addresses = true;
         };
     };
-    # services.greetd = {
-    #     enable = true;
-    #     settings.default_session = {
-    #         command = "${config.programs.niri.package}/bin/niri-session";
-    #         user = "fritz";
-    #     };
-    # };
+
     services.displayManager.noctalia-greeter = {
         enable = true;
         settings = {
-            cursor.size = 24;
+            cursor.size = 20;
             keyboard.layout = "us";
         };
         cursorTheme = {
-            package = pkgs.bibata-cursors;
-            name = "Bibata-Modern-Ice";
+            package = pkgs.adwaita-icon-theme;
+            name = "Adwaita";
         };
     };
+
     services.libinput.enable = true;
     services.pipewire = {
         enable = true;
@@ -151,7 +138,7 @@
 
     security.doas.enable = true;
     security.doas.extraRules = [
-    { users = ["fritz"]; keepEnv = true; persist = true; }
+        { users = ["fritz"]; keepEnv = true; persist = true; }
     ];
     security.polkit.enable = true;
     security.sudo.enable = false;

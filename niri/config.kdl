@@ -46,6 +46,11 @@ input {
     // focus-follows-mouse max-scroll-amount="0%"
 }
 
+cursor {
+    xcursor-theme "Adwaita"
+    xcursor-size 20
+}
+
 //Laptop Display
 output "eDP-1" {
     mode "2560x1600@60"
