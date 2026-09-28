@@ -10,7 +10,9 @@
         ./hardware-configuration.nix
         ./aarch64.nix
         ./x86_64.nix
-        ] ++ lib.optional (builtins.pathExists ./apple-silicon-support) ./asahi.nix;
+        ]
+        ++ lib.optional (builtins.pathExists ./apple-silicon-support) ./asahi.nix
+        ++ lib.optional (builtins.pathExists ./wifi.nix) ./wifi.nix;
 
 
     hardware.graphics.enable = true;
@@ -24,8 +26,8 @@
     boot.loader.systemd-boot.enable = true;
     boot.loader.systemd-boot.configurationLimit = 5;
 
-    networking.networkmanager.wifi.backend = "iwd";
-    networking.networkmanager.enable = true;
+    # networking.networkmanager.wifi.backend = "iwd";
+    # networking.networkmanager.enable = true;
 
     # Set your time zone.
     time.timeZone = "America/Detroit";
@@ -75,11 +77,13 @@
         fastfetch
         gimp
         gnome-firmware
+            fwupd
         htop
         meld
         mpv
         noctalia
             ddcutil
+            iw
         neovim
             R
             asm-lsp
