@@ -44,7 +44,7 @@
 
     fonts.fontconfig.defaultFonts = {
         sansSerif = [ "DejaVu Sans" ];
-        serif = [ "DejaVu Sans Serif" ];
+        serif = [ "DejaVu Serif" ];
         monospace = [ "DejaVu Sans Mono" ];
     };
 
@@ -70,8 +70,6 @@
         cava
         fastfetch
         gimp
-        gnome-firmware
-            fwupd
         htop
         meld
         mpv
