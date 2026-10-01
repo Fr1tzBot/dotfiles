@@ -88,6 +88,7 @@ position = "bottom_center"
 
 [shell]
 font_family = "DejaVu Sans"
+polkit_agent = true
 screen_time_enabled = true
 
     [shell.animation]
