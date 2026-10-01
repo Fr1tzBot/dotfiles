@@ -149,6 +149,7 @@
         pulse.enable = true;
     };
     services.openssh.enable = true;
+    services.power-profiles-daemon.enable = true;
     services.printing.enable = false;
     services.upower.enable = true;
     services.zerotierone.enable = true;
