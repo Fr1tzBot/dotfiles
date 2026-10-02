@@ -161,6 +161,10 @@
     security.polkit.enable = true;
     security.sudo.enable = false;
 
-    networking.firewall.enable = false;
+    networking.firewall = {
+        enable = true;
+        allowedTCPPorts = [ 22 ];
+        allowedUDPPorts = [ 5353 ];
+    };
 }
 
