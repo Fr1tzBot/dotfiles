@@ -54,6 +54,20 @@ in
         ref = "main";
         }}/apple-silicon-support"
     ];
+
+    nix.distributedBuilds = true;
+    nix.settings.builders-use-substitutes = true;
+    nix.buildMachines = [{
+        hostName = "jesse.lan";
+        protocol = "ssh-ng";
+        systems = [ "aarch64-linux" "x86_64-linux" ];
+        sshUser = "fritz";
+        sshKey = "/root/.ssh/id_builder";
+        maxJobs = 10;
+        speedFactor = 10;
+        supportedFeatures = [ "big-parallel" "nixos-test" ];
+    }];
+
     hardware.asahi.enable = true;
     boot.loader.efi.canTouchEfiVariables = false;
     boot.kernelParams = [ "hid_apple.fnmode=2" ];
