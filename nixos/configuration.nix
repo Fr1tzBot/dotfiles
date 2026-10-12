@@ -1,12 +1,17 @@
-{ config, lib, pkgs, ... }:
-
 {
-    imports = [
-        ./hardware-configuration.nix
-        ./aarch64.nix
-        ./x86_64.nix
-    ] ++ lib.optional (builtins.pathExists ./apple-silicon-support) ./asahi.nix
-      ++ lib.optional (builtins.pathExists ./wifi.nix) ./wifi.nix;
+    config,
+    lib,
+    pkgs,
+    ...
+}: {
+    imports =
+        [
+            ./hardware-configuration.nix
+            ./aarch64.nix
+            ./x86_64.nix
+        ]
+        ++ lib.optional (builtins.pathExists ./apple-silicon-support) ./asahi.nix
+        ++ lib.optional (builtins.pathExists ./wifi.nix) ./wifi.nix;
 
     hardware.graphics.enable = true;
 
@@ -34,7 +39,7 @@
         options = "--delete-older-than 10d";
     };
 
-    nix.settings.experimental-features = [ "nix-command" ];
+    nix.settings.experimental-features = ["nix-command"];
 
     fonts.packages = with pkgs; [
         nerd-fonts.hack
@@ -46,15 +51,14 @@
     ];
 
     fonts.fontconfig.defaultFonts = {
-        sansSerif = [ "DejaVu Sans" ];
-        serif = [ "DejaVu Serif" ];
-        monospace = [ "DejaVu Sans Mono" ];
+        sansSerif = ["DejaVu Sans"];
+        serif = ["DejaVu Serif"];
+        monospace = ["DejaVu Sans Mono"];
     };
-
 
     users.users.fritz = {
         isNormalUser = true;
-        extraGroups = [ "networkmanager" "wheel" ];
+        extraGroups = ["networkmanager" "wheel"];
     };
 
     programs.bat.enable = true;
@@ -65,21 +69,22 @@
     programs.niri.enable = true;
     systemd.user.services.niri.enableDefaultPath = false;
 
-    environment.systemPackages = with pkgs; [
-        aria2
-        adwaita-icon-theme
-        baobab
-        btop
-        cava
-        fastfetch
-        gimp
-        htop
-        meld
-        mpv
-        noctalia
+    environment.systemPackages = with pkgs;
+        [
+            aria2
+            adwaita-icon-theme
+            baobab
+            btop
+            cava
+            fastfetch
+            gimp
+            htop
+            meld
+            mpv
+            noctalia
             ddcutil
             iw
-        neovim
+            neovim
             R
             asm-lsp
             bash-language-server
@@ -93,17 +98,18 @@
             shellcheck
             verible
 
-        nmap
-        obsidian
-        restic #this should be done with services.restic later
-        tealdeer
-        tree
-        viu
-        waybar-lyric #last waybar dep still hanging around
-        webcord
-        wget
-        wl-clipboard-rs
-    ] ++ lib.optional pkgs.stdenv.hostPlatform.isx86_64 pkgs.spotify;
+            nmap
+            obsidian
+            restic #this should be done with services.restic later
+            tealdeer
+            tree
+            viu
+            waybar-lyric #last waybar dep still hanging around
+            webcord
+            wget
+            wl-clipboard-rs
+        ]
+        ++ lib.optional pkgs.stdenv.hostPlatform.isx86_64 pkgs.spotify;
 
     xdg.mime.defaultApplications = {
         # Nvim Files
@@ -159,15 +165,18 @@
 
     security.doas.enable = true;
     security.doas.extraRules = [
-        { users = ["fritz"]; keepEnv = true; persist = true; }
+        {
+            users = ["fritz"];
+            keepEnv = true;
+            persist = true;
+        }
     ];
     security.polkit.enable = true;
     security.sudo.enable = false;
 
     networking.firewall = {
         enable = true;
-        allowedTCPPorts = [ 22 ];
-        allowedUDPPorts = [ 5353 ];
+        allowedTCPPorts = [22];
+        allowedUDPPorts = [5353];
     };
 }
-
