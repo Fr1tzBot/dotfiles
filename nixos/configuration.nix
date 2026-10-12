@@ -34,6 +34,8 @@
         options = "--delete-older-than 10d";
     };
 
+    nix.settings.experimental-features = [ "nix-command" ];
+
     fonts.packages = with pkgs; [
         nerd-fonts.hack
         dejavu_fonts
