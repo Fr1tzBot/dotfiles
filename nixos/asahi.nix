@@ -49,7 +49,11 @@ let
   '';
 in
 {
-    imports = [ ./apple-silicon-support ];
+    imports = [ "${builtins.fetchGit {
+        url = "https://github.com/nix-community/nixos-apple-silicon.git";
+        ref = "main";
+        }}/apple-silicon-support"
+    ];
     hardware.asahi.enable = true;
     boot.loader.efi.canTouchEfiVariables = false;
     boot.kernelParams = [ "hid_apple.fnmode=2" ];
