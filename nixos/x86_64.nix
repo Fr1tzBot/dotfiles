@@ -8,6 +8,7 @@
         boot.loader.efi.canTouchEfiVariables = true;
         networking.hostName = "antilles";
         system.stateVersion = "26.05"; # Don't mess with this alr bud
+        hardware.cpu.intel.updateMicrocode = true;
         swapDevices = [
             {
                 device = "/swap";

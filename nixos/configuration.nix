@@ -39,7 +39,10 @@
         options = "--delete-older-than 10d";
     };
 
-    nix.settings.experimental-features = ["nix-command"];
+    nix.settings = {
+        auto-optimise-store = true;
+        experimental-features = ["nix-command"];
+    };
 
     fonts.packages = with pkgs; [
         nerd-fonts.hack
@@ -67,42 +70,43 @@
     programs.git.enable = true;
     programs.lazygit.enable = true;
     programs.niri.enable = true;
+    programs.nix-ld.enable = true;
     systemd.user.services.niri.enableDefaultPath = false;
 
     environment.systemPackages = with pkgs;
         [
-            aria2
+            R
             adwaita-icon-theme
+            aria2
+            asm-lsp
             baobab
+            bash-language-server
             btop
             cava
+            clang-tools
+            ddcutil
             fastfetch
             gimp
+            gnome-firmware
             htop
-            meld
-            mpv
-            noctalia
-            ddcutil
             iw
-            neovim
-            R
-            asm-lsp
-            bash-language-server
-            clang-tools
             jdt-language-server
             lua-language-server
             matlab-language-server
+            meld
+            mpv
+            neovim
             nil
+            nmap
+            noctalia
+            obsidian
             python314Packages.python-lsp-server
+            restic #this should be done with services.restic later
             rust-analyzer
             shellcheck
-            verible
-
-            nmap
-            obsidian
-            restic #this should be done with services.restic later
             tealdeer
             tree
+            verible
             viu
             waybar-lyric #last waybar dep still hanging around
             webcord
@@ -140,6 +144,12 @@
         };
     };
 
+    services.chrony = {
+        enable = true;
+        servers = [ "time.mtu.edu" "time.cloudflare.com" "0.nixos.pool.ntp.org" ];
+        serverOption = "iburst";
+    };
+
     services.displayManager.noctalia-greeter = {
         enable = true;
         settings = {
@@ -151,7 +161,9 @@
             name = "Adwaita";
         };
     };
-
+    services.earlyoom.enable = true;
+    services.fstrim.enable = true;
+    services.fwupd.enable = true;
     services.libinput.enable = true;
     services.pipewire = {
         enable = true;
@@ -160,6 +172,12 @@
     services.openssh.enable = true;
     services.power-profiles-daemon.enable = true;
     services.printing.enable = false;
+    services.smartd = {
+        enable = true;
+        autodetect = true;
+        defaults.monitored = "-a -o on -S on -n standby,q -W 4,45,55 -s (S/../.././02|L/../01/./03) ";
+        notifications.x11.enable = true;
+    };
     services.upower.enable = true;
     services.zerotierone.enable = true;
 
@@ -179,4 +197,6 @@
         allowedTCPPorts = [22];
         allowedUDPPorts = [5353];
     };
+
+    zramSwap.enable = true;
 }
