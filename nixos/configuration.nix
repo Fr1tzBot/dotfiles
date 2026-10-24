@@ -61,10 +61,14 @@
 
     users.users.fritz = {
         isNormalUser = true;
-        extraGroups = ["networkmanager" "wheel"];
+        extraGroups = ["networkmanager" "wheel" "dialout"];
     };
 
     programs.bat.enable = true;
+    programs.direnv = {
+        enable = true;
+        nix-direnv.enable = true;
+    };
     programs.firefox.enable = true;
     programs.foot.enable = true;
     programs.git.enable = true;

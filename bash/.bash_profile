@@ -174,6 +174,8 @@ if has dircolors ; then
     eval "$(dircolors "$HOME/.dir_colors")"
 fi
 
+has direnv && eval "$(direnv hook bash)"
+
 #Large histfile and histfilesize values, but not unlimitted
 HISTSIZE=250000
 HISTFILESIZE=800000
