@@ -189,6 +189,7 @@
             persist = true;
         }
     ];
+    security.pam.services.greetd.enableGnomeKeyring = true;
     security.polkit.enable = true;
     security.sudo.enable = false;
 
