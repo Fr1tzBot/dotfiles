@@ -142,9 +142,9 @@
         enable = true;
         openFirewall = true;
         nssmdns4 = true;
-        publish = {
-            enable = true;
-            addresses = true;
+        settings.publish = {
+            publish-addresses = true;
+            disable-publishing = false;
         };
     };
 
