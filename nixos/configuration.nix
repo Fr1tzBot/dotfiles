@@ -64,6 +64,12 @@
         extraGroups = ["networkmanager" "wheel" "dialout" "video"];
     };
 
+    users.users.agent = {
+        isNormalUser = true;
+        extraGroups = ["wheel"];
+    };
+
+
     programs.bat.enable = true;
     programs.direnv = {
         enable = true;
