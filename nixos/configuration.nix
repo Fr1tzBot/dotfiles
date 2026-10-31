@@ -61,7 +61,7 @@
 
     users.users.fritz = {
         isNormalUser = true;
-        extraGroups = ["networkmanager" "wheel" "dialout"];
+        extraGroups = ["networkmanager" "wheel" "dialout" "video"];
     };
 
     programs.bat.enable = true;
