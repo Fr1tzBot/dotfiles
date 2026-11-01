@@ -55,7 +55,30 @@ in {
         "${builtins.fetchGit {
             url = "https://github.com/nix-community/nixos-apple-silicon.git";
             ref = "main";
+            # Pinned so rebuilds reuse the already-built kernel (7.2.12); tracking main forces a full kernel build.
+            # Bump deliberately when you're ready to build a new kernel.
+            rev = "46e80bc641f5aaee6ed7ef90a12314a81492f48f";
         }}/apple-silicon-support"
+    ];
+
+    # agent: harness automation user, logs in from the harness controller
+    users.users.agent.openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGaZHqqfvz77JMb8uc4zCxYyjHPZtTlWukUsZlSbsygc fritz@antilles"
+    ];
+    environment.systemPackages = [pkgs.asahi-bless];
+    # agent may switch the boot OS and reboot without a password, nothing else
+    security.doas.extraRules = [
+        {
+            users = ["agent"];
+            noPass = true;
+            cmd = "asahi-bless";
+        }
+        {
+            users = ["agent"];
+            noPass = true;
+            cmd = "systemctl";
+            args = ["reboot"];
+        }
     ];
 
     #fix /boot being world-accessible
