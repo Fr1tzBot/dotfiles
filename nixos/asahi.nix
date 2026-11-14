@@ -57,7 +57,7 @@ in {
             ref = "main";
             # Pinned so rebuilds reuse the already-built kernel (7.2.12); tracking main forces a full kernel build.
             # Bump deliberately when you're ready to build a new kernel.
-            rev = "481cf53add16849ecd02c4419a1794ce70bfc0eb";
+            rev = "5de1c7ae865d645a3ebcc7d2ba5a13b9b50c0c16";
         }}/apple-silicon-support"
     ];
 
