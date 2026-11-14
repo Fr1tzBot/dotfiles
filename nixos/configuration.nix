@@ -1,18 +1,7 @@
 {
-    config,
-    lib,
     pkgs,
     ...
 }: {
-    imports =
-        [
-            ./hardware-configuration.nix
-            ./aarch64.nix
-            ./x86_64.nix
-        ]
-        ++ lib.optional (builtins.pathExists ./apple-silicon-support) ./asahi.nix
-        ++ lib.optional (builtins.pathExists ./wifi.nix) ./wifi.nix;
-
     hardware.graphics.enable = true;
 
     hardware.bluetooth.enable = true;
@@ -122,8 +111,7 @@
             webcord
             wget
             wl-clipboard-rs
-        ]
-        ++ lib.optional pkgs.stdenv.hostPlatform.isx86_64 pkgs.spotify;
+        ];
 
     xdg.mime.defaultApplications = {
         # Nvim Files
