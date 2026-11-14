@@ -56,6 +56,7 @@ for i, lang in pairs(langs) do
         table.insert(missing, lang.prog)
     end
 end
+vim.lsp.log.set_level(vim.log.levels.ERROR)
 
 if #missing > 0 then
     print("LSP: Missing "..table.concat(missing, " "))
