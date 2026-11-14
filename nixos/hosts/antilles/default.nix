@@ -1,9 +1,7 @@
 {
-    lib,
     pkgs,
     ...
 }: {
-    config = lib.mkIf pkgs.stdenv.hostPlatform.isx86_64 {
         boot.kernelPackages = pkgs.linuxPackages_latest;
         boot.loader.efi.canTouchEfiVariables = true;
         networking.hostName = "antilles";
@@ -27,5 +25,4 @@
                 "noauto" # optional: don't mount at boot, only on access
             ];
         };
-    };
 }
