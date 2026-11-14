@@ -51,16 +51,6 @@
         EOF
     '';
 in {
-    imports = [
-        "${builtins.fetchGit {
-            url = "https://github.com/nix-community/nixos-apple-silicon.git";
-            ref = "main";
-            # Pinned so rebuilds reuse the already-built kernel (7.2.12); tracking main forces a full kernel build.
-            # Bump deliberately when you're ready to build a new kernel.
-            rev = "5de1c7ae865d645a3ebcc7d2ba5a13b9b50c0c16";
-        }}/apple-silicon-support"
-    ];
-
     # agent: harness automation user, logs in from the harness controller
     users.users.agent.openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGaZHqqfvz77JMb8uc4zCxYyjHPZtTlWukUsZlSbsygc fritz@antilles"
@@ -100,6 +90,7 @@ in {
     # ];
 
     hardware.asahi.enable = true;
+    hardware.asahi.peripheralFirmwareDirectory = null;
     boot.loader.efi.canTouchEfiVariables = false;
     boot.kernelParams = ["hid_apple.fnmode=2"];
     environment.sessionVariables.MOZ_GMP_PATH = "${widevineGmp}/gmp-widevinecdm/system-installed";
