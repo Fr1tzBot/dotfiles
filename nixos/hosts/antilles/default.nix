@@ -2,6 +2,8 @@
     pkgs,
     ...
 }: {
+        imports = [./hardware-configuration.nix];
+        environment.systemPackages = [pkgs.spotify];
         boot.kernelPackages = pkgs.linuxPackages_latest;
         boot.loader.efi.canTouchEfiVariables = true;
         networking.hostName = "antilles";
