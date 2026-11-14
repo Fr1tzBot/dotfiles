@@ -35,10 +35,9 @@ error() {
 
 TRIMMED_HOME=$(realpath -s "$HOME")
 DOTFILES="$TRIMMED_HOME/Documents/dotfiles"
+FLAKE_PATH="$DOTFILES/nixos"
 ROOT_STRING=""
 
-# technically this is a bad check cuz nix can be installed on non-nixos systems...
-# TODO improve
 ! has nix && printf "nix not detected." && exit 1
 
 if [ -n "$TERMUX_VERSION" ] ; then
@@ -53,13 +52,13 @@ else
     error "no root privileges found.\nYou can try running this script as root or verifying that sudo or doas is in your PATH" 126
 fi
 
-$ROOT_STRING cp -ruv "$DOTFILES/nixos" "/etc/"
-
-read -rp "Would you like to rebuild now? [Y/n] " response
+nixos-rebuild build --flake "$FLAKE_PATH" || error "Flake Build Failed."
+ok "Flake Build Successful"
+read -rp "Would you like to deploy now? [Y/n] " response
 case "${response,,}" in
     no|n) exit 0
 esac
 
-$ROOT_STRING nixos-rebuild switch
+$ROOT_STRING nixos-rebuild switch --flake "$FLAKE_PATH"
 exit 0
 
