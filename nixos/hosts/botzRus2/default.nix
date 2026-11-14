@@ -1,6 +1,4 @@
-{
-    ...
-}: {
+{...}: {
     imports = [
         ./asahi.nix
         ./hardware-configuration.nix

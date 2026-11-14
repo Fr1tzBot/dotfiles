@@ -1,7 +1,4 @@
-{
-    pkgs,
-    ...
-}: {
+{pkgs, ...}: {
     hardware.graphics.enable = true;
 
     hardware.bluetooth.enable = true;
@@ -58,7 +55,6 @@
         extraGroups = ["wheel"];
     };
 
-
     programs.bat.enable = true;
     programs.direnv = {
         enable = true;
@@ -72,46 +68,45 @@
     programs.nix-ld.enable = true;
     systemd.user.services.niri.enableDefaultPath = false;
 
-    environment.systemPackages = with pkgs;
-        [
-            R
-            adwaita-icon-theme
-            aria2
-            asm-lsp
-            baobab
-            bash-language-server
-            btop
-            cava
-            clang-tools
-            ddcutil
-            fastfetch
-            gimp
-            gnome-firmware
-            htop
-            iw
-            jdt-language-server
-            lua-language-server
-            matlab-language-server
-            meld
-            mpv
-            neovim
-            nil
-            nmap
-            noctalia
-            obsidian
-            python314Packages.python-lsp-server
-            restic #this should be done with services.restic later
-            rust-analyzer
-            shellcheck
-            tealdeer
-            tree
-            verible
-            viu
-            waybar-lyric #last waybar dep still hanging around
-            webcord
-            wget
-            wl-clipboard-rs
-        ];
+    environment.systemPackages = with pkgs; [
+        R
+        adwaita-icon-theme
+        aria2
+        asm-lsp
+        baobab
+        bash-language-server
+        btop
+        cava
+        clang-tools
+        ddcutil
+        fastfetch
+        gimp
+        gnome-firmware
+        htop
+        iw
+        jdt-language-server
+        lua-language-server
+        matlab-language-server
+        meld
+        mpv
+        neovim
+        nil
+        nmap
+        noctalia
+        obsidian
+        python314Packages.python-lsp-server
+        restic #this should be done with services.restic later
+        rust-analyzer
+        shellcheck
+        tealdeer
+        tree
+        verible
+        viu
+        waybar-lyric #last waybar dep still hanging around
+        webcord
+        wget
+        wl-clipboard-rs
+    ];
 
     xdg.mime.defaultApplications = {
         # Nvim Files
@@ -144,7 +139,7 @@
 
     services.chrony = {
         enable = true;
-        servers = [ "time.mtu.edu" "time.cloudflare.com" "0.nixos.pool.ntp.org" ];
+        servers = ["time.mtu.edu" "time.cloudflare.com" "0.nixos.pool.ntp.org"];
         serverOption = "iburst";
     };
 
