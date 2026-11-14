@@ -62,7 +62,10 @@
     };
     programs.firefox.enable = true;
     programs.foot.enable = true;
-    programs.git.enable = true;
+    programs.git = {
+        enable = true;
+        config.safe.directory = "/home/fritz/Documents/dotfiles";
+    };
     programs.lazygit.enable = true;
     programs.niri.enable = true;
     programs.nix-ld.enable = true;
