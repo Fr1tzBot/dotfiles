@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{lib, pkgs, ...}: {
     hardware.bluetooth.enable = true;
     hardware.bluetooth.powerOnBoot = true;
     hardware.graphics.enable = true;
@@ -7,6 +7,7 @@
     systemd.user.services.niri.enableDefaultPath = false;
 
     environment.systemPackages = with pkgs; [
+        adw-gtk3
         ddcutil
         noctalia
     ];
@@ -27,4 +28,15 @@
     services.libinput.enable = true;
     services.power-profiles-daemon.enable = true;
     services.upower.enable = true;
+
+    programs.dconf.profiles.user.databases = [
+        {
+            settings."org/gnome/desktop/interface" = {
+                gtk-theme = "adw-gtk3-dark";
+                icon-theme = "Adwaita";
+                cursor-theme = "Adwaita";
+                cursor-size = lib.gvariant.mkInt32 20;
+            };
+        }
+    ];
 }
