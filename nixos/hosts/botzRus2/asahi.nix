@@ -19,48 +19,39 @@
         sha256 = "6e886755201f1ba9dab1ead5f11846bae321cbf343da1112f06c08c8a8012182";
     };
 
-    widevineGmp = pkgs.runCommand "widevine-gmp-${pkgver}" {
-        nativeBuildInputs = [pkgs.squashfsTools pkgs.python3 pkgs.patchelf];
-    } ''
-        unsquashfs -q -no-xattrs ${lacrosImage} 'WidevineCdm/*'
+    widevineGmp =
+        pkgs.runCommand "widevine-gmp-${pkgver}" {
+            nativeBuildInputs = [pkgs.squashfsTools pkgs.python3 pkgs.patchelf];
+        } ''
+            unsquashfs -q -no-xattrs ${lacrosImage} 'WidevineCdm/*'
 
-        # patch widevine lib: add missing functions, support non-4k page sizes
-        python3 ${fixupScript} \
-          squashfs-root/WidevineCdm/_platform_specific/cros_arm64/libwidevinecdm.so \
-          libwidevinecdm.so
+            # patch widevine lib: add missing functions, support non-4k page sizes
+            python3 ${fixupScript} \
+              squashfs-root/WidevineCdm/_platform_specific/cros_arm64/libwidevinecdm.so \
+              libwidevinecdm.so
 
-        # NixOS-only: Arch finds libnspr4 in /usr/lib, we have to point at it
-        patchelf --add-rpath ${lib.getLib pkgs.nspr}/lib libwidevinecdm.so
+            # NixOS-only: Arch finds libnspr4 in /usr/lib, we have to point at it
+            patchelf --add-rpath ${lib.getLib pkgs.nspr}/lib libwidevinecdm.so
 
-        d=$out/gmp-widevinecdm/system-installed
-        mkdir -p $d
-        install -m755 libwidevinecdm.so $d/
+            d=$out/gmp-widevinecdm/system-installed
+            mkdir -p $d
+            install -m755 libwidevinecdm.so $d/
 
-        # same manifest the PKGBUILD generates (major=4, minor=10)
-        cat > $d/manifest.json <<EOF
-        {
-           "name": "WidevineCdm",
-           "description": "Widevine Content Decryption Module",
-           "version": "${pkgver}",
-           "x-cdm-codecs": "vp8,vp9.0,avc1,av01",
-           "x-cdm-host-versions": "10",
-           "x-cdm-interface-versions": "10",
-           "x-cdm-module-versions": "4",
-           "x-cdm-persistent-license-support": true
-        }
-        EOF
-    '';
+            # same manifest the PKGBUILD generates (major=4, minor=10)
+            cat > $d/manifest.json <<EOF
+            {
+               "name": "WidevineCdm",
+               "description": "Widevine Content Decryption Module",
+               "version": "${pkgver}",
+               "x-cdm-codecs": "vp8,vp9.0,avc1,av01",
+               "x-cdm-host-versions": "10",
+               "x-cdm-interface-versions": "10",
+               "x-cdm-module-versions": "4",
+               "x-cdm-persistent-license-support": true
+            }
+            EOF
+        '';
 in {
-    imports = [
-        "${builtins.fetchGit {
-            url = "https://github.com/nix-community/nixos-apple-silicon.git";
-            ref = "main";
-            # Pinned so rebuilds reuse the already-built kernel (7.2.12); tracking main forces a full kernel build.
-            # Bump deliberately when you're ready to build a new kernel.
-            rev = "5de1c7ae865d645a3ebcc7d2ba5a13b9b50c0c16";
-        }}/apple-silicon-support"
-    ];
-
     # agent: harness automation user, logs in from the harness controller
     users.users.agent.openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGaZHqqfvz77JMb8uc4zCxYyjHPZtTlWukUsZlSbsygc fritz@antilles"
@@ -81,9 +72,6 @@ in {
         }
     ];
 
-    #fix /boot being world-accessible
-    fileSystems."/boot".options = [ "fmask=0077" "dmask=0077" ];
-
     nix.distributedBuilds = true;
     nix.settings.builders-use-substitutes = true;
     # nix.buildMachines = [
@@ -100,6 +88,7 @@ in {
     # ];
 
     hardware.asahi.enable = true;
+    hardware.asahi.peripheralFirmwareDirectory = null;
     boot.loader.efi.canTouchEfiVariables = false;
     boot.kernelParams = ["hid_apple.fnmode=2"];
     environment.sessionVariables.MOZ_GMP_PATH = "${widevineGmp}/gmp-widevinecdm/system-installed";

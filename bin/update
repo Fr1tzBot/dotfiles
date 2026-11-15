@@ -60,6 +60,8 @@ error() {
     fi
 }
 
+TRIMMED_HOME=$(realpath -s "$HOME")
+DOTFILES="$TRIMMED_HOME/Documents/dotfiles"
 ROOT_STRING=""
 if [ -n "$TERMUX_VERSION" ] ; then
     ok "No Root Privileges on Termux"
@@ -88,7 +90,7 @@ MANAGER_LIST["emerge"]="$ROOT_STRING emerge --sync &&
                         $ROOT_STRING emerge --deepclean"
 MANAGER_LIST["flatpak"]="$ROOT_STRING flatpak update"
 MANAGER_LIST["softwareupdate"]="softwareupdate --verbose -lir --agree-to-license"
-MANAGER_LIST["nix"]="$ROOT_STRING nix-channel --update && $ROOT_STRING nixos-rebuild switch --upgrade"
+MANAGER_LIST["nixos-rebuild"]="nix flake update --flake \"$DOTFILES/nixos\" && dfm nixdeploy"
 MANAGER_LIST["nvim"]="nvim --headless -c \"lua if vim.pack then vim.pack.update() end\" -c qa && echo"
 MANAGER_LIST["pacman"]="$ROOT_STRING pacman -Syu"
 MANAGER_LIST["pkg"]="pkg upgrade &&
