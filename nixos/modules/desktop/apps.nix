@@ -5,12 +5,25 @@
     environment.systemPackages = with pkgs; [
         adwaita-icon-theme
         baobab
+        ffmpegthumbnailer
+        file-roller
         gimp
         gnome-firmware
         meld
         mpv
+        nautilus
         obsidian
         webcord
         wl-clipboard-rs
     ];
+
+    services.gvfs.enable = true;
+    services.udisks2.enable = true;
+    services.gnome.sushi.enable = true;
+    services.gnome.localsearch.enable = true;
+    services.gnome.tinysparql.enable = true;
+    programs.nautilus-open-any-terminal = {
+        enable = true;
+        terminal = "foot";
+    };
 }

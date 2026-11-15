@@ -1,5 +1,8 @@
 {...}: {
     xdg.mime.defaultApplications = {
+        #Folders
+        "inode/directory" = "org.gnome.Nautilus.desktop";
+
         # Nvim Files
         "text/plain" = "nvim.desktop";
         "text/markdown" = "nvim.desktop";
