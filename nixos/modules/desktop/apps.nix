@@ -18,7 +18,10 @@
     ];
 
     services.gvfs.enable = true;
-    services.udisks2.enable = true;
+    services.udisks2 = {
+        enable = true;
+        mountOnMedia = true;
+    };
     services.gnome.sushi.enable = true;
     services.gnome.localsearch.enable = true;
     services.gnome.tinysparql.enable = true;
