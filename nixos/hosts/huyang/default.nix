@@ -25,5 +25,5 @@
         ];
     };
     services.octoprint.enable = true;
-    networking.firewall.allowedTCPPorts = [22 5000];
+    networking.firewall.allowedTCPPorts = [5000];
 }
