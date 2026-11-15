@@ -72,9 +72,6 @@ in {
         }
     ];
 
-    #fix /boot being world-accessible
-    fileSystems."/boot".options = ["fmask=0077" "dmask=0077"];
-
     nix.distributedBuilds = true;
     nix.settings.builders-use-substitutes = true;
     # nix.buildMachines = [
