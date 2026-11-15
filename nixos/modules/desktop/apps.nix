@@ -6,7 +6,6 @@
         adwaita-icon-theme
         baobab
         ffmpegthumbnailer
-        file-roller
         gimp
         gnome-firmware
         meld

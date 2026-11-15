@@ -12,4 +12,6 @@
 
     nixpkgs.config.allowUnfree = true;
     programs.nix-ld.enable = true;
+    environment.defaultPackages = [];
+    documentation.nixos.enable = false;
 }

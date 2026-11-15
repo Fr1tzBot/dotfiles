@@ -5,6 +5,7 @@
         nix-direnv.enable = true;
     };
     programs.lazygit.enable = true;
+    programs.nano.enable = false;
 
     environment.systemPackages = with pkgs; [
         aria2
