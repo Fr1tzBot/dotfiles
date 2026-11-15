@@ -52,13 +52,6 @@ else
     error "no root privileges found.\nYou can try running this script as root or verifying that sudo or doas is in your PATH" 126
 fi
 
-nixos-rebuild build --flake "$FLAKE_PATH" || error "Flake Build Failed."
-ok "Flake Build Successful"
-read -rp "Would you like to deploy now? [Y/n] " response
-case "${response,,}" in
-    no|n) exit 0
-esac
-
 $ROOT_STRING nixos-rebuild switch --flake "$FLAKE_PATH"
 exit 0
 
