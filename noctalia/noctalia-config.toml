@@ -20,7 +20,7 @@ start = [ "session", "launcher", "wallpaper", "workspaces", "media", "tray" ]
     accordion = false
     accordion_direction = "end"
     enabled = true
-    fill = "surface_variant"
+    fill = "surface_container"
     id = "g1"
     members = [ "notifications", "volume", "network", "bluetooth", "cpu", "ram", "battery", "date", "clock" ]
     opacity = 1.0
@@ -63,7 +63,7 @@ widget_order = [ "lockscreen-login-box@eDP-1" ]
     type = "login_box"
 
         [lockscreen_widgets.widget."lockscreen-login-box@eDP-1".settings]
-        background_color = "surface_variant"
+        background_color = "surface_container"
         background_opacity = 0.88
         background_radius = 12.0
         center_password_text = false
@@ -100,6 +100,9 @@ screen_time_enabled = true
 [theme]
 builtin = "Nord"
 source = "wallpaper"
+
+    [theme.templates]
+    builtin_ids = [ "gtk3", "gtk4" ]
 
 [wallpaper]
 directory = "/home/fritz/.config/niri"
