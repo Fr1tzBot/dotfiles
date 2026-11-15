@@ -52,7 +52,6 @@
 
     users.users.agent = {
         isNormalUser = true;
-        extraGroups = ["wheel"];
     };
 
     programs.bat.enable = true;
