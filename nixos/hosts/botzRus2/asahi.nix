@@ -53,6 +53,9 @@
         '';
 in {
     # agent: harness automation user, logs in from the harness controller
+    users.users.agent = {
+        isNormalUser = true;
+    };
     users.users.agent.openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGaZHqqfvz77JMb8uc4zCxYyjHPZtTlWukUsZlSbsygc fritz@antilles"
     ];
