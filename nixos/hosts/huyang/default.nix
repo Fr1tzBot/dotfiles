@@ -3,7 +3,7 @@
     environment.systemPackages = [pkgs.spotify];
     boot.kernelPackages = pkgs.linuxPackages_latest;
     boot.loader.efi.canTouchEfiVariables = true;
-    networking.hostName = "antilles";
+    networking.hostName = "huyang";
     system.stateVersion = "26.05"; # Don't mess with this alr bud
     hardware.cpu.intel.updateMicrocode = true;
     swapDevices = [
@@ -24,4 +24,6 @@
             "noauto" # optional: don't mount at boot, only on access
         ];
     };
+    services.octoprint.enable = true;
+    networking.firewall.allowedTCPPorts = [22 5000];
 }

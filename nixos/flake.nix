@@ -12,11 +12,11 @@
         ...
     }: {
         nixosConfigurations = {
-            antilles = nixpkgs.lib.nixosSystem {
+            huyang = nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
                     ./configuration.nix
-                    ./hosts/antilles
+                    ./hosts/huyang
                 ];
             };
             botzRus2 = nixpkgs-asahi.lib.nixosSystem {
