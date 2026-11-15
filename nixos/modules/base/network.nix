@@ -1,5 +1,4 @@
 {...}: {
-
     networking.networkmanager.wifi.backend = "iwd";
     networking.networkmanager.enable = true;
 
