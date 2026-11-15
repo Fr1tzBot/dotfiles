@@ -1,6 +1,5 @@
 {pkgs, ...}: {
     environment.systemPackages = with pkgs; [
-        R
         asm-lsp
         bash-language-server
         clang-tools

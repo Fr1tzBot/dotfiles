@@ -33,7 +33,6 @@ if #unused > 0 then
 end
 
 local langs = {
-    {prog="R", lsp="r_language_server"},
     {prog="arduino-language-server", lsp="arduino_language_server"},
     {prog="asm-lsp", lsp="asm_lsp"},
     {prog="bash-language-server", lsp="bashls"},
