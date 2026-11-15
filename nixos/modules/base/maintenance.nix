@@ -1,5 +1,8 @@
 {...}: {
-    services.earlyoom.enable = true;
+    services.earlyoom = {
+        enable = true;
+        enableNotifications = true;
+    };
     services.fstrim.enable = true;
     services.fwupd.enable = true;
     services.printing.enable = false;
