@@ -102,7 +102,7 @@ builtin = "Nord"
 source = "wallpaper"
 
     [theme.templates]
-    builtin_ids = [ "gtk3", "gtk4" ]
+    builtin_ids = [ "gtk3", "gtk4", "niri" ]
 
 [wallpaper]
 directory = "/home/fritz/.config/niri"
