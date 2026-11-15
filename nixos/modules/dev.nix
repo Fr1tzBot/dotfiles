@@ -7,7 +7,6 @@
         jdt-language-server
         lua-language-server
         matlab-language-server
-        neovim
         nil
         python314Packages.python-lsp-server
         rust-analyzer

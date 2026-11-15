@@ -17,4 +17,9 @@
         "x-scheme-handler/https" = "firefox.desktop";
         "text/html" = "firefox.desktop";
     };
+
+    xdg.terminal-exec = {
+        enable = true;
+        settings.default = ["foot.desktop"];
+    };
 }

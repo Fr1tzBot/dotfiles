@@ -1,10 +1,12 @@
 {pkgs, ...}: {
     fonts.packages = with pkgs; [
-        nerd-fonts.hack
         dejavu_fonts
         fira-sans
         font-awesome
+        nerd-fonts.hack
         nerd-fonts.space-mono
+        noto-fonts-cjk-sans
+        noto-fonts-color-emoji
         source-code-pro
     ];
 

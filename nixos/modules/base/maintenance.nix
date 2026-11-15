@@ -7,7 +7,7 @@
         enable = true;
         autodetect = true;
         defaults.monitored = "-a -o on -S on -n standby,q -W 4,45,55 -s (S/../.././02|L/../01/./03) ";
-        notifications.x11.enable = true;
+        notifications.systembus-notify.enable = true;
     };
     programs.git = {
         enable = true;
