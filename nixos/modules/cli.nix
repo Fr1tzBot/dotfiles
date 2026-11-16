@@ -20,6 +20,7 @@
         restic #this should be done with services.restic later
         tealdeer
         tree
+        unzip
         viu
         wget
     ];
