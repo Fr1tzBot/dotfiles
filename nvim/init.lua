@@ -43,6 +43,7 @@ local langs = {
     {prog="nil", lsp="nil_ls"},
     {prog="pylsp", lsp="pylsp"},
     {prog="rust-analyzer", lsp="rust_analyzer"},
+    {prog="slang-server", lsp="slang_server"}, --verilog completion (verible has none)
     {prog="verible-verilog-ls", lsp="verible"},
 }
 

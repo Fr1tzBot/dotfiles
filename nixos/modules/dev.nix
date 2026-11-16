@@ -10,6 +10,7 @@
         python314Packages.python-lsp-server
         rust-analyzer
         shellcheck
+        slang-server
         verible
     ];
 }
