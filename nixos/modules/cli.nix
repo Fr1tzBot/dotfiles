@@ -11,6 +11,7 @@
         aria2
         btop
         cava
+        claude-code
         fastfetch
         htop
         iw #??? may be able to get rid of
