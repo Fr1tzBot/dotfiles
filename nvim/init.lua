@@ -47,6 +47,24 @@ local langs = {
     {prog="verible-verilog-ls", lsp="verible"},
 }
 
+-- verible formats via its LSP; flags are verible-verilog-format style options
+vim.lsp.config("verible", {
+    cmd = {"verible-verilog-ls", "--indentation_spaces=4"},
+})
+
+-- <leader>f / :Format -- format buffer with whichever attached LSP supports it
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client and client:supports_method("textDocument/formatting") then
+            vim.keymap.set("n", "<leader>f", function() vim.lsp.buf.format({bufnr = args.buf}) end,
+                {buffer = args.buf, desc = "LSP format buffer"})
+            vim.api.nvim_buf_create_user_command(args.buf, "Format",
+                function() vim.lsp.buf.format({bufnr = args.buf}) end, {desc = "LSP format buffer"})
+        end
+    end,
+})
+
 local missing = {}
 
 for i, lang in pairs(langs) do
