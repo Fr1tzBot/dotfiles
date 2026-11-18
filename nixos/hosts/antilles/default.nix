@@ -14,6 +14,7 @@
     fileSystems."/home/fritz/mnt" = {
         device = "/dev/disk/by-uuid/62E8-18EA";
         fsType = "exfat";
+        noCheck = true;
         options = [
             "uid=1000"
             "gid=100" # "users" group
