@@ -6,6 +6,11 @@
     networking.hostName = "antilles";
     system.stateVersion = "26.05"; # Don't mess with this alr bud
     hardware.cpu.intel.updateMicrocode = true;
+    # Apple devices in DFU/recovery mode (e.g. the M1 Air test machine), so irecovery/idevicerestore run without root.
+    # libirecovery's own rule is a template (group "myusergroup") and does nothing as shipped.
+    services.udev.extraRules = ''
+        SUBSYSTEM=="usb", ATTR{idVendor}=="05ac", ATTR{idProduct}=="122[27]|128[0-3]", MODE="0660", GROUP="dialout", TAG+="uaccess"
+    '';
     swapDevices = [
         {
             device = "/swap";
