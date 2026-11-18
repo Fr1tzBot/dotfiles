@@ -22,6 +22,16 @@
                     ./modules/desktop
                 ];
             };
+            antilles = nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                    ./hosts/antilles
+                    ./modules/base
+                    ./modules/cli.nix
+                    ./modules/dev.nix
+                    ./modules/desktop
+                ];
+            };
             botzRus2 = nixpkgs-asahi.lib.nixosSystem {
                 system = "aarch64-linux";
                 modules = [
