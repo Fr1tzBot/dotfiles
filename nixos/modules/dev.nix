@@ -3,6 +3,7 @@
         asm-lsp
         bash-language-server
         clang-tools
+        claude-code
         jdt-language-server
         lua-language-server
         matlab-language-server
