@@ -12,16 +12,7 @@
         ...
     }: {
         nixosConfigurations = {
-            huyang = nixpkgs.lib.nixosSystem {
-                system = "x86_64-linux";
-                modules = [
-                    ./hosts/huyang
-                    ./modules/base
-                    ./modules/cli.nix
-                    ./modules/dev.nix
-                    ./modules/desktop
-                ];
-            };
+            # Desktop PC
             antilles = nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
@@ -32,6 +23,7 @@
                     ./modules/desktop
                 ];
             };
+            # Main Laptop
             botzRus2 = nixpkgs-asahi.lib.nixosSystem {
                 system = "aarch64-linux";
                 modules = [
@@ -41,6 +33,26 @@
                     ./modules/cli.nix
                     ./modules/dev.nix
                     ./modules/desktop
+                ];
+            };
+            # Octoprint PC
+            huyang = nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                    ./hosts/huyang
+                    ./modules/base
+                    ./modules/cli.nix
+                    ./modules/dev.nix
+                    ./modules/desktop
+                ];
+            };
+            # Remote build LXC
+            jesse = nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                    ./hosts/jesse
+                    ./modules/base
+                    ./modules/cli.nix
                 ];
             };
         };
