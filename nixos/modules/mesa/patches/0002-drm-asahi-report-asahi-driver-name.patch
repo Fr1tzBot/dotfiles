@@ -1,0 +1,22 @@
+drm/asahi: report the DRM driver as "asahi" 0.0.0, as upstream Asahi Linux does
+
+Aurora 7.3 (ce3c5d3) names the driver "aurora" with major 1. Stock Mesa (asahi gallium and
+the kmsro loader for the "apple" display node) only knows "asahi", so compositors fall back to
+software rendering and wlroots refuses to start. The UAPI itself only gained ioctls and
+feature bits since 7.2.11, which reported "asahi" 0.0.0.
+
+--- a/drivers/gpu/drm/asahi/driver.rs
++++ b/drivers/gpu/drm/asahi/driver.rs
+@@ -92,10 +92,10 @@
+ /// accepts without probing. The patch level marks fixes userspace may need to
+ /// detect.
+ const INFO: drm::driver::DriverInfo = drm::driver::DriverInfo {
+-    major: 1,
++    major: 0,
+     minor: 0,
+     patchlevel: 0,
+-    name: c"aurora",
++    name: c"asahi",
+     desc: c"Aurora GPU for Apple AGX",
+ };
+ 

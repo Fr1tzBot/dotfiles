@@ -66,6 +66,8 @@ for o in RUST=y APPLE_SEP=m ARM64_16K_PAGES=y EFI_STUB=y DRM_ASAHI=m NVME_APPLE=
 done
 check 'config BINDGEN_VERSION_TEXT is the patched 0.73.2' grep -qx 'CONFIG_BINDGEN_VERSION_TEXT="bindgen 0.73.2"' "$cfg"
 info "$(grep -E '^CONFIG_(APPLE_AURORA_BOOT_SECURITY_LOCKDOWN|SECURITY_LOCKDOWN_LSM|MODULE_SIG_FORCE)=' "$cfg" | tr '\n' ' ')"
+# stock Mesa only drives a GPU named "asahi" (a guest has no AGX, so this is checked on the build inputs)
+check "kernel built with the asahi DRM-name patch (stock Mesa)" grep -q 0002-drm-asahi-report-asahi-driver-name <(nix derivation show "$kernel" 2>/dev/null)
 
 echo "== device tree (t8103-j313)"
 dtb=$(find -L "$kernel/dtbs" -name t8103-j313.dtb 2>/dev/null | head -n1)

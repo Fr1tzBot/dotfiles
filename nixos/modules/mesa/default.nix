@@ -6,8 +6,9 @@
 # it. Bump one deliberately by editing its entry (and its hash), then rebuild and check Touch ID.
 #
 # Pieces:
-#  1. Kernel: omacom/linux-aurora integration/aurora-7.3 with one patch, patches/0001-apple-sep-t8103-key-store-v5.patch
-#     (`key_store_v5=1`: this Mac's identity keybag is variant 5, the T8103 profile assumes the 13.5 key store). Its
+#  1. Kernel: omacom/linux-aurora integration/aurora-7.3 with two patches: 0001-apple-sep-t8103-key-store-v5.patch
+#     (`key_store_v5=1`: this Mac's identity keybag is variant 5, the T8103 profile assumes the 13.5 key store) and
+#     0002-drm-asahi-report-asahi-driver-name.patch (stock Mesa only knows the GPU as "asahi", not "aurora"). Its
 #     DTBs (SEP and Mesa nodes) go into boot.bin. Config: generated, as for linux-asahi (see auroraKernel below).
 #  2. m1n1: Aurora's fork, unpatched. It forwards /chosen/apfs-preboot-uuid, the SEP's OS identity; without it the
 #     master catacomb save/load fails 0x6 (mesa-vault "Why does the master SAVE_CATACOMB fail in Linux").
@@ -186,6 +187,11 @@
                             SCHED_CLASS_EXT = lib.mkForce unset; # needs BTF
                             NET_SCH_BPF = lib.mkForce unset; # needs BTF
                         };
+                    }
+                    {
+                        # stock Mesa only drives a DRM device named "asahi"; Aurora 7.3 calls it "aurora"
+                        name = "drm/asahi: report the driver as asahi 0.0.0";
+                        patch = ./patches/0002-drm-asahi-report-asahi-driver-name.patch;
                     }
                 ];
         })
