@@ -175,6 +175,16 @@
                             ARMV8_DEPRECATED = lib.mkForce unset;
                             COMPAT_ALIGNMENT_FIXUPS = lib.mkForce unset;
                             CP15_BARRIER_EMULATION = lib.mkForce unset;
+                            # No debug info (as the 7.2 kernel had): nixpkgs' uncompressed DWARF + BTF over the
+                            # whole arm64 defconfig fills >29 GB of build dir (ENOSPC in modfinal) and doubles the time.
+                            DEBUG_INFO_NONE = yes;
+                            DEBUG_INFO = lib.mkForce unset;
+                            DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT = lib.mkForce unset;
+                            DEBUG_INFO_REDUCED = lib.mkForce unset;
+                            DEBUG_INFO_BTF = lib.mkForce unset;
+                            MODULE_ALLOW_BTF_MISMATCH = lib.mkForce unset;
+                            SCHED_CLASS_EXT = lib.mkForce unset; # needs BTF
+                            NET_SCH_BPF = lib.mkForce unset; # needs BTF
                         };
                     }
                 ];
