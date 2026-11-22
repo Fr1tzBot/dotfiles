@@ -10,6 +10,7 @@
         adw-gtk3
         ddcutil
         noctalia
+        xdg-user-dirs
     ];
 
     services.displayManager.noctalia-greeter = {
