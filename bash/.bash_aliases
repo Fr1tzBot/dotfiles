@@ -2,14 +2,15 @@
 has() { type -p "$1" &> /dev/null; }
 
 #Color aliases
-has grep && alias grep="grep --color=auto"
-has fgrep && alias fgrep='fgrep --color=auto'
-has egrep && alias egrep='egrep --color=auto'
 has diff && alias diff="diff --color=auto"
 has dir && alias dir='dir --color=auto'
-has vdir && alias vdir='vdir --color=auto'
-has tree && alias tree="tree -a -C"
+has egrep && alias egrep='egrep --color=auto'
+has fgrep && alias fgrep='fgrep --color=auto'
+has grep && alias grep="grep --color=auto"
 has ip && alias ip="ip -c"
+has tree && alias tree="tree -a -C"
+has vdir && alias vdir='vdir --color=auto'
+has watch && alias watch="watch --color"
 
 #Util aliases
 if has ls ; then
