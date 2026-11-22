@@ -5,7 +5,13 @@ HV runs established (linux16–linux19). Imported from `flake.nix` for botzRus2,
 with `mesa.auroraTouchId.enable`.
 
 **Status (2026-11-22):** works. The linux19 enrolment restores at boot, and `fprintd-verify` matches natively.
-Not yet tried: fingerprint at `doas`/polkit, the lock screen, suspend/resume, a Touch ID lockout.
+Also confirmed: `doas`, noctalia's lock screen (its own Fingerprint Unlock setting, via fprintd) and polkit prompts
+through noctalia's built-in polkit agent, all with the finger, and Touch ID after closing and reopening the lid. The
+greeter stays password-only on purpose: a fingerprint login can't unlock gnome-keyring. Suspend/resume works. Not yet tried:
+a Touch ID lockout.
+
+Polkit agents: soteria asks for the password *before* it starts PAM, so it then waits for the finger as well. Use
+noctalia's agent (Settings → Privacy & Security → Polkit Agent) with `security.soteria.enable = false`.
 
 ## What it changes
 - **Kernel:** aurora-silicon/linux 6a08a08 (7.2.11) instead of linux-asahi, plus m1harness's test patch (it
@@ -47,5 +53,6 @@ Pick an older generation in systemd-boot. It still boots through the new `boot.b
 rollback, copy `boot.bin.nixos` over `boot.bin` on the NixOS ESP from macOS, then boot the previous generation.
 
 ## Not on this kernel
-sep-bio interface v4: no password re-arm after a Touch ID lockout (Aurora's `touchid-rearm` needs v5), so a lockout lasts
-until reboot. There's also no orphan delete.
+sep-bio interface v4: no password re-arm after a Touch ID lockout (Aurora's `touchid-rearm` needs v5), so a password can't clear a lockout.
+Whether a reboot does is unknown: the driver also saves and restores a lockout state. Avoid testing it on purpose
+(every failed attempt writes xART); the password keeps working in every prompt. There's also no orphan delete.

@@ -17,7 +17,8 @@
 #     unlock gnome-keyring) or sshd.
 #
 # Not available on this kernel (sep-bio interface v4): Aurora's touchid-rearm (lockout re-arm by password, needs v5
-# SEP_BIO_REARM) and orphan deletion. A lockout ends with the next boot.
+# SEP_BIO_REARM) and orphan deletion. The password can't clear a lockout; whether a reboot does is unknown (the driver
+# saves/restores a lockout state). pam_fprintd still falls back to the password.
 #
 # Every enrolment and match writes the device-wide xART store (mesa-vault "xART anti-replay risk"); the user accepted
 # that for this Mac on 2026-11-18. Private data (host state, calibration) lives only in /var/lib, never in the store.
