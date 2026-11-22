@@ -1,0 +1,141 @@
+From 9077c17392dc97ec5b2c02721c012a98866e9d93 Mon Sep 17 00:00:00 2001
+From: Ryan Murray <81541646+RyanTheTide@users.noreply.github.com>
+Date: Sat, 7 Nov 2026 23:08:41 +1100
+Subject: [PATCH] aurora: say why a capture did not count, and keep waiting for
+ a finger
+
+The kernel names the cause of a retry in the poll guidance (partial
+contact, a moving finger, dirt or moisture, an unreadable frame) and
+reports each enrolment capture that did not count. Map those causes onto
+the retry codes fprintd turns into specific prompts: CENTER_FINGER,
+TOO_FAST, REMOVE_FINGER (with the reason), instead of the general retry.
+
+When no finger came before the kernel capture timeout, start the match
+again without a message, as a macOS Touch ID prompt keeps waiting; a
+retry that comes sooner than 5 s is still reported, so a sensor that
+never captures cannot spin.
+
+Signed-off-by: Ryan Murray <81541646+RyanTheTide@users.noreply.github.com>
+Assisted-by: LLM
+---
+ libfprint/drivers/aurora/aurora.c | 61 ++++++++++++++++++++++++++++---
+ 1 file changed, 56 insertions(+), 5 deletions(-)
+
+diff --git a/libfprint/drivers/aurora/aurora.c b/libfprint/drivers/aurora/aurora.c
+index 75f1c0f..d10518d 100644
+--- a/libfprint/drivers/aurora/aurora.c
++++ b/libfprint/drivers/aurora/aurora.c
+@@ -42,6 +42,17 @@
+ #ifndef SEP_BIO_GUIDANCE_LIFT
+ #define SEP_BIO_GUIDANCE_LIFT 4
+ #endif
++/* Why a capture did not count, in 'guidance' next to a retry status. */
++#ifndef SEP_BIO_GUIDANCE_CENTER
++#define SEP_BIO_GUIDANCE_CENTER   5
++#define SEP_BIO_GUIDANCE_TOO_FAST 6
++#define SEP_BIO_GUIDANCE_CLEAN    7
++#endif
++
++/* A verify that waited this long for a finger and got none is started again
++ * without a message, as a macOS Touch ID prompt keeps waiting. A shorter one
++ * is reported, so a sensor that never captures cannot spin. */
++#define AURORA_SILENT_REARM_US (5 * G_USEC_PER_SEC)
+ #ifndef SEP_BIO_STATUS_LOCKOUT
+ #define SEP_BIO_STATUS_LOCKOUT 8
+ #endif
+@@ -57,6 +68,7 @@ struct _FpiDeviceAurora
+ 
+   guint8    nonce[SEP_BIO_NONCE_LEN];
+   gboolean  nonce_valid;
++  gint64    match_started_us;
+ };
+ 
+ G_DECLARE_FINAL_TYPE (FpiDeviceAurora, fpi_device_aurora, FPI, DEVICE_AURORA, FpDevice)
+@@ -200,10 +212,33 @@ aurora_failure_new (const gchar *operation, guint32 status)
+ /* The kernel reports an unusable capture without saying why it was unusable,
+  * so the general retry is the most specific code that is always true. */
+ static GError *
+-aurora_retry_new (void)
++aurora_retry_new (guint32 cause)
+ {
+-  return fpi_device_retry_new_msg (FP_DEVICE_RETRY_GENERAL,
+-                                   "the capture was not usable; touch the sensor again");
++  switch (cause)
++    {
++    case SEP_BIO_GUIDANCE_CENTER:
++      return fpi_device_retry_new_msg (FP_DEVICE_RETRY_CENTER_FINGER,
++                                       "only part of the finger touched the sensor; "
++                                       "rest it flat on the middle of the sensor");
++
++    case SEP_BIO_GUIDANCE_TOO_FAST:
++      return fpi_device_retry_new_msg (FP_DEVICE_RETRY_TOO_FAST,
++                                       "the finger moved during the scan; hold it still");
++
++    case SEP_BIO_GUIDANCE_CLEAN:
++      return fpi_device_retry_new_msg (FP_DEVICE_RETRY_REMOVE_FINGER,
++                                       "the scan was not clear; wipe the sensor or dry "
++                                       "the finger and touch again");
++
++    case SEP_BIO_GUIDANCE_LIFT_AND_MOVE:
++      return fpi_device_retry_new_msg (FP_DEVICE_RETRY_REMOVE_FINGER,
++                                       "the scan could not be read; lift the finger and "
++                                       "touch the sensor again");
++
++    default:
++      return fpi_device_retry_new_msg (FP_DEVICE_RETRY_GENERAL,
++                                       "the capture was not usable; touch the sensor again");
++    }
+ }
+ 
+ /* The label is how the host recognises its own records in the device's list.
+@@ -594,7 +629,7 @@ aurora_enrol_ready (gint fd, GIOCondition condition, gpointer user_data)
+        * came after that stage. */
+       if (poll_res.status == SEP_BIO_STATUS_RETRY)
+         fpi_device_enroll_progress (device, self->enroll_last_reported_stage,
+-                                    NULL, aurora_retry_new ());
++                                    NULL, aurora_retry_new (poll_res.guidance));
+       return G_SOURCE_CONTINUE;
+ 
+     case SEP_BIO_STATE_DONE:
+@@ -804,6 +839,8 @@ aurora_not_compared_new (const struct sep_bio_verify_poll *res)
+   return fpi_device_error_new (FP_DEVICE_ERROR_GENERAL);
+ }
+ 
++static void aurora_match_start (FpDevice *device);
++
+ static gboolean
+ aurora_verify_ready (gint fd, GIOCondition condition, gpointer user_data)
+ {
+@@ -851,7 +888,20 @@ aurora_verify_ready (gint fd, GIOCondition condition, gpointer user_data)
+    * own, where a failure would end the authentication attempt. */
+   else if (res.state == SEP_BIO_STATE_FAILED &&
+            res.status == SEP_BIO_STATUS_RETRY)
+-    retry = aurora_retry_new ();
++    {
++      /* No finger came before the kernel's capture timeout: nothing to tell
++       * the person, the prompt simply keeps waiting for a touch. */
++      if (res.guidance == SEP_BIO_GUIDANCE_PLACE &&
++          g_get_monotonic_time () - self->match_started_us >= AURORA_SILENT_REARM_US)
++        {
++          fp_dbg ("no finger before the capture timeout; waiting for a touch again");
++          self->nonce_valid = FALSE;
++          memset (self->nonce, 0, sizeof (self->nonce));
++          aurora_match_start (device);
++          return G_SOURCE_REMOVE;
++        }
++      retry = aurora_retry_new (res.guidance);
++    }
+ 
+   if (action == FPI_DEVICE_ACTION_VERIFY)
+     {
+@@ -1050,6 +1100,7 @@ aurora_match_start (FpDevice *device)
+   self->nonce_valid = TRUE;
+ 
+   memcpy (start.nonce, self->nonce, sizeof (start.nonce));
++  self->match_started_us = g_get_monotonic_time ();
+ 
+   if (!aurora_ioctl (self, SEP_BIO_VERIFY_START, &start, &error))
+     {
+-- 
+2.54.0
+

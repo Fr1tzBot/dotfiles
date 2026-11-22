@@ -1,0 +1,29 @@
+Subject: [PATCH] aurora: name a touch of another enrolled finger as a plain no match
+
+A single-finger verify (fprintd-verify with no -f picks the first enrolled
+finger) accepts only the requested print. When the enclave matches another
+enrolled finger of the same user, the driver reports no match, which is right,
+but logged a warning that read like a print filed under the wrong identity.
+Log it as what it is: the touch matched another enrolled print.
+
+Assisted-by: LLM
+---
+diff --git a/libfprint/drivers/aurora/aurora.c b/libfprint/drivers/aurora/aurora.c
+index c14db48..9d1cc33 100644
+--- a/libfprint/drivers/aurora/aurora.c
++++ b/libfprint/drivers/aurora/aurora.c
+@@ -1011,8 +1011,13 @@ aurora_verify_ready (gint fd, GIOCondition condition, gpointer user_data)
+           else
+             {
+               aurora_uuid_hex (expected_uuid, expected_hex);
++              /* A single-finger verify accepts only the requested finger.
++               * A touch of another enrolled finger matches that finger's
++               * identity, and the answer is a plain no match: say so, so it
++               * does not read as a print filed under the wrong identity. */
+               if (memcmp (expected_uuid, res.uuid, SEP_BIO_UUID_LEN) != 0)
+-                g_warning ("SEP matched enclave identity %s; requested print identity is %s",
++                g_message ("the touch matched enclave identity %s, another enrolled print "
++                           "than the one requested (%s); reporting no match",
+                            actual_hex, expected_hex);
+               else
+                 fp_dbg ("SEP matched requested enclave identity %s", actual_hex);

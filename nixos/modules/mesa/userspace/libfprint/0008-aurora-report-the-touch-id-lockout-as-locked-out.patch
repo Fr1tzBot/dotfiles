@@ -1,0 +1,86 @@
+From 8e571eae6d9f673e373e5f9f6a60d5c56b82830d Mon Sep 17 00:00:00 2001
+From: Ryan Murray <81541646+RyanTheTide@users.noreply.github.com>
+Date: Sun, 8 Nov 2026 01:28:06 +1100
+Subject: [PATCH] aurora: report the Touch ID lockout as
+ FP_DEVICE_ERROR_LOCKED_OUT
+
+After too many failed matches, or when Touch ID has gone too long without
+the password, the apple_sep driver ends every verify with
+SEP_BIO_STATUS_LOCKOUT (8) until a password authentication re-arms it.
+0006 names that status in the message, but it still reaches fprintd as a
+general error, which fprintd turns into verify-unknown-error: pam_fprintd
+says "An unknown error occurred" and lock screens keep offering a reader
+that refuses every touch.
+
+Add FP_DEVICE_ERROR_LOCKED_OUT, for a device that refuses to match until
+the user authenticates another way, and report the lockout with it in
+verify and identify. fprintd with the lockout patch turns it into
+verify-lockout, and pam_fprintd goes straight to the password. A kernel
+that never reports the lockout sees no change.
+
+Signed-off-by: Ryan Murray <81541646+RyanTheTide@users.noreply.github.com>
+Assisted-by: LLM
+---
+ libfprint/drivers/aurora/aurora.c | 7 +++++++
+ libfprint/fp-device.h             | 4 ++++
+ libfprint/fpi-device.c            | 4 ++++
+ 3 files changed, 15 insertions(+)
+
+diff --git a/libfprint/drivers/aurora/aurora.c b/libfprint/drivers/aurora/aurora.c
+index d10518d..308015b 100644
+--- a/libfprint/drivers/aurora/aurora.c
++++ b/libfprint/drivers/aurora/aurora.c
+@@ -199,6 +199,13 @@ aurora_failure_new (const gchar *operation, guint32 status)
+ {
+   const gchar *reason = aurora_status_reason (status);
+ 
++  /* Its own code, so that fprintd sends the user to the password instead of
++   * retrying a reader that refuses every attempt until then. */
++  if (status == SEP_BIO_STATUS_LOCKOUT)
++    return fpi_device_error_new_msg (FP_DEVICE_ERROR_LOCKED_OUT,
++                                     "%s failed: %s (driver status %u)",
++                                     operation, reason, status);
++
+   if (reason == NULL)
+     return fpi_device_error_new_msg (FP_DEVICE_ERROR_GENERAL,
+                                      "%s failed, driver status 0x%x",
+diff --git a/libfprint/fp-device.h b/libfprint/fp-device.h
+index e82cb53..c7af2b2 100644
+--- a/libfprint/fp-device.h
++++ b/libfprint/fp-device.h
+@@ -143,6 +143,9 @@ typedef enum {
+  * @FP_DEVICE_ERROR_DATA_DUPLICATE: Enrolling template duplicates storaged templates
+  * @FP_DEVICE_ERROR_REMOVED: The device has been removed.
+  * @FP_DEVICE_ERROR_TOO_HOT: The device might be getting too hot
++ * @FP_DEVICE_ERROR_LOCKED_OUT: The device refuses to match, after too many
++ *   failed attempts, until the user authenticates another way, such as with
++ *   a password
+  *
+  * Error codes for device operations. More specific errors from other domains
+  * such as #G_IO_ERROR or #G_USB_DEVICE_ERROR may also be reported.
+@@ -161,6 +164,7 @@ typedef enum {
+   /* Leave some room to add more DATA related errors */
+   FP_DEVICE_ERROR_REMOVED = 0x100,
+   FP_DEVICE_ERROR_TOO_HOT,
++  FP_DEVICE_ERROR_LOCKED_OUT,
+ } FpDeviceError;
+ 
+ GQuark fp_device_retry_quark (void);
+diff --git a/libfprint/fpi-device.c b/libfprint/fpi-device.c
+index a70db5c..4149afc 100644
+--- a/libfprint/fpi-device.c
++++ b/libfprint/fpi-device.c
+@@ -274,6 +274,10 @@ fpi_device_error_new (FpDeviceError error)
+       msg = "Device disabled to prevent overheating.";
+       break;
+ 
++    case FP_DEVICE_ERROR_LOCKED_OUT:
++      msg = "Fingerprint matching is locked; authenticate with your password to use it again.";
++      break;
++
+     default:
+       g_warning ("Unsupported error, returning general error instead!");
+       error = FP_DEVICE_ERROR_GENERAL;
+-- 
+2.54.0
+

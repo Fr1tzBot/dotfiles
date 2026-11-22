@@ -1,0 +1,63 @@
+From 8eb26272900d21995678b366c57ad977fa98e5f4 Mon Sep 17 00:00:00 2001
+From: Ryan Murray <81541646+RyanTheTide@users.noreply.github.com>
+Date: Sat, 7 Nov 2026 21:50:09 +1100
+Subject: [PATCH] aurora: report a finger still on the sensor and name the
+ Touch ID lockout
+
+The kernel now arms the next capture when the finger of the last touch is
+lifted, as macOS does, and reports SEP_BIO_GUIDANCE_LIFT while it waits.
+Report that as FP_FINGER_STATUS_PRESENT instead of no status. Name the
+lockout status (8) in the failure message instead of a bare driver status.
+
+Signed-off-by: Ryan Murray <81541646+RyanTheTide@users.noreply.github.com>
+Assisted-by: LLM
+---
+ libfprint/drivers/aurora/aurora.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/libfprint/drivers/aurora/aurora.c b/libfprint/drivers/aurora/aurora.c
+index ab5b865..75f1c0f 100644
+--- a/libfprint/drivers/aurora/aurora.c
++++ b/libfprint/drivers/aurora/aurora.c
+@@ -37,6 +37,15 @@
+ #define SEP_BIO_STATUS_REJECTED 7
+ #endif
+ 
++/* Named in kernels that pace captures by the finger and lock Touch ID after
++ * the retry limit; headers from before them carry the same numbers. */
++#ifndef SEP_BIO_GUIDANCE_LIFT
++#define SEP_BIO_GUIDANCE_LIFT 4
++#endif
++#ifndef SEP_BIO_STATUS_LOCKOUT
++#define SEP_BIO_STATUS_LOCKOUT 8
++#endif
++
+ struct _FpiDeviceAurora
+ {
+   FpDevice  parent;
+@@ -164,6 +173,10 @@ aurora_status_reason (guint32 status)
+       return "too many captures in a row were not usable; "
+              "rest more of the finger flat on the sensor and enrol again";
+ 
++    case SEP_BIO_STATUS_LOCKOUT:
++      return "Touch ID is locked after too many failed attempts; "
++             "authenticate with the password to use it again";
++
+     default:
+       return NULL;
+     }
+@@ -524,7 +537,10 @@ aurora_report_guidance (FpDevice *device, guint32 guidance, gboolean active)
+ 
+   if (active)
+     {
+-      if (guidance == SEP_BIO_GUIDANCE_HOLD_STILL)
++      /* LIFT: the last touch's finger is still down, and the kernel arms
++       * the next capture when it is lifted. */
++      if (guidance == SEP_BIO_GUIDANCE_HOLD_STILL ||
++          guidance == SEP_BIO_GUIDANCE_LIFT)
+         status = FP_FINGER_STATUS_PRESENT;
+       else if (guidance == SEP_BIO_GUIDANCE_PLACE ||
+                guidance == SEP_BIO_GUIDANCE_LIFT_AND_MOVE)
+-- 
+2.54.0
+

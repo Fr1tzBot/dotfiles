@@ -1,0 +1,222 @@
+From 990a1267f64768984848475dd121ec58e7ce9df2 Mon Sep 17 00:00:00 2001
+From: Ryan Murray <ryan@aurorasilicon.org>
+Date: Tue, 10 Nov 2026 16:58:13 +1100
+Subject: [PATCH] fprintd: don't ask for a finger the reader will not take
+
+When a reader refuses every match until the password (Touch ID after a
+restart, or after too many failed attempts), VerifyStart still emitted
+VerifyFingerSelected, so pam_fprintd printed "Place your right index finger
+on the fingerprint reader" and GNOME showed "(or place finger on reader)"
+right before the verify ended with verify-password-required-after-boot and
+"Your password is required to enable Touch ID."
+
+Ask libfprint first with fp_device_get_password_required(). If the reader
+needs the password, start the verify as before, so it ends with the reader's
+own reason, but don't emit VerifyFingerSelected: front-ends then show only
+the password message.
+
+fp_device_get_password_required() is looked up at run time, so fprintd
+still builds against a libfprint without it and then behaves as before.
+
+Assisted-by: LLM
+Signed-off-by: Ryan Murray <ryan@aurorasilicon.org>
+---
+ src/device.c                          | 43 ++++++++++++++++-
+ src/net.reactivated.Fprint.Device.xml |  5 ++
+ tests/fprintd.py                      | 67 ++++++++++++++++++++++++++-
+ 3 files changed, 112 insertions(+), 3 deletions(-)
+
+diff --git a/src/device.c b/src/device.c
+index 9b4cc8b..4ec69e5 100644
+--- a/src/device.c
++++ b/src/device.c
+@@ -22,6 +22,7 @@
+ 
+ #include <glib/gi18n.h>
+ #include <gio/gio.h>
++#include <gmodule.h>
+ #include <polkit/polkit.h>
+ #include <fprint.h>
+ 
+@@ -1653,6 +1654,34 @@ identify_cb (FpDevice *dev, GAsyncResult *res, void *user_data)
+     }
+ }
+ 
++typedef gboolean (*PasswordRequiredFunc) (FpDevice *device,
++                                          GError  **reason);
++
++/* fp_device_get_password_required() comes with libfprint's Aurora patches
++ * and may be missing from the libfprint fprintd was built against, so look it
++ * up in the one it runs with. Without it, no device needs the password first. */
++static gboolean
++device_password_required (FpDevice *dev, GError **reason)
++{
++  static PasswordRequiredFunc password_required = NULL;
++  static gsize resolved = 0;
++
++  if (g_once_init_enter (&resolved))
++    {
++      GModule *self = g_module_open (NULL, 0);
++      gpointer symbol = NULL;
++
++      if (self && g_module_symbol (self, "fp_device_get_password_required", &symbol))
++        password_required = (PasswordRequiredFunc) symbol;
++      g_debug ("fp_device_get_password_required() %s",
++               password_required ? "found" : "not available");
++      /* The main program's module stays open for the process */
++      g_once_init_leave (&resolved, 1);
++    }
++
++  return password_required != NULL && password_required (dev, reason);
++}
++
+ static gboolean
+ fprint_device_verify_start (FprintDBusDevice      *dbus_dev,
+                             GDBusMethodInvocation *invocation,
+@@ -1664,7 +1693,9 @@ fprint_device_verify_start (FprintDBusDevice      *dbus_dev,
+   g_autoptr(GPtrArray) gallery = NULL;
+   g_autoptr(SessionData) session = NULL;
+   g_autoptr(GError) error = NULL;
++  g_autoptr(GError) password_reason = NULL;
+   FpFinger finger = finger_name_to_fp_finger (finger_name);
++  gboolean password_required;
+ 
+   if (!_fprint_device_check_claimed (rdev, invocation, &error))
+     {
+@@ -1713,6 +1744,13 @@ fprint_device_verify_start (FprintDBusDevice      *dbus_dev,
+         }
+     }
+ 
++  /* A device that refuses to match until the password ends this verify
++   * with that reason and never waits for a finger: don't ask for one. */
++  password_required = device_password_required (priv->dev, &password_reason);
++  if (password_required)
++    g_debug ("device %d needs the password first: %s", priv->id,
++             password_reason ? password_reason->message : "no reason given");
++
+   if (fp_device_has_feature (priv->dev, FP_DEVICE_FEATURE_IDENTIFY) &&
+       finger == FP_FINGER_UNKNOWN)
+     {
+@@ -1765,8 +1803,9 @@ fprint_device_verify_start (FprintDBusDevice      *dbus_dev,
+ 
+   /* Emit VerifyFingerSelected telling the front-end which finger
+    * we selected for auth */
+-  g_signal_emit (rdev, signals[SIGNAL_VERIFY_FINGER_SELECTED],
+-                 0, fp_finger_to_name (finger));
++  if (!password_required)
++    g_signal_emit (rdev, signals[SIGNAL_VERIFY_FINGER_SELECTED],
++                   0, fp_finger_to_name (finger));
+ 
+   return TRUE;
+ }
+diff --git a/src/net.reactivated.Fprint.Device.xml b/src/net.reactivated.Fprint.Device.xml
+index fc07cb7..117ecbf 100644
+--- a/src/net.reactivated.Fprint.Device.xml
++++ b/src/net.reactivated.Fprint.Device.xml
+@@ -501,6 +501,11 @@
+ 				</doc:doc>
+ 			</arg>
+ 			<doc:doc>
++				<doc:description>
++					<doc:para>
++						Not emitted when the device refuses to match until the user authenticates with their password: the verification then ends with verify-lockout or a verify-password-required status, and the user should not be asked for a finger.
++					</doc:para>
++				</doc:description>
+ 				<doc:seealso>
+ 					<doc:ref type="description" to="fingerprint-names">Fingerprint names</doc:ref>.
+ 				</doc:seealso>
+diff --git a/tests/fprintd.py b/tests/fprintd.py
+index 9938875..f72205d 100644
+--- a/tests/fprintd.py
++++ b/tests/fprintd.py
+@@ -917,7 +917,7 @@ class FPrintdVirtualStorageDeviceBaseTest(FPrintdVirtualDeviceBaseTest):
+         self.assertIn(command, ['INSERT', 'REMOVE', 'SCAN', 'ERROR', 'RETRY',
+             'FINGER', 'UNPLUG', 'SLEEP', 'SET_ENROLL_STAGES', 'SET_SCAN_TYPE',
+             'SET_CANCELLATION_ENABLED', 'LIST', 'IGNORED_COMMAND',
+-            'SET_KEEP_ALIVE', 'CONT'])
++            'SET_KEEP_ALIVE', 'SET_PASSWORD_REQUIRED', 'CONT'])
+ 
+         with Connection(self.sockaddr) as con:
+             res = self._send_command(con, command, *args)
+@@ -955,6 +955,9 @@ class FPrintdVirtualStorageDeviceBaseTest(FPrintdVirtualDeviceBaseTest):
+     def set_keep_alive(self, value):
+         self.send_command('SET_KEEP_ALIVE', 1 if value else 0)
+ 
++    def set_password_required(self, device_error):
++        self.send_command('SET_PASSWORD_REQUIRED', int(device_error))
++
+     def enroll_print(self, nick, finger='right-index-finger', expected_result='enroll-completed'):
+         # Using the name of the image as the print id
+         super().enroll_image(img=nick, finger=finger, expected_result=expected_result)
+@@ -2429,6 +2432,68 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
+             self.device.DeleteEnrolledFingers('(s)', 'nottestuser')
+ 
+ 
++class FPrintdVirtualDevicePasswordRequiredTests(FPrintdVirtualStorageDeviceBaseTest):
++
++    def setUp(self):
++        super().setUp()
++        self.device.Claim('(s)', 'testuser')
++
++    def tearDown(self):
++        self.try_release()
++        super().tearDown()
++
++    def assertVerifyNeedsPassword(self, device_error, expected_result, finger):
++        self.set_password_required(device_error)
++        self.device.VerifyStart('(s)', finger)
++        # The device refuses the match as soon as it starts.
++        self.send_error(error=device_error)
++        self.wait_for_result()
++        self.assertTrue(self._verify_stopped)
++        self.assertEqual(self._last_result, expected_result)
++        # No finger was asked for.
++        self.assertIsNone(self._selected_finger)
++        self.device.VerifyStop()
++
++    def test_verify_password_required_after_boot_asks_no_finger(self):
++        self.enroll_image('whorl', finger='left-thumb')
++        self.assertVerifyNeedsPassword(FPrint.DeviceError.PASSWORD_REQUIRED_AFTER_BOOT,
++                                       'verify-password-required-after-boot', 'any')
++
++    def test_verify_finger_password_required_after_boot_asks_no_finger(self):
++        self.enroll_image('whorl', finger='left-thumb')
++        self.assertVerifyNeedsPassword(FPrint.DeviceError.PASSWORD_REQUIRED_AFTER_BOOT,
++                                       'verify-password-required-after-boot', 'left-thumb')
++
++    def test_verify_lockout_asks_no_finger(self):
++        self.enroll_image('whorl', finger='left-thumb')
++        self.assertVerifyNeedsPassword(FPrint.DeviceError.LOCKED_OUT,
++                                       'verify-lockout', 'any')
++
++    def test_identify_password_required_after_boot_asks_no_finger(self):
++        self.enroll_image('whorl', finger='left-thumb')
++        self.enroll_image('tented_arch', finger='right-thumb')
++        self.assertVerifyNeedsPassword(FPrint.DeviceError.PASSWORD_REQUIRED_AFTER_BOOT,
++                                       'verify-password-required-after-boot', 'any')
++
++    def test_verify_after_password_asks_for_finger(self):
++        self.enroll_image('whorl', finger='left-thumb')
++        self.assertVerifyNeedsPassword(FPrint.DeviceError.PASSWORD_REQUIRED_AFTER_BOOT,
++                                       'verify-password-required-after-boot', 'any')
++        self.set_password_required(0)
++        self.device.VerifyStart('(s)', 'any')
++        self.send_image('whorl')
++        self.wait_for_result()
++        self.assertTrue(self._verify_stopped)
++        self.assertEqual(self._last_result, 'verify-match')
++        self.assertEqual(self._selected_finger, 'left-thumb')
++        self.device.VerifyStop()
++
++
++class FPrintdVirtualNoStorageDevicePasswordRequiredTests(FPrintdVirtualNoStorageDeviceBaseTest,
++                                                        FPrintdVirtualDevicePasswordRequiredTests):
++    pass
++
++
+ class FPrintdVirtualDeviceEnrollTests(FPrintdVirtualDeviceBaseTest):
+ 
+     def setUp(self):
+-- 
+2.50.1 (Apple Git-155)
+

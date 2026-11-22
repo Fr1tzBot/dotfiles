@@ -1,0 +1,204 @@
+Subject: [PATCH] fprintd: guard Aurora enrol and retain failed deletes
+
+Resolve the Unix account before fprintd can identify or delete any SEP
+print for an enrolment. Disable automatic duplicate and clear-storage steps
+for this device; require explicit deletion of an already enrolled finger.
+Keep the host record whenever device deletion fails, with regression tests.
+
+Assisted-by: LLM
+---
+diff --git a/src/device.c b/src/device.c
+index 4de4a10..757c30a 100644
+--- a/src/device.c
++++ b/src/device.c
+@@ -28,6 +28,8 @@
+ #include <sys/types.h>
+ #include <pwd.h>
+ #include <errno.h>
++#include <stdbool.h>
++#include <string.h>
+ 
+ #include "fprintd-dbus.h"
+ #include "fprintd.h"
+@@ -2174,6 +2176,21 @@ is_first_enrollment (FprintDevice * rdev)
+   return host_prints->len == 0;
+ }
+ 
++static gboolean
++aurora_account_resolves (const char *username)
++{
++  struct passwd account;
++  struct passwd *found = NULL;
++  char buffer[16384];
++
++  if (!username || !*username)
++    return false;
++
++  return getpwnam_r (username, &account, buffer, sizeof (buffer), &found) == 0 &&
++         found && found->pw_name && strcmp (found->pw_name, username) == 0 &&
++         found->pw_uid != (uid_t) -1;
++}
++
+ static gboolean
+ fprint_device_enroll_start (FprintDBusDevice      *dbus_dev,
+                             GDBusMethodInvocation *invocation,
+@@ -2185,6 +2202,7 @@ fprint_device_enroll_start (FprintDBusDevice      *dbus_dev,
+   FprintDevice *rdev = FPRINT_DEVICE (dbus_dev);
+   FprintDevicePrivate *priv = fprint_device_get_instance_private (rdev);
+   FpFinger finger = finger_name_to_fp_finger (finger_name);
++  gboolean aurora = g_strcmp0 (fp_device_get_driver (priv->dev), "apple-sep") == 0;
+ 
+   if (!_fprint_device_check_claimed (rdev, invocation, &error))
+     {
+@@ -2201,6 +2219,20 @@ fprint_device_enroll_start (FprintDBusDevice      *dbus_dev,
+     }
+ 
+   session = session_data_get (priv);
++  if (aurora)
++    {
++      /* fprintd normally identifies (and may delete) a device print before
++       * invoking the driver's enrol method. Resolve the account here so an
++       * invalid target causes no SEP match, save or deletion at all. */
++      if (!aurora_account_resolves (session->username))
++        {
++          g_set_error (&error, FPRINT_ERROR, FPRINT_ERROR_INTERNAL,
++                       "Unix account '%s' has no passwd entry or uid; no biometric operation was started",
++                       session->username ? session->username : "");
++          g_dbus_method_invocation_return_gerror (invocation, error);
++          return TRUE;
++        }
++    }
+   store.print_data_load (priv->dev, finger,
+                          session->username, &existing_print);
+ 
+@@ -2212,6 +2244,13 @@ fprint_device_enroll_start (FprintDBusDevice      *dbus_dev,
+ 
+   if (existing_print)
+     {
++      if (aurora)
++        {
++          g_set_error (&error, FPRINT_ERROR, FPRINT_ERROR_FINGER_ALREADY_ENROLLED,
++                       "finger already enrolled; delete it explicitly before enrolling again");
++          g_dbus_method_invocation_return_gerror (invocation, error);
++          return TRUE;
++        }
+       if (!delete_enrolled_fingers (rdev, session->username, finger, &error))
+         {
+           g_dbus_method_invocation_return_gerror (invocation, error);
+@@ -2225,7 +2264,7 @@ fprint_device_enroll_start (FprintDBusDevice      *dbus_dev,
+   priv->enroll_data = finger;
+   priv->current_action = ACTION_ENROLL;
+ 
+-  if (fp_device_has_feature (priv->dev, FP_DEVICE_FEATURE_STORAGE) &&
++  if (!aurora && fp_device_has_feature (priv->dev, FP_DEVICE_FEATURE_STORAGE) &&
+       !fp_device_has_feature (priv->dev, FP_DEVICE_FEATURE_STORAGE_LIST) &&
+       is_first_enrollment (rdev))
+     {
+@@ -2236,7 +2275,7 @@ fprint_device_enroll_start (FprintDBusDevice      *dbus_dev,
+                    clear_err->message);
+     }
+ 
+-  if (fp_device_has_feature (priv->dev, FP_DEVICE_FEATURE_IDENTIFY))
++  if (!aurora && fp_device_has_feature (priv->dev, FP_DEVICE_FEATURE_IDENTIFY))
+     {
+       g_autoptr(GPtrArray) all_prints = load_all_prints (rdev);
+ 
+@@ -2390,8 +2429,8 @@ delete_enrolled_fingers (FprintDevice *rdev,
+       return FALSE;
+     }
+ 
+-  /* First try deleting the print from the device, we don't consider it
+-   * fatal if this does not work. */
++  /* Keep the host record until the device confirms deletion. A failed SEP
++   * deletion may leave an enclave identity that a later retry must address. */
+   if (fp_device_has_feature (priv->dev, FP_DEVICE_FEATURE_STORAGE))
+     {
+       g_autoptr(GSList) prints = NULL;
+@@ -2432,6 +2471,12 @@ delete_enrolled_fingers (FprintDevice *rdev,
+         }
+     }
+ 
++  if (device_error)
++    {
++      g_propagate_error (error, g_steal_pointer (&device_error));
++      return FALSE;
++    }
++
+   if (finger != FP_FINGER_UNKNOWN)
+     {
+       if ((r = store.print_data_delete (priv->dev, finger, user)) != 0)
+@@ -2473,13 +2518,6 @@ delete_enrolled_fingers (FprintDevice *rdev,
+         }
+     }
+ 
+-  if (device_error)
+-    {
+-      /* This is a low priority error, higher priority errors would have returned failure already */
+-      g_propagate_error (error, g_steal_pointer (&device_error));
+-      return FALSE;
+-    }
+-
+   return TRUE;
+ }
+ 
+diff --git a/tests/fprintd.py b/tests/fprintd.py
+index a1fef1c..bc45720 100644
+--- a/tests/fprintd.py
++++ b/tests/fprintd.py
+@@ -2601,6 +2601,7 @@ class FPrintdVirtualDeviceStorageClaimedTest(FPrintdVirtualStorageDeviceBaseTest
+ 
+         with self.assertFprintError('PrintsNotDeletedFromDevice'):
+             self.device.DeleteEnrolledFingers('(s)', 'testuser')
++        self.assertFingerInStorage('testuser', FPrint.Finger.RIGHT_INDEX)
+ 
+     def test_delete_enrolled_fingers2_device_error(self):
+         self.enroll_print('new-print')
+@@ -2609,6 +2610,7 @@ class FPrintdVirtualDeviceStorageClaimedTest(FPrintdVirtualStorageDeviceBaseTest
+ 
+         with self.assertFprintError('PrintsNotDeletedFromDevice'):
+             self.device.DeleteEnrolledFingers2()
++        self.assertFingerInStorage('testuser', FPrint.Finger.RIGHT_INDEX)
+ 
+     def test_delete_enrolled_finger_device_error(self):
+         self.enroll_print('new-print', finger='left-thumb')
+@@ -2617,6 +2619,7 @@ class FPrintdVirtualDeviceStorageClaimedTest(FPrintdVirtualStorageDeviceBaseTest
+ 
+         with self.assertFprintError('PrintsNotDeletedFromDevice'):
+             self.device.DeleteEnrolledFinger('(s)', 'left-thumb')
++        self.assertFingerInStorage('testuser', FPrint.Finger.LEFT_THUMB)
+ 
+     def test_delete_enrolled_fingers_device_removed(self):
+         self.enroll_print('deleted-print')
+@@ -2650,8 +2653,9 @@ class FPrintdVirtualDeviceStorageClaimedTest(FPrintdVirtualStorageDeviceBaseTest
+ 
+         self.set_print_not_writable('testuser', FPrint.Finger.LEFT_THUMB)
+ 
+-        with self.assertFprintError('PrintsNotDeleted'):
++        with self.assertFprintError('PrintsNotDeletedFromDevice'):
+             self.wait_for_device_reply()
++        self.assertFingerInStorage('testuser', FPrint.Finger.LEFT_THUMB)
+ 
+     def test_delete_enrolled_fingers2_storage_error_has_higher_priority(self):
+         self.enroll_print('deleted-print', finger='left-thumb')
+@@ -2664,8 +2668,9 @@ class FPrintdVirtualDeviceStorageClaimedTest(FPrintdVirtualStorageDeviceBaseTest
+ 
+         self.set_print_not_writable('testuser', FPrint.Finger.LEFT_THUMB)
+ 
+-        with self.assertFprintError('PrintsNotDeleted'):
++        with self.assertFprintError('PrintsNotDeletedFromDevice'):
+             self.wait_for_device_reply()
++        self.assertFingerInStorage('testuser', FPrint.Finger.LEFT_THUMB)
+ 
+     def test_delete_enrolled_finger_storage_error_has_higher_priority(self):
+         self.enroll_print('deleted-print', finger='left-thumb')
+@@ -2678,8 +2683,9 @@ class FPrintdVirtualDeviceStorageClaimedTest(FPrintdVirtualStorageDeviceBaseTest
+ 
+         self.set_print_not_writable('testuser', FPrint.Finger.LEFT_THUMB)
+ 
+-        with self.assertFprintError('PrintsNotDeleted'):
++        with self.assertFprintError('PrintsNotDeletedFromDevice'):
+             self.wait_for_device_reply()
++        self.assertFingerInStorage('testuser', FPrint.Finger.LEFT_THUMB)
+ 
+     def test_release_error(self):
+         self.send_error(FPrint.DeviceError.PROTO)
