@@ -52,28 +52,7 @@
             EOF
         '';
 in {
-    # agent: harness automation user, logs in from the harness controller
-    users.users.agent = {
-        isNormalUser = true;
-    };
-    users.users.agent.openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGaZHqqfvz77JMb8uc4zCxYyjHPZtTlWukUsZlSbsygc fritz@antilles"
-    ];
     environment.systemPackages = [pkgs.asahi-bless];
-    # agent may switch the boot OS and reboot without a password, nothing else
-    security.doas.extraRules = [
-        {
-            users = ["agent"];
-            noPass = true;
-            cmd = "asahi-bless";
-        }
-        {
-            users = ["agent"];
-            noPass = true;
-            cmd = "systemctl";
-            args = ["reboot"];
-        }
-    ];
 
     nix.distributedBuilds = true;
     nix.settings.builders-use-substitutes = true;
