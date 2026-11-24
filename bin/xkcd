@@ -10,3 +10,5 @@ fi
 
 
 curl -s "$(curl -s "$BASE_URL$1/" | grep -oP -m 1 'https://imgs.xkcd.com/comics/.*\.(png|jpg)')" | viu -
+echo
+
