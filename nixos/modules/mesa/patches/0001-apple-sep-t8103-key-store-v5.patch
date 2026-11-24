@@ -1,0 +1,49 @@
+diff --git a/drivers/soc/apple/profile.rs b/drivers/soc/apple/profile.rs
+index 8790463..96f768c 100644
+--- a/drivers/soc/apple/profile.rs
++++ b/drivers/soc/apple/profile.rs
+@@ -228,6 +228,20 @@ pub(crate) struct PlatformProfile {
+     xart_guard: 0,
+ };
+ 
++/// T8103 with the variant-5 key store, selected only by `key_store_v5=1`. A J313 whose iBoot preloads a newer
++/// sepOS (27.2 measured) accepts a variant-5 identity keybag, and creating one wrote no xART records, unlike the
++/// 13.5-format bag. An existing variant-5 keybag needs this profile to load.
++pub(crate) const T8103_V5: PlatformProfile = PlatformProfile {
++    name: "T8103/J313 (variant-5 key store)",
++    keybag_create: KeybagCreate {
++        variant: 5,
++        bag_type: 0,
++        arg: -1,
++    },
++    key_store: KeyStore::Variant5,
++    ..T8103
++};
++
+ /// M1 Pro (J316s). The M1 family cold-boots its SEP like T8103, so the boot
+ /// path, shared-memory geometry and key store follow T8103. The sensor sits on
+ /// SPI2 at the T6020 address, in the mode T6020 verified: the J313, J316s and
+@@ -650,6 +664,9 @@ fn t6020_profile() -> &'static PlatformProfile {
+ /// rather than guessed at, so the driver cannot run a handshake with the wrong
+ /// geometry.
+ pub(crate) fn detect() -> Result<&'static PlatformProfile> {
++    if machine_has(b"apple,t8103") && crate::module_parameters::key_store_v5.value() != 0 {
++        return Ok(&T8103_V5);
++    }
+     select(&machine_has, &t6020_profile)
+ }
+ 
+diff --git a/drivers/soc/apple/sep.rs b/drivers/soc/apple/sep.rs
+index 02fcc78..fca42fb 100644
+--- a/drivers/soc/apple/sep.rs
++++ b/drivers/soc/apple/sep.rs
+@@ -3745,5 +3745,9 @@ fn init(module: &'static ThisModule) -> impl PinInit<Self, Error> {
+             default: 0,
+             description: "Opt-in J414s enrollment test: export owner from the fresh context, then save user before master at completion",
+         },
++        key_store_v5: u8 {
++            default: 0,
++            description: "T8103: use the variant-5 key store (as T6020) instead of the 13.5 one; needed for a variant-5 identity keybag",
++        },
+     },
+ }

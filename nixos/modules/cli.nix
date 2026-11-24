@@ -20,7 +20,7 @@
     tealdeer
     tree
     unzip
-    (viu.override {withSixel = true;})
+    (viu.overrideAttrs (old: { cargoBuildFeatures = [ "icy_sixel" ]; }))
     wget
   ];
 }

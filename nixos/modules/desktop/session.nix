@@ -29,7 +29,6 @@
         };
     };
     security.pam.services.greetd.enableGnomeKeyring = true;
-    security.soteria.enable = true;
     services.geoclue2.enable = true;
     services.libinput.enable = true;
     services.power-profiles-daemon.enable = true;

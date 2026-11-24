@@ -33,6 +33,7 @@
                     ./modules/cli.nix
                     ./modules/dev.nix
                     ./modules/desktop
+                    ./modules/mesa
                 ];
             };
             # Octoprint PC
