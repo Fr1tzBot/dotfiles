@@ -20,7 +20,7 @@
     tealdeer
     tree
     unzip
-    (viu.override {withSixel = truel;})
+    (viu.override {withSixel = true;})
     wget
   ];
 }
