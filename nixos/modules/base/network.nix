@@ -1,9 +1,11 @@
-{...}: {
+{config, ...}: let
+    bare_metal = !config.boot.isContainer;
+in {
     networking.networkmanager.wifi.backend = "iwd";
-    networking.networkmanager.enable = true;
+    networking.networkmanager.enable = bare_metal;
 
     networking.firewall = {
-        enable = true;
+        enable = bare_metal;
         allowedTCPPorts = [22];
         allowedUDPPorts = [5353];
     };
@@ -19,7 +21,7 @@
     };
 
     services.chrony = {
-        enable = true;
+        enable = bare_metal;
         servers = ["time.mtu.edu" "time.cloudflare.com" "0.nixos.pool.ntp.org"];
         serverOption = "iburst";
     };

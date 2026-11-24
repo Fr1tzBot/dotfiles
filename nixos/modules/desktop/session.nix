@@ -1,4 +1,8 @@
-{lib, pkgs, ...}: {
+{
+    lib,
+    pkgs,
+    ...
+}: {
     hardware.bluetooth.enable = true;
     hardware.bluetooth.powerOnBoot = true;
     hardware.graphics.enable = true;

@@ -1,13 +1,8 @@
-{
-    modulesPath,
-    pkgs,
-    ...
-}: {
+{modulesPath, ...}: {
     imports = ["${modulesPath}/virtualisation/proxmox-lxc.nix"];
 
     networking.hostName = "jesse";
     proxmoxLXC.manageHostName = true;
-    networking.domain = "lan";
     system.stateVersion = "26.11";
 
     users.users.agent = {
