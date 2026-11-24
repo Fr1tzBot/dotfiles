@@ -64,7 +64,7 @@
             kickback = nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
-                    ./hosts/jesse
+                    ./hosts/kickback
                     ./modules/base/locale.nix
                     ./modules/base/maintenance.nix
                     ./modules/base/network.nix
