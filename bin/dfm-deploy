@@ -5,22 +5,37 @@ DOTFILES="$TRIMMED_HOME/Documents/dotfiles"
 CONFIG="$TRIMMED_HOME/.config"
 
 has() { type -p "$1" > /dev/null; }
-install_config() { has "$1" && mkdir -p "$CONFIG" && cp -ruv "$DOTFILES/$1" "$CONFIG"; }
-install_home() { has "$1" && cp -ruv "${DOTFILES}/$1/"* "$TRIMMED_HOME"; }
-
+#dfm_install: install a file from dotfiles
+# args:
+# 1. program - the name of the program to check for
+# 2. destination - where to copy the file to
+# 3. copydir - 1 to copy the directory, 0 to copy only its contents
+# returns:
+# 0 - success
+# 73 - failed to create destination directory
+# 74 - failed to copy file(s)
+dfm_install() {
+    if has "$1" ; then
+        mkdir -p "$2" || return 73
+        if (( $3 )) ; then
+            cp -ruv "$DOTFILES/$1" "$2" || return 74
+        else
+            cp -ruv "$DOTFILES/$1/"* "$2" || return 74
+        fi
+    fi
+    return 0
+}
 shopt -s dotglob
 
 PROGS_HOME=("bash" "ssh" "git" "vim")
 for prog in "${PROGS_HOME[@]}"; do
-    install_home "$prog"
+    dfm_install "$prog" "$TRIMMED_HOME" 0
 done
 
 PROGS_CONFIG=("foot" "kitty" "mpv" "fastfetch" "neofetch" "nvim" "noctalia" "rofi" "sway" "swaylock" "waybar" "niri" "dunst" "fuzzel" "cava")
 for prog in "${PROGS_CONFIG[@]}"; do
-    install_config "$prog"
+    dfm_install "$prog" "$CONFIG" 1
 done
-
-has sway && [ -f "$DOTFILES/sway/$HOSTNAME.config" ] && [ ! -e "$CONFIG/sway/osspecific.config" ] && ln -sv "$CONFIG/sway/$HOSTNAME.config" "$CONFIG/sway/osspecific.config"
 
 cp -ruv "$DOTFILES/bin" "$TRIMMED_HOME/"
 
