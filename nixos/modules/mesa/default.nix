@@ -400,7 +400,7 @@ in {
             serviceConfig = {
                 # /dev/sep-bio for the reader (the misc class, since a path rule resolves before the node exists);
                 # input devices read-only for the lid switch (the reader is hidden while the lid is closed).
-                DeviceAllow = ["char-misc rw" "char-input r"];
+                DeviceAllow = ["/dev/sep-bio rw" "char-input r"];
                 # Stay resident: each new start re-probes the reader and the lock screen asks right away.
                 ExecStart = ["" "${fprintdAurora}/libexec/fprintd --no-timeout"];
             };
