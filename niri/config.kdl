@@ -64,6 +64,11 @@ output "DVI-I-1" {
     scale 1
     transform "90"
 }
+output "DP-2" {
+    mode "1680x1050"
+    scale 1
+    transform "normal"
+}
 output "DP-4" {
     mode "1680x1050"
     scale 1
