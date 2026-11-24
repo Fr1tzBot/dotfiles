@@ -52,6 +52,12 @@ else
     error "no root privileges found.\nYou can try running this script as root or verifying that sudo or doas is in your PATH" 126
 fi
 
-$ROOT_STRING nixos-rebuild switch --flake "$FLAKE_PATH"
+HOST=""
+if [[ "$HOSTNAME" == *".lan"* ]] ; then
+    HOST="#${HOSTNAME%.*}"
+fi
+
+$ROOT_STRING nixos-rebuild switch --flake "$FLAKE_PATH$HOST"
+
 exit 0
 
