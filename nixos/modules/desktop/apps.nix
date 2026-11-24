@@ -1,6 +1,7 @@
 {pkgs, ...}: {
     programs.firefox.enable = true;
     programs.foot.enable = true;
+    programs.kdeconnect.enable = true;
 
     environment.systemPackages = with pkgs; [
         adwaita-icon-theme
