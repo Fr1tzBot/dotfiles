@@ -60,6 +60,20 @@
                     ./modules/cli.nix
                 ];
             };
+            # Cloud Replacement LXC
+            kickback = nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                    ./hosts/jesse
+                    ./modules/base/locale.nix
+                    ./modules/base/maintenance.nix
+                    ./modules/base/network.nix
+                    ./modules/base/nix.nix
+                    ./modules/base/security.nix
+                    ./modules/base/users.nix
+                    ./modules/cli.nix
+                ];
+            };
         };
     };
 }

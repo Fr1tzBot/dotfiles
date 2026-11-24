@@ -3,7 +3,6 @@
 
     networking.hostName = "jesse";
     proxmoxLXC.manageHostName = true;
-    networking.domain = "lan";
     system.stateVersion = "26.11";
 
     users.users.agent = {
