@@ -22,5 +22,11 @@ else
 fi
 
 printf 'Good day, welcome to %s\n' "$distro!"
-has fastfetch && fastfetch
+if has fastfetch ; then
+    if ((COLUMNS > 70)) ; then
+        fastfetch
+    else
+        fastfetch -s none
+    fi
+fi
 
