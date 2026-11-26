@@ -27,6 +27,7 @@ if has fastfetch ; then
         fastfetch
     else
         fastfetch -s none
+        fastfetch --logo none
     fi
 fi
 
